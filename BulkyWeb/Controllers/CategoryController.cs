@@ -21,5 +21,21 @@ namespace BulkyWeb.Controllers
 
             return View();
         }
+        [HttpPost]
+        public IActionResult Create(Category obj)
+        {
+            if (obj.Name == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name", "Display Order cant match name");
+            }
+            if (ModelState.IsValid)
+            {
+                _dbContext.Categories.Add(obj);
+                _dbContext.SaveChanges();
+
+                return RedirectToAction("Index", "Category");
+            }
+            return View();
+        }
     }
 }
