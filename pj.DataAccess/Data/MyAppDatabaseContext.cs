@@ -1,7 +1,7 @@
-﻿using BulkyWeb.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using pj.Models;
 
-namespace BulkyWeb.Data
+namespace pj.DataAccess.Data
 {
     public class MyAppDatabaseContext :DbContext
     {

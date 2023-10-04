@@ -1,4 +1,4 @@
-namespace BulkyWeb.Models
+namespace pj.Models
 {
     public class ErrorViewModel
     {
