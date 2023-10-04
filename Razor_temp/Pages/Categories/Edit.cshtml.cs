@@ -29,6 +29,8 @@ namespace Razor_temp.Pages.Categories
             {
                 _data.Categories.Update(category);
                 _data.SaveChanges();
+                TempData["success"] = "Category edited successfully";
+
                 return RedirectToPage("Index");
             }
 

@@ -24,6 +24,7 @@ namespace Razor_temp.Pages.Categories
         {
             _datacontext.Categories.Add(category);
             _datacontext.SaveChanges();
+            TempData["success"] = "Category created successfully";
             return RedirectToPage("Index");
         }
 

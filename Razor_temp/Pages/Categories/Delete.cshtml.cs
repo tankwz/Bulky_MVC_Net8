@@ -35,6 +35,8 @@ namespace Razor_temp.Pages.Categories
 
             _data.Categories.Remove(obj);
             _data.SaveChanges();
+            TempData["success"] = "Category deleted successfully";
+
             return RedirectToPage("Index");
         }
 
