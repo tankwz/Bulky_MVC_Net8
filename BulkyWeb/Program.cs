@@ -1,5 +1,7 @@
 using pj.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using pj.DataAccess.Repository.IRepository;
+using pj.DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyAppDatabaseContext>(myoptions => 
     myoptions.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionName")));
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
