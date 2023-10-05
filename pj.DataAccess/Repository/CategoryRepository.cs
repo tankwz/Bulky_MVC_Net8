@@ -18,9 +18,6 @@ namespace pj.DataAccess.Repository
             _db = db;
         }
 
-
-     
-
         public void Update(Category category)
         {
             _db.Categories.Update(category);
