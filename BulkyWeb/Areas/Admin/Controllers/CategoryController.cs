@@ -1,11 +1,11 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using pj.DataAccess.Data;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
 
-namespace BulkyWeb.Controllers
+namespace BulkyWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _uniOfWork;
@@ -16,7 +16,7 @@ namespace BulkyWeb.Controllers
         public IActionResult Index()
         {
             List<Category> objCategoryList = _uniOfWork.Category.GetAll().ToList();
-            return View(objCategoryList); 
+            return View(objCategoryList);
         }
         public IActionResult Create()
         {
@@ -44,7 +44,7 @@ namespace BulkyWeb.Controllers
         {
             if (id == null || id == 0)
                 return NotFound();
-            Category? category = _uniOfWork.Category.Get1(u=>u.Id==id);
+            Category? category = _uniOfWork.Category.Get1(u => u.Id == id);
             if (category == null)
                 return NotFound();
             return View(category);
@@ -71,7 +71,7 @@ namespace BulkyWeb.Controllers
         {
             if (id == null || id == 0)
                 return NotFound();
-            Category? category = _uniOfWork.Category.Get1(u=>u.Id==id);
+            Category? category = _uniOfWork.Category.Get1(u => u.Id == id);
             if (category == null)
                 return NotFound();
             return View(category);
@@ -81,7 +81,7 @@ namespace BulkyWeb.Controllers
         public IActionResult DeletePost(int? id)
         {
             Category? obj = _uniOfWork.Category.Get1(u => u.Id == id);
-            if (obj == null)   return NotFound();
+            if (obj == null) return NotFound();
             _uniOfWork.Category.Remove(obj);
             _uniOfWork.save();
             TempData["success"] = "Category deleted successfully";
