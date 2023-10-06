@@ -52,6 +52,17 @@ namespace BulkyWeb.Areas.Admin.Controllers
             Product? product = _unitOfWork.Product.Get1(p=>p.Id == id);
             return View(product);
         }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePost(int? id)
+        {
+
+            Product? product = _unitOfWork.Product.Get1(p => p.Id == id);
+            if (product == null) return NotFound();
+            _unitOfWork.Product.Remove(product);
+            _unitOfWork.save();
+            TempData["success"] = "Removed product successfully";
+            return RedirectToAction("Index", "Product");
+        }
 
 
 
