@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace pj.DataAccess.Repository
 {
-    internal class ProductRepository : Repository<Product>, IProductRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
 
 
@@ -21,7 +21,7 @@ namespace pj.DataAccess.Repository
         }
         public void Update(Product product)
         {
-            _db.Update(product); 
+            _db.Products.Update(product); 
            // throw new NotImplementedException();
         }
     }

@@ -12,6 +12,8 @@ namespace pj.DataAccess.Repository.IRepository
         //T - Category
         IEnumerable<T> GetAll();
         T Get1(Expression<Func<T, bool>> filter);
+        // Get1(Experssion<Func<T,bool>>
+        //Get (Experssion<Func<t,bool>>)???????????????????????????????????
         void Add(T item);
         void Remove(T item);
         void RemoveRange(IEnumerable<T> item);

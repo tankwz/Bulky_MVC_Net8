@@ -1,4 +1,5 @@
-﻿using pj.DataAccess.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using pj.DataAccess.Data;
 using pj.DataAccess.Repository.IRepository;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,12 @@ namespace pj.DataAccess.Repository
 
         private MyAppDatabaseContext _dbContext;
         public ICategoryRepository Category { get; private set; }
-        public ICategoryRepository Product { get; private set; }
+        public IProductRepository Product { get; private set; }
         public UnitOfWork(MyAppDatabaseContext db)
         {
             _dbContext = db;
             Category = new CategoryRepository(_dbContext);
+            Product = new ProductRepository(_dbContext);
         }
 
 
