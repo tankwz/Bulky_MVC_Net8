@@ -1,0 +1,101 @@
+﻿@model Product
+
+<div class="card-body p-4 border-2">
+    <form method="post">
+        <div class="border p-3 my-4">
+            <div class="input-group">
+                <div class="mb-3 p-1">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" type="text"></input>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3 p-1">
+                    <label asp-for="ISBN" class="form-label"></label>
+                    <input asp-for="ISBN" class="form-control" type="text"></input>
+                    <span asp-validation-for="ISBN" class="text-danger"></span>
+                </div>
+                <div class="mb-3 p-1">
+                    <label asp-for="Author" class="form-label"></label>
+                    <input asp-for="Author" class="form-control" type="text"></input>
+                    <span asp-validation-for="Author" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="mb-3 p-1">
+                    <label asp-for="ListPrice" class="form-label"></label>
+                    <input asp-for="ListPrice" class="form-control" type="text"></input>
+                    <span asp-validation-for="ListPrice" class="text-danger"></span>
+
+                </div>
+                <div class="mb-3 p-1">
+                    <label asp-for="Price" class="form-label"></label>
+                    <input asp-for="Price" class="form-control" type="text"></input>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+
+                </div>
+                <div class="mb-3 p-1">
+                    <label asp-for="Price50" class="form-label"></label>
+                    <input asp-for="Price50" class="form-control" type="text"></input>
+                    <span asp-validation-for="Price50" class="text-danger"></span>
+
+                </div>
+                <div class="mb-3 p-1">
+                    <label asp-for="Price100" class="form-label"></label>
+                    <input asp-for="Price100" class="form-control" type="text"></input>
+                    <span asp-validation-for="Price100" class="text-danger"></span>
+
+                </div>
+            </div>
+            <div class="mb-3 p-1">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" type=""></textarea>
+                <span asp-validation-for="ISBN" class="text-danger"></span>
+
+            </div>
+            <div class="row p-1 justify-content-between">
+                <div class="col-3  ">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+                </div>
+                <div class="col-3 ">
+                    <button class="btn btn-primary form-control ">Submit</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+
+@*     public int Id { get; set; }
+    [Required]
+    public string Title { get; set; }
+    public string Description { get; set; }
+    [Required]
+    public string ISBN { get; set; }
+
+    [Required]
+    public string Author { get; set; }
+
+    [Required, Display(Name ="List Price"),Range(1,1000)]
+    public double ListPrice { get; set; }
+    [Required, Display(Name = "Price for 1-50"), Range(1, 1000)]
+    public double Price { get; set; }
+    [Required, Display(Name = "Price for 50-100"), Range(1, 1000)]
+    public double Price50 { get; set; }
+    [Required, Display(Name = "Price for 100+"), Range(1, 1000)]
+    public double Price100 { get; set; }
+ *@
+
+
+</div>

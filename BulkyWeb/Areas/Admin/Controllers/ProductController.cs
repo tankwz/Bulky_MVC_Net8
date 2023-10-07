@@ -34,6 +34,14 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
             return View();
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id==0)
+                return NotFound();
+            Product? product = _unitOfWork.Product.Get1(p => p.Id == id);
+            return View(product);
+        }
         [HttpPost]
         public IActionResult Edit(Product product)
         {
