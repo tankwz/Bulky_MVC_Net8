@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pj.DataAccess.Data;
 
@@ -10,9 +11,11 @@ using pj.DataAccess.Data;
 namespace pj.DataAccess.Migrations
 {
     [DbContext(typeof(MyAppDatabaseContext))]
-    partial class MyAppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231007101953_imageurlprop")]
+    partial class imageurlprop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

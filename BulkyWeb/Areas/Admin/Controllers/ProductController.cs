@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
 
@@ -16,10 +17,19 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
+
             return View(objProductList);
         }
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(
+                u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+
+            ViewBag.Bagcategory = CategoryList;
             return View();
         }
         [HttpPost]
@@ -30,14 +40,14 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 _unitOfWork.Product.Add(product);
                 _unitOfWork.save();
                 TempData["success"] = "Added product successfully";
-                return RedirectToAction("Index","Product");
+                return RedirectToAction("Index", "Product");
             }
             return View();
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null || id==0)
+            if (id == null || id == 0)
                 return NotFound();
             Product? product = _unitOfWork.Product.Get1(p => p.Id == id);
             return View(product);
@@ -57,7 +67,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
         public IActionResult Delete(int? id)
         {
-            Product? product = _unitOfWork.Product.Get1(p=>p.Id == id);
+            Product? product = _unitOfWork.Product.Get1(p => p.Id == id);
             return View(product);
         }
         [HttpPost, ActionName("Delete")]
