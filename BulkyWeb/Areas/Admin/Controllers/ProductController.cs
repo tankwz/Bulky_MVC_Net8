@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
 using pj.Models.ViewModels;
@@ -54,16 +55,37 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 {
                     string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRootPath, @"img\products");
+
+                    if (!(string.IsNullOrEmpty(p.Product.ImageUrl)))
+                    {
+                        var OldImagePath = Path.Combine(wwwRootPath, p.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(OldImagePath))
+                        {
+                            System.IO.File.Delete(OldImagePath);
+                        }
+                    }
+
                     using (var fileStream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
 
                     p.Product.ImageUrl = @"\img\products\" + filename;
-                } ;
-                _unitOfWork.Product.Add(p.Product);
+                }
+
+
+                if (p.Product.Id == 0)
+                {
+
+                    _unitOfWork.Product.Add(p.Product);
+                    TempData["success"] = "Added product successfully";
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(p.Product);
+                    TempData["success"] = "Updated product successfully";
+                }
                 _unitOfWork.save();
-                TempData["success"] = "Added product successfully";
                 return RedirectToAction("Index", "Product");
             }
             else
@@ -82,14 +104,14 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             ProductVM productVM = new()
             {
-                
+
                 Product = new Product(),
                 CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
                 })
-                
+
             };
 
             return View(productVM);
