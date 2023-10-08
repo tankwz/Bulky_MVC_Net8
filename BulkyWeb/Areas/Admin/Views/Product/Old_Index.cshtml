@@ -1,0 +1,97 @@
+﻿@model List<Product>
+<div class="card shadow border-0 mt-4 ">
+
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3 ">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2"> Product List</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <div class="row">
+            <div class="col-6"></div>
+
+            <div class="col-6 text-end">
+                <a asp-controller="Product" asp-action="UpSert" class=" btn btn-primary w-50 mb-3 ">
+                    <i class="bi bi-plus-circle"></i>&nbsp; Add new product
+                </a>
+
+            </div>
+        </div>
+        <div class="table-responsive align-middle ">
+            <table class="table table-dark table-bordered  table-striped table-hover align-middle ">
+                <thead class="align-middle text-center">
+                    <tr class="">
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th class="">Description</th>
+                        <th>ISBN</th>
+                        <th>Category</th>
+                        <th>Author</th>@*
+                        <th>List Price</th> *@
+                        <th class="">Price</th>@*
+                        <th class="">Price for 50-100</th>
+                        <th>Price for 100+</th> *@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.OrderBy(p => p.Id))
+                    {
+                        <tr>
+                            <td>
+                                @product.Id
+                            </td>
+                            <td>
+                                @product.Title
+                            </td>
+                            <td class="">
+                                @Html.Raw(product.Description)
+                            </td>
+                            <td>
+                                @product.ISBN
+                            </td>
+                            <td>
+                                @product.Category.Name
+                            </td>
+                            <td>
+                                @product.Author
+                            </td>@*
+                        <td>
+                        @product.ListPrice
+                        </td> *@
+                            <td>
+                                @product.Price
+                            </td>
+                            @*                             <td>
+                        @product.Price50
+                        </td>
+                        <td>
+                        @product.Price100
+                        </td> *@
+                            <td>
+                                <div class="w-100 btn-group" role="group">
+                                    <a asp-controller="Product" asp-action="UpSert" asp-route-id="@product.Id" class="btn btn-primary mx-2">
+                                        <i class="bi bi-pencil"></i> &nbsp   Edit
+                                    </a>
+                                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class=" btn btn-danger mx-2">
+                                        <i class="bi bi-trash3"></i> &nbsp  Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+
+
+            </table>
+        </div>
+
+
+
+
+    </div>
+</div>

@@ -19,6 +19,7 @@ namespace pj.DataAccess.Repository
         {
             _dbContext = db;
             dbSet=_dbContext.Set<T>();
+            _dbContext.Products.Include(u => u.Category).Include(u=>u.CategoryID);
         }
 
 
@@ -28,17 +29,31 @@ namespace pj.DataAccess.Repository
           //  throw new NotImplementedException();
         }
 
-        public T Get1(Expression<Func<T, bool>> filter)
+        public T Get1(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
             query = query.Where(filter);
             return query.FirstOrDefault();
             //throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var property in includeProperties.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
             return query.ToList();
             //throw new NotImplementedException();
         }
