@@ -1,7 +1,7 @@
 ﻿@model ProductVM
 
 <div class="card-body p-4 border-2">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div class="border p-3 my-4">
             <div class="input-group">
                 <div class="mb-3 p-1">
@@ -27,7 +27,10 @@
                         <option disabled selected>--Select Category--</option>
                     </select>
                     @*                    <span asp-validation-for="Price100" class="text-danger"></span> *@
-
+                </div>
+                <div class="mb-3 p-1">
+                    <label asp-for="Product.ImageUrl" class="form-label"></label>
+                    <input type="file" class="form-control" type="text"></input>
                 </div>
 
             </div>

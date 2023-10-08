@@ -25,28 +25,39 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             ProductVM productVM = new()
             {
+                
+                Product = new Product(),
                 CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
                 })
-                ,
-                Product = new Product()
+                
             };
 
             return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(ProductVM product)
+        public IActionResult Create(ProductVM p)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(product.Product);
+                _unitOfWork.Product.Add(p.Product);
                 _unitOfWork.save();
                 TempData["success"] = "Added product successfully";
                 return RedirectToAction("Index", "Product");
             }
-            return View();
+            else
+            {
+                p.CategoryList = _unitOfWork.Category.GetAll().Select(a =>
+                new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString()
+                });
+                return View(p);
+            }
+     
         }
 
         public IActionResult Edit(int? id)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace pj.Models.ViewModels
     public class ProductVM
     {
         public Product Product { get; set; }
+        [ValidateNever]
         public IEnumerable<SelectListItem> CategoryList { get; set; }
     }
 }
