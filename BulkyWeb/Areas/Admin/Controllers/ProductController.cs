@@ -158,7 +158,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Delete(int? id)
+     /*   public IActionResult Delete(int? id)
         {
             Product? product = _unitOfWork.Product.Get1(p => p.Id == id);
             return View(product);
@@ -173,7 +173,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             _unitOfWork.save();
             TempData["success"] = "Removed product successfully";
             return RedirectToAction("Index", "Product");
-        }
+        }*/
 
         #region API CALLS
         [HttpGet]
@@ -183,6 +183,26 @@ namespace BulkyWeb.Areas.Admin.Controllers
             List<Product> p = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
             return Json(new {data = p});
         }
+
+       
+        public IActionResult Delete(int? id)
+        {
+            Product p = _unitOfWork.Product.Get1(p => p.Id == id);
+            string wwwRoot = _webHostEnvironment.WebRootPath;
+            if( p == null) return Json(new {success=false, message="Error while deleting"});
+            if (!string.IsNullOrEmpty(p.ImageUrl))
+            {
+                string oldfile = Path.Combine(wwwRoot, p.ImageUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldfile))
+                {
+                    System.IO.File.Delete(oldfile);
+                }
+            }
+            _unitOfWork.Product.Remove(p);
+            _unitOfWork.save();
+            return Json(new { success=true, messsage="Delete Successfully" });
+        }        
+        
         #endregion
 
 
