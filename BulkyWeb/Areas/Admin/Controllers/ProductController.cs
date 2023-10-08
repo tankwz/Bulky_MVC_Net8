@@ -184,7 +184,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return Json(new {data = p});
         }
 
-       
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
             Product p = _unitOfWork.Product.Get1(p => p.Id == id);
@@ -201,6 +201,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
             _unitOfWork.Product.Remove(p);
             _unitOfWork.save();
             return Json(new { success=true, messsage="Delete Successfully" });
+
+
         }        
         
         #endregion
