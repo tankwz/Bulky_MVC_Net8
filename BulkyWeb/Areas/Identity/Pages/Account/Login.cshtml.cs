@@ -132,6 +132,13 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                     return Page();
                 }
             }
+            string path = @"C:\MyDirectory";
+            if (Directory.Exists(path))
+            {
+                // Directory exists
+            }
+            string directoryPath = @"C:\SomeDirectory\SubDirectory";
+            string parentDirectoryPath = Directory.GetParent(directoryPath).FullName;
 
             // If we got this far, something failed, redisplay form
             return Page();
