@@ -12151,3 +12151,7 @@ textarea.form-control-lg {
   --bs-tooltip-bg: var(--bs-tertiary-bg);
   --bs-tooltip-color: var(--bs-emphasis-color);
 }
+
+.no-margin {
+    margin: 0;
+}

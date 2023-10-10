@@ -1,15 +1,15 @@
 ﻿@model Product
 
 <form method="post">
-      <div class="card">
-          <div class="card-header text-center">
-              <h3>@Model.Title</h3>
-              <p> by @Model.Author</p>
+    <div class="card">
+        <div class="card-header text-center">
+            <h3 class="my-0">@Model.Title</h3>
+            <p class="my-0"> by @Model.Author</p>
 
-          </div>
-          <div class="card-body">
+        </div>
+        <div class="card-body">
 
-           <div class="row" >
+            <div class="row">
                 <div class="col-12 col-lg-5  text-center">
                     <img class="card-img-top img-fluid rounded" style=" ;" src="@Model.ImageUrl"></img>
                 </div>
@@ -27,7 +27,7 @@
                             <div class="ps-2 mt-2">
                                 ListPrice: <span class="text-decoration-line-through">@Model.ListPrice.ToString("c")</span>
                             </div>
-                         <div class="container mt-2">
+                            <div class="container mt-2">
                                 <div class=" ps-2 row text-center text-nowrap">
                                     <div class=" ps-1 col-3 border-bottom ">
                                         Quantity
@@ -56,25 +56,39 @@
                                         @Model.Price.ToString("c")
                                     </div>
                                 </div>
-                         </div>
+                            </div>
 
-                    </div>
-                    <div class="container ">
-                            <h4 class="text-info">Description</h4>
-                           <div class="border border-secondary ps-2 pt-1 rounded-1">
+                        </div>
+                        <div class="container ">
+                            <h4 class="text-info ">Description</h4>
+                            <div class="border border-secondary ps-2 pt-1 mb-0 rounded-1 lh-sm remove-p-margin">
                                 @Html.Raw(Model.Description)
-                           </div>
+                            </div>
+                        </div>
+
                     </div>
-
+                    <div class="row mt-2 ">
+                        <div class="col-md-4 ps-2 mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text">Count</span>
+                                <input class="form-control text-end" type="number" value="1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                            </div>
+                        </div>
+                        <div class="col-4 offset-1 text-end">
+                            <button type="submit" class="btn btn-primary form-control">Buy</button>
+                        </div>
+                    </div>
                 </div>
-           </div>
+               
+
+
+            </div>
 
 
 
-          </div>
 
-
-
-
-      </div>
+        </div>
 </form>
+
+
+
