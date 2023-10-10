@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulkyWeb", "BulkyWeb\BulkyW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Razor_temp", "Razor_temp\Razor_temp.csproj", "{10AE9C7E-CDED-4362-A0C9-A686A4322DEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pj.DataAccess", "pj.DataAccess\pj.DataAccess.csproj", "{B825CD17-7D8C-48B8-BAAD-808619963559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pj.DataAccess", "pj.DataAccess\pj.DataAccess.csproj", "{B825CD17-7D8C-48B8-BAAD-808619963559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pj.Models", "pj.Models\pj.Models.csproj", "{23C0366B-C9BD-424B-B525-E6B19F8B2137}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pj.Models", "pj.Models\pj.Models.csproj", "{23C0366B-C9BD-424B-B525-E6B19F8B2137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pj.Utility", "pj.Utility\pj.Utility.csproj", "{C863F148-8020-4EDA-BF05-40A60DEAAA21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pj.Utility", "pj.Utility\pj.Utility.csproj", "{C863F148-8020-4EDA-BF05-40A60DEAAA21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,7 +24,6 @@ Global
 		{38AAB08F-3150-40FF-A370-07C43E9F3345}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38AAB08F-3150-40FF-A370-07C43E9F3345}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10AE9C7E-CDED-4362-A0C9-A686A4322DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10AE9C7E-CDED-4362-A0C9-A686A4322DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10AE9C7E-CDED-4362-A0C9-A686A4322DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10AE9C7E-CDED-4362-A0C9-A686A4322DEA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B825CD17-7D8C-48B8-BAAD-808619963559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

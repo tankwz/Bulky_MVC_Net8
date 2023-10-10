@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyAppDatabaseContext>(myoptions => 
     myoptions.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionName")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MyAppDatabaseContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<MyAppDatabaseContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
@@ -28,6 +28,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
