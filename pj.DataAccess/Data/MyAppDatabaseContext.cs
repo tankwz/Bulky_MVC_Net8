@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using pj.Models;
 
 namespace pj.DataAccess.Data
 {
-    public class MyAppDatabaseContext : DbContext
+    public class MyAppDatabaseContext : IdentityDbContext<IdentityUser>
     {
         public MyAppDatabaseContext(DbContextOptions<MyAppDatabaseContext> options) : base(options)
         {
@@ -13,8 +15,9 @@ namespace pj.DataAccess.Data
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+            base.OnModelCreating(modelBuilder);
             // modelBuilder.Entity<Category>()
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },

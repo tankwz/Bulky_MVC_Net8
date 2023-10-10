@@ -2,6 +2,7 @@ using pj.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using pj.DataAccess.Repository.IRepository;
 using pj.DataAccess.Repository;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyAppDatabaseContext>(myoptions => 
     myoptions.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionName")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MyAppDatabaseContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
