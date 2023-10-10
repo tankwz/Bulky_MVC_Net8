@@ -1,0 +1,80 @@
+﻿@model Product
+
+<form method="post">
+      <div class="card">
+          <div class="card-header text-center">
+              <h3>@Model.Title</h3>
+              <p> by @Model.Author</p>
+
+          </div>
+          <div class="card-body">
+
+           <div class="row" >
+                <div class="col-12 col-lg-5  text-center">
+                    <img class="card-img-top img-fluid rounded" style=" ;" src="@Model.ImageUrl"></img>
+                </div>
+                <div class=" col-lg-7 card-text">
+                    <div class="row mb-0 pb-0">
+                        <div class="col-12 col-md-6 pb-2 ">
+                            <div class="row py-2">
+                                <div class="container col-3 ms-0 me-3">
+                                    <h3 class="badge bg-info " style="display:inline; font-size: 1.1em;"> @Model.Category.Name </h3>
+                                </div>
+                                <div class="ps-2 col-6 p-0 m-0 text-nowrap">
+                                    IBSN : @Model.ISBN
+                                </div>
+                            </div>
+                            <div class="ps-2 mt-2">
+                                ListPrice: <span class="text-decoration-line-through">@Model.ListPrice.ToString("c")</span>
+                            </div>
+                         <div class="container mt-2">
+                                <div class=" ps-2 row text-center text-nowrap">
+                                    <div class=" ps-1 col-3 border-bottom ">
+                                        Quantity
+                                    </div>
+                                    <div class="col-3 border-bottom">
+                                        1-50
+                                    </div>
+                                    <div class="col-3 border-bottom">
+                                        51-100
+                                    </div>
+                                    <div class="col-3 border-bottom">
+                                        101+
+                                    </div>
+                                </div>
+                                <div class=" ps-2 row text-center text-nowrap">
+                                    <div class="col-3 ">
+                                        Price
+                                    </div>
+                                    <div class="col-3">
+                                        @Model.Price50.ToString("c")
+                                    </div>
+                                    <div class="col-3">
+                                        @Model.Price100.ToString("c")
+                                    </div>
+                                    <div class="col-3">
+                                        @Model.Price.ToString("c")
+                                    </div>
+                                </div>
+                         </div>
+
+                    </div>
+                    <div class="container ">
+                            <h4 class="text-info">Description</h4>
+                           <div class="border border-secondary ps-2 pt-1 rounded-1">
+                                @Html.Raw(Model.Description)
+                           </div>
+                    </div>
+
+                </div>
+           </div>
+
+
+
+          </div>
+
+
+
+
+      </div>
+</form>

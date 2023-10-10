@@ -3,41 +3,50 @@
 }
 
 @model List<Product>
+<div class="container">
 
-<div class=" row ">
+    <div class=" row ">
 
-    @foreach (var p in Model)
-    {
-        <div class="col-sm-6 col-lg-3 ">
-            <div class="row p-2">
-                <div class="col-12 p-1">
-                    <div class="card shadow border-5 rounded">
-                        <div class="row">
-                            <div class="col-12" >
-                                <img src="@p.ImageUrl" class="card-img-top img-fluid" style="height:150px; object-fit:cover;"></img>
+        @foreach (var p in Model)
+        {
+            <div class="col-sm-6 col-lg-4 col-xxl-3">
+                <div class="row p-2">
+                    <div class="col-12 p-1">
+                        <div class="card shadow border-5 rounded p-2">
+                            <div class="row">
+                                <div class="col-12">
+                                    <img src="@p.ImageUrl" class="card-img-top img-fluid" style="height:150px; object-fit:cover;"></img>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body pb-0">
+                            <div class="card-body pb-0">
+                                <div>
+                                    <p class="card-title text-center bg-secondary border border-info rounded-1 text-uppercase py-1 ">
+                                        @p.Title
+                                    </p>
+                                    <p class="card-title text-center text-info bg-secondary rounded-1">
+                                        <span class="text-muted">by</span> <b>@p.Author</b>
+                                    </p>
+                                </div>
+                                <div class="text-center pt-1 pb-0 mb-0">
+                                    <p class="p-0 m-0 opacity-75 "> List Price: <span class="text-decoration-line-through">@p.ListPrice.ToString("c")</span> </p>
+                                </div>
+                                <div class="text-center pb-1 mb-1 pt-0">
+                                    <p class="p-0 m-0 opacity-75"> As low as <span>@p.Price100.ToString("c")</span> </p>
+                                </div>
+
+                            </div>
                             <div>
-                                <p class="card-title text-center bg-secondary p-1  rounded-1 text-uppercase ">
-                                    @p.Title
-                                </p>
-                                <p class="card-title text-center text-info bg-secondary rounded-1">
-                                    <span class="text-muted">by</span> <b>@p.Author</b>
-                                </p>
-                            </div>
-                            <div class="">
-                                <p class=""> </p>
+                                <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@p.Id" class="btn btn-secondary form-control bg-gradient"> Detail</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+
+    </div>
 
 </div>
-
 
 
 
