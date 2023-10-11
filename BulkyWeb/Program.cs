@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using pj.DataAccess.Repository.IRepository;
 using pj.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using pj.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyAppDatabaseContext>(myoptions => 
     myoptions.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionName")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<MyAppDatabaseContext>();
+builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<MyAppDatabaseContext>();
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmailSender,EmailSender>() ;
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,7 +34,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
