@@ -15,11 +15,13 @@ namespace pj.DataAccess.Repository
         private MyAppDatabaseContext _dbContext;
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
+        public ICompanyRepository Company { get; private set; }
         public UnitOfWork(MyAppDatabaseContext db)
         {
             _dbContext = db;
             Category = new CategoryRepository(_dbContext);
             Product = new ProductRepository(_dbContext);
+            Company = new CompanyRepository(_dbContext);
         }
 
 
