@@ -19,7 +19,7 @@ namespace pj.DataAccess.Repository
 
         public void Update(Company company)
         {
-            throw new NotImplementedException();
+            _dbContext.Update(company);
         }
     }
 }
