@@ -28,7 +28,6 @@ namespace pj.DataAccess.Data
                 );
 
             modelBuilder.Entity<Product>().HasData(
-
                   new Product
                   {
                       Id = 1,
@@ -115,7 +114,48 @@ namespace pj.DataAccess.Data
                     ImageUrl = ""
                 }
                 );
-
+            modelBuilder.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "SFX Coop",
+                    StressAddress = "3/2 abc xyz",
+                    City = "Colalombua",
+                    State = "Texa",
+                    PostalCode = "AAA123",
+                    PhoneNumber = "012312312"
+                },
+                new Company
+                {
+                    Id = 2,
+                    Name = "KMS Coop",
+                    StressAddress = "532 ax",
+                    City = "Xiaxia",
+                    State = "Texa",
+                    PostalCode = "BBB345",
+                    PhoneNumber = "0111111233"
+                },
+                new Company
+                {
+                    Id = 3,
+                    Name = "ABC Coop",
+                    StressAddress = "6/3 351s as",
+                    City = "That city",
+                    State = "That state",
+                    PostalCode = "123BBB",
+                    PhoneNumber = "00123233"
+                },
+                new Company
+                {
+                    Id = 4,
+                    Name = "Last Coop",
+                    StressAddress = "3/2 abc xyz",
+                    City = "AAAA",
+                    State = "BBBBBB",
+                    PostalCode = "15325",
+                    PhoneNumber = "1551251252"
+                }
+               );
         }
 
 

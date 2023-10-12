@@ -12,7 +12,6 @@ function loadDataTable() {
             { data: 'listPrice', 'width': "10%" },
             { data: 'author', 'width': "15%" },
             { data: 'category.name', 'width': "10%" },
-
             {
                 data: 'id',
                 "render": function (data) {

@@ -1,0 +1,48 @@
+﻿@model List<Company>
+
+<div class="card">
+    <div class="card-header bg-gradient">
+        <h2> Company List </h2>
+    </div>
+
+    <div class="card-body">
+        <div class="col">
+            <div class="row-6">
+
+            </div>
+            <div class="row-6">
+                <a asp-controller="Company" asp-action="Upsert" class="btn btn-primary ">Add New Product</a>
+            </div>
+        </div>
+
+        <div>
+            <table id="tblData" class="">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Stress Address
+                        </th>
+                        <th>
+                            City
+                        </th>
+                        <th>
+                            State
+                        </th>
+                        <th>
+                            PostalCode
+                        </th>
+                        <th>
+                            Phone Number
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+
+
+</div>

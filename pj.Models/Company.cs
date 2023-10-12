@@ -18,7 +18,9 @@ namespace pj.Models
 
         public string? City { get; set; }
         public string? State { get; set; }
+        [DisplayName("Postal Code")]
         public string? PostalCode { get; set; }
+        [DisplayName("Phone Number")]
 
         public string? PhoneNumber { get; set; }
     }

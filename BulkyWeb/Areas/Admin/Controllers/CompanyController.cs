@@ -76,6 +76,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             if(cp == null)
                 return Json( new {success = false, message= "Error while deleteing" });
             _unitOfWork.Company.Remove(cp);
+            _unitOfWork.save();
             return Json(new { success = true, message = "Delete successfully" });
         }
 
