@@ -1,13 +1,100 @@
 ﻿@model Company
-<div class="card my-4 ">
-    <div class="card-header bg-gradient">
-        <div class="row">
-            <div class="col-12 text-center my-3">
-                <h2>  @(!(Model.Id == 0) ? "Update" : "Create New") Company </h2>
+<div class="container">
+
+    <div class="card my-4 ">
+        <div class="card-header bg-gradient">
+            <div class="row">
+                <div class="col-12 text-center my-3">
+                    <h2>   @(!(Model.Id == 0) ? "Update" : "Create New") Company </h2>
+
+                </div>
             </div>
         </div>
+        <div class="card-body">
+            <form method="post">
+                <input asp-for="Id" hidden></input>
+                <div class="row">
+                    <div class="form-floating my-3 col-md-6 py-0">
+                        <input asp-for="Name" class=" form-control" placeholder="name ph">
+                        </input>
+                        <label asp-for="Name" class="form-label ms-2">  </label>
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                    <div class="form-floating  my-3 col-md-6 py-0">
+                        <input asp-for="StressAddress" class="form-control" placeholder="name ph">
+                        </input>
+                        <label asp-for="StressAddress" class="form-label ms-2"></label>
+                        <span asp-validation-for="StressAddress"></span>
+
+                    </div>
+                    <div class="form-floating  my-3 col-md-6 py-0">
+                        <input asp-for="City" class="form-control" placeholder="name ph">
+                        </input>
+                        <label asp-for="City" class="form-label ms-2">  </label>
+                        <span asp-validation-for="City"></span>
+
+                    </div>
+                    <div class="form-floating  my-3 col-md-6 py-0">
+                        <input asp-for="State" class="form-control" placeholder="name ph">
+                        </input>
+                        <label asp-for="State" class="form-label ms-2">  </label>
+                        <span asp-validation-for="State"></span>
+
+                    </div>
+                    <div class="form-floating  my-3 col-md-6 py-0">
+                        <input asp-for="PostalCode" class="form-control" placeholder="name ph">
+                        </input>
+                        <label asp-for="PostalCode" class="form-label ms-2"> </label>
+                        <span asp-validation-for="PostalCode"></span>
+
+                    </div>
+                    <div class="form-floating  my-3 col-md-6 py-0">
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="name ph">
+                        </input>
+                        <label asp-for="PhoneNumber" class="form-label ms-2"> </label>
+                        <span asp-validation-for="PhoneNumber"></span>
+
+                    </div>
+                    <div class="col-md-4 my-3">
+                        <a class="btn btn-primary form-control" asp-controller="Company" asp-action="Index">Back</a>
+                    </div>
+                    <div class="col-md-4 "></div>
+
+                    <div class="col-md-4 my-3">
+                        <button class="btn btn-primary form-control">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="card-body">
-        <div class=""></div>
-    </div>
+    @*         public int Id { get; set; }
+    [Required]
+    1     public string Name { get; set; }
+    2      [DisplayName("Stress Address")]
+    2    public string? StressAddress { get; set; }
+
+    3   public string? City { get; set; }
+    4     public string? State { get; set; }
+    [DisplayName("Postal Code")]
+    5   public string? PostalCode { get; set; }
+    [DisplayName("Phone Number")]
+
+    6   public string? PhoneNumber { get; set; } *@
+
+
+
+
+
+
 </div>
+
+@section Scripts{
+
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+
+}
+

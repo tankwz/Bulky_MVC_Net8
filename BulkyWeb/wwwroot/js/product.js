@@ -6,12 +6,20 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/product/getall' },
+        "columnDefs": [
+            { "width": "20%", "targets": 0 }, // 25% width for the first column (index 0)
+            { "width": "20%", "targets": 1 }, // 15% width for the second column (index 1)
+            { "width": "10%", "targets": 2 }, // 10% width for the third column (index 2)
+            { "width": "15%", "targets": 3 }, // 15% width for the fourth column (index 3)
+            { "width": "10%", "targets": 4 }, // 10% width for the fifth column (index 4)
+            { "width": "25%", "targets": 5 }  // 25% width for the sixth column (index 5)
+        ],
         "columns": [
-            { data: 'title', 'width': "25%" },
-            { data: 'isbn', 'width': "15%" },
-            { data: 'listPrice', 'width': "10%" },
-            { data: 'author', 'width': "15%" },
-            { data: 'category.name', 'width': "10%" },
+            { data: 'title' },
+            { data: 'isbn' },
+            { data: 'listPrice'  },
+            { data: 'author'  },
+            { data: 'category.name'  },
             {
                 data: 'id',
                 "render": function (data) {
@@ -26,8 +34,7 @@ function loadDataTable() {
                         </div>
 
                     `
-                },
-                'width': "25%"
+                }
             }
 
 

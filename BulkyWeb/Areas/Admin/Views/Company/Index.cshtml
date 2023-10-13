@@ -1,17 +1,16 @@
 ﻿@model List<Company>
 
-<div class="card">
-    <div class="card-header bg-gradient">
+<div class="card my-3">
+    <div class="card-header bg-gradient text-center py-4">
         <h2> Company List </h2>
     </div>
 
     <div class="card-body">
         <div class="row">
             <div class="col-6">
-
             </div>
-            <div class="col-6 text-end">
-                <a asp-controller="Company" asp-action="Upsert" class="btn btn-primary ">Add New Product</a>
+            <div class="col-6 text-end ">
+                <a asp-controller="Company" asp-action="Upsert" class=" btn btn-primary w-50 mb-3 ">                     <i class="bi bi-plus-circle"></i>&nbsp; Add new product </a>
             </div>
         </div>
 
@@ -51,5 +50,5 @@
 </div>
 
 @section Scripts{
-   <script src="~/js/company.js"></script>
+    <script src="~/js/company.js"></script>
 }
