@@ -14,6 +14,7 @@ namespace pj.DataAccess.Repository.IRepository
         T Get1(Expression<Func<T, bool>> filter, string? includeProperties = null);
         // Get1(Experssion<Func<T,bool>>
         //Get (Experssion<Func<t,bool>>)???????????????????????????????????
+        // Exoression<Func<t,bool>> 
         void Add(T item);
         void Remove(T item);
         void RemoveRange(IEnumerable<T> item);
