@@ -12,6 +12,7 @@ namespace pj.DataAccess.Repository.IRepository
         IProductRepository Product { get; }
         ICompanyRepository Company { get; }
         IShoppingCartRepository ShoppingCart { get; }
+        IAppUser AppUser { get; }
         void save();
 
     }
