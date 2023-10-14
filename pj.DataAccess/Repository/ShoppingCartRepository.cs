@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace pj.DataAccess.Repository
 {
-    public class ShoppingCartRepository : Repository<ShoppingCartRepository>, IShoppingCartRepository
+    public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
     {
         private readonly MyAppDatabaseContext _dbContext;
         public ShoppingCartRepository(MyAppDatabaseContext dbContext) : base(dbContext)
@@ -19,9 +19,9 @@ namespace pj.DataAccess.Repository
 
         }
 
-        public void update(ShoppingCart cart)
+        public void Update(ShoppingCart cart)
         {
-            _dbContext.shoppingCarts.Update(cart);
+            _dbContext.ShoppingCarts.Update(cart);
 
         }
 

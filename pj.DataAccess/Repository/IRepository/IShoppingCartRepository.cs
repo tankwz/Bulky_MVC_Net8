@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace pj.DataAccess.Repository.IRepository
 {
-    public interface IShoppingCartRepository : IRepository<ShoppingCartRepository>
+    public interface IShoppingCartRepository : IRepository<ShoppingCart>
     {
-      void update(ShoppingCart cart);
+      void Update(ShoppingCart cart);
        
     }
 }

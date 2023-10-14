@@ -1,31 +1,35 @@
-﻿@model Product
+﻿@model ShoppingCart
 
 <form method="post">
+    <input asp-for="Id" type="" value="" />
+    <input asp-for="@Model.ProductId"></input>
+
+
     <div class="card">
         <div class="card-header text-center">
-            <h3 class="my-0">@Model.Title</h3>
-            <p class="my-0"> by @Model.Author</p>
+            <h3 class="my-0">@Model.Product.Title</h3>
+            <p class="my-0"> by @Model.Product.Author</p>
 
         </div>
         <div class="card-body">
 
             <div class="row">
                 <div class="col-12 col-lg-5  text-center">
-                    <img class="card-img-top img-fluid rounded" style=" ;" src="@Model.ImageUrl"></img>
+                    <img class="card-img-top img-fluid rounded" style=" ;" src="@Model.Product.ImageUrl"></img>
                 </div>
                 <div class=" col-lg-7 card-text">
                     <div class="row mb-0 pb-0">
                         <div class="col-12 col-md-6 pb-2 ">
                             <div class="row py-2">
                                 <div class="container col-3 ms-0 me-3">
-                                    <h3 class="badge bg-info " style="display:inline; font-size: 1.1em;"> @Model.Category.Name </h3>
+                                    <h3 class="badge bg-info " style="display:inline; font-size: 1.1em;"> @Model.Product.Category.Name </h3>
                                 </div>
                                 <div class="ps-2 col-6 p-0 m-0 text-nowrap">
-                                    IBSN : @Model.ISBN
+                                    IBSN : @Model.Product.ISBN
                                 </div>
                             </div>
                             <div class="ps-2 mt-2">
-                                ListPrice: <span class="text-decoration-line-through">@Model.ListPrice.ToString("c")</span>
+                                ListPrice: <span class="text-decoration-line-through">@Model.Product.ListPrice.ToString("c")</span>
                             </div>
                             <div class="container mt-2">
                                 <div class=" ps-2 row text-center text-nowrap">
@@ -47,13 +51,13 @@
                                         Price
                                     </div>
                                     <div class="col-3">
-                                        @Model.Price50.ToString("c")
+                                        @Model.Product.Price50.ToString("c")
                                     </div>
                                     <div class="col-3">
-                                        @Model.Price100.ToString("c")
+                                        @Model.Product.Price100.ToString("c")
                                     </div>
                                     <div class="col-3">
-                                        @Model.Price.ToString("c")
+                                        @Model.Product.Price.ToString("c")
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +66,7 @@
                         <div class="container ">
                             <h4 class="text-info ">Description</h4>
                             <div class="border border-secondary ps-2 pt-1 mb-0 rounded-1 lh-sm remove-p-margin">
-                                @Html.Raw(Model.Description)
+                                @Html.Raw(Model.Product.Description)
                             </div>
                         </div>
 
@@ -71,7 +75,7 @@
                         <div class="col-md-4 ps-2 mb-3">
                             <div class="input-group">
                                 <span class="input-group-text">Count</span>
-                                <input class="form-control text-end" type="number" value="1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                <input asp-for="count" class="form-control text-end" type="number" value="1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
                             </div>
                         </div>
                         <div class="col-4 offset-1 text-end">
