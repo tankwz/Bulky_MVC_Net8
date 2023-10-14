@@ -10,8 +10,8 @@ namespace pj.DataAccess.Repository.IRepository
     public interface IRepository<T> where T : class
     {
         //T - Category
-        IEnumerable<T> GetAll(string? includeProperties = null);
-        T Get1(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter=null, string? includeProperties = null);
+        T Get1(Expression<Func<T, bool>> filter, string? includeProperties = null,bool tracked = false);
         // Get1(Experssion<Func<T,bool>>
         //Get (Experssion<Func<t,bool>>)???????????????????????????????????
         // Exoression<Func<t,bool>> 

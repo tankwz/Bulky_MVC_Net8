@@ -68,7 +68,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 cartcheck.count += cart.count;
                 _unitOfWork.ShoppingCart.Update(cartcheck);
             }
-
+            TempData["success"] = "Added to cart";
             _unitOfWork.save();
 
             return RedirectToAction(nameof(Index));
