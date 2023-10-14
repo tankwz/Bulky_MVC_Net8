@@ -21,5 +21,6 @@ namespace pj.Models
         public AppUser AppUser { get; set; }
         [Range(1,1000, ErrorMessage ="Quantity must be between 1-1000")]
         public int count { get; set; }
+        [NotMapped] public double price { get; set; }
     }
 }
