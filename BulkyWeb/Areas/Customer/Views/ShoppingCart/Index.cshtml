@@ -50,16 +50,16 @@
                                     <div class="col-2 ms-2 p-0 ">
                                         <div class="input-group">
                                             <button asp-area="customer" asp-controller="ShoppingCart" asp-route-cartid="@cart.Id" asp-action="Less" class="btn btn-secondary">-</button>
-                                            <input asp-for="@cart.count" type="number" class="form-control text-center"></input>
+                                            <input asp-for="@cart.count" disabled type="number" class="form-control text-center"></input>
                                             <button asp-action="More" asp-route-cartid="@cart.Id" class="btn btn-secondary">+</button>
 
                                         </div>
                                     </div>
-                                    <div class="col-1"></div>
+                                    <div class="col-2">
+                                        <span>@cart.currentprice.ToString("c")</span>
+                                    </div>
                                     <div class="col-3 ms-2 p-0">
-
                                             <button type="button" class="btn btn-lg btn-primary form-control">Buy</button>
-
                                     </div>
                                 </div>
                             </div>

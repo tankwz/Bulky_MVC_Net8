@@ -49,7 +49,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
         }
         public IActionResult Less(int? cartid)
         {
-            if (cartid != null || cartid != 0) return NotFound();
+            if (cartid == null || cartid == 0) return NotFound();
             ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(c => c.Id == cartid);
             if (cart.count > 1) cart.count--;
             else
@@ -74,6 +74,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             foreach(var cart in ShoppingCartVM.ListCarts)
             {
                 cart.price = PricenQuantityCal(cart);
+                cart.currentprice = cart.price * cart.count;
+
                 ShoppingCartVM.TotalCartPrice += (cart.price *cart.count) ;
             }
             return View(ShoppingCartVM);
