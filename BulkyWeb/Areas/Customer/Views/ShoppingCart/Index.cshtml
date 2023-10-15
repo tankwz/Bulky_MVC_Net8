@@ -1,1 +1,90 @@
-﻿<h1>aaaaaaaaa</h1>
+﻿@model ShoppingCartVM
+
+<form method="post">
+
+    <div class="card border-1 shadow">
+    <div class="card-header bg-gradient ms-0 py-4">
+        <div class="row">
+            <div class="col">
+                <h5 class="pt-2">Shopping Cart</h5>
+            </div>
+        </div>
+    </div>
+    <div class="card-body py-0">
+            @foreach (var cart in Model.ListCarts)
+            {
+                <div class="row py-2 border-bottom">
+                    <div class=" py-2  col-12 col-md-4  ps-1">
+                        <img class="  border border-1 border-secondary rounded"src="@cart.Product.ImageUrl" style="width:100%"></img>
+                    </div>
+                    <div class="col-12 col-md-8 ">
+                        <div class="row">
+                            <div class="col-12">
+                                <H3 class="text-primary text-uppercase"> @cart.Product.Title </H3>
+                                <p>
+                                    <small>
+                                        @if (cart.Product.Description.Length > 475)
+                                        {
+                                            <span>@Html.Raw(cart.Product.Description.Substring(0,475))</span>
+                                            <span class="" id="extra-des-@cart.ProductId" style="display:none;">@Html.Raw(cart.Product.Description.Substring(475))</span>
+                                            <a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.ProductId)" >ShowMore</a>
+                                            //<span>@Html.Raw(cart.Product.Description.Substring(0, 475))</span>
+                                           // <span style="" id="more-@cart.Product.Id" style="display: none;">@Html.Raw(cart.Product.Description.Substring(475))</span>
+                                            //<a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.Product.Id)">Show More</a>
+
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(cart.Product.Description)
+                                        }
+                                    </small>
+                                </p>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4 ps-1">
+                        <div class="input-group">
+                            <button class="btn btn-secondary">+</button>
+                            <input class="form-control"></input>
+                            <button class="btn btn-secondary">-</button>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+
+
+</form>
+
+@section Scripts{
+    <script>
+        // function toggleDescription(productId) {
+        //     var moreText = document.getElementById("more-" + productId);
+        //     if (moreText.style.display === "none" || moreText.style.display === "") {
+        //         moreText.style.display = "inline";
+        //         document.getElementById("readmorelink-" + productId).innerHTML = "Show less";
+        //     } else {
+        //         moreText.style.display = "none";
+        //         document.getElementById("readmorelink-" + productId).innerHTML = "Show More";
+        //     }
+        //     return false; // Prevent the default anchor link behavior
+        // }
+        function toggleDescription(productId) {
+            var extratext = document.getElementById("extra-des-" + productId);
+            if (extratext.style.display === "none") {
+                extratext.style.display === "inline";
+                document.getElementById("readmorelink-" + productId).innerHTML = "Show less";
+            }
+            else {
+                extratext.display === "none";
+                document.getElementById("readmorelink-" + productId).innerHTML = "Show More";
+            }
+            return false
+        }
+    </script>
+}
