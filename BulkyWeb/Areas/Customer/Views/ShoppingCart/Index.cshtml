@@ -3,33 +3,38 @@
 <form method="post">
 
     <div class="card border-1 shadow">
-    <div class="card-header bg-gradient ms-0 py-4">
-        <div class="row">
-            <div class="col">
-                <h5 class="pt-2">Shopping Cart</h5>
+        <div class="card-header bg-gradient ms-0 py-4">
+            <div class="row">
+                <div class="col">
+                    <h5 class="pt-2">Shopping Cart</h5>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-body py-0">
+        <div class="card-body py-0">
             @foreach (var cart in Model.ListCarts)
             {
                 <div class="row py-2 border-bottom">
                     <div class=" py-2  col-12 col-md-4  ps-1">
-                        <img class="  border border-1 border-secondary rounded"src="@cart.Product.ImageUrl" style="width:100%"></img>
+                        <img class="  border border-1 border-secondary rounded" src="@cart.Product.ImageUrl" style="width:100%"></img>
                     </div>
                     <div class="col-12 col-md-8 ">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 ps-1">
                                 <H3 class="text-primary text-uppercase"> @cart.Product.Title </H3>
                                 <p>
                                     <small>
                                         @if (cart.Product.Description.Length > 475)
                                         {
-                                            <span>@Html.Raw(cart.Product.Description.Substring(0,475))</span>
-                                            <span class="" id="extra-des-@cart.ProductId" style="display:none;">@Html.Raw(cart.Product.Description.Substring(475))</span>
-                                            <a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.ProductId)" >ShowMore</a>
+                                            <span><p class="m-0 p-0 d-inline">@Html.Raw(cart.Product.Description.Substring(3,475))</span>
+                                            <span class="" id="extra-des-@cart.ProductId" style="display:none;">
+                                                @Html.Raw(cart.Product.Description.Substring(475))
+                                                <button style="margin-top: -1rem" class="btn btn-link m-0 p-0" type="button" id="readmorebutton-@cart.ProductId" onclick="toggleDescription(@cart.ProductId)">Show More</button>
+
+                                            </span>
+
+                                            // <a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.ProductId)" >ShowMore</a>
                                             //<span>@Html.Raw(cart.Product.Description.Substring(0, 475))</span>
-                                           // <span style="" id="more-@cart.Product.Id" style="display: none;">@Html.Raw(cart.Product.Description.Substring(475))</span>
+                                            // <span style="" id="more-@cart.Product.Id" style="display: none;">@Html.Raw(cart.Product.Description.Substring(475))</span>
                                             //<a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.Product.Id)">Show More</a>
 
                                         }
@@ -40,17 +45,24 @@
                                     </small>
                                 </p>
                             </div>
-                            <div>
+                            <div class="col-12">
+                                <div class="row align-items-center">
+                                    <div class="col-2 ms-2 p-0 ">
+                                        <div class="input-group">
+                                            <button asp-area="customer" asp-controller="ShoppingCart" asp-action="more" type="button" class="btn btn-secondary">-</button>
+                                            <input asp-for="@cart.count" type="number" class="form-control text-center"></input>
+                                            <button asp-action="less" asp-route-cartid="" type="button" class="btn btn-secondary">+</button>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-1"></div>
+                                    <div class="col-3 ms-2 p-0">
+
+                                            <button type="button" class="btn btn-lg btn-primary form-control">Buy</button>
+
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-4 ps-1">
-                        <div class="input-group">
-                            <button class="btn btn-secondary">+</button>
-                            <input class="form-control"></input>
-                            <button class="btn btn-secondary">-</button>
-
                         </div>
                     </div>
                 </div>
@@ -76,15 +88,18 @@
         // }
         function toggleDescription(productId) {
             var extratext = document.getElementById("extra-des-" + productId);
+            var button = document.getElementById("readmorebutton-" + productId);
             if (extratext.style.display === "none") {
-                extratext.style.display === "inline";
-                document.getElementById("readmorelink-" + productId).innerHTML = "Show less";
+                extratext.style.display = "inline";
+                //document.getElementById("readmorelink-" + productId).innerHTML = "Show less";
+                button.textContent = "Show Less";
             }
             else {
-                extratext.display === "none";
-                document.getElementById("readmorelink-" + productId).innerHTML = "Show More";
+                extratext.style.display = "none";
+                //  document.getElementById("readmorelink-" + productId).innerHTML = "Show More";
+                button.textContent = "Show More";
+
             }
-            return false
         }
     </script>
 }

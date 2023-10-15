@@ -24,6 +24,24 @@ namespace BulkyWeb.Areas.Customer.Controllers
             return View(products);
         }
 
+        public IActionResult More(int? id)
+        {
+            if(id != null || id != 0) return NotFound();
+            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(c => c.Id == id);
+            if (cart.count<=1000) cart.count++;
+            TempData["error"] = "Added to cart";
+            _unitOfWork.save();
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Less(int? id)
+        {
+            if (id != null || id != 0) return NotFound();
+            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(c => c.Id == id);
+            
+            _unitOfWork.save();
+            return RedirectToAction(nameof(Index));
+        }
+
         //public IActionResult Details(int? id)
         //{
         //    ShoppingCart cart = new ShoppingCart();

@@ -1,14 +1,23 @@
 
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
 
 .divider-text:before,
-.divider-text:after{
-    color:white;
+.divider-text:after {
+    color: white;
     content: "";
-    flex:1;
-    border-bottom:1px solid #555;
+    flex: 1;
+    border-bottom: 1px solid #555;
     margin: auto 0.25rem;
     box-shadow: 0 -2px;
 }

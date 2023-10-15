@@ -32,6 +32,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
             return View(ShoppingCartVM);
         }
+
+
         private double PricenQuantityCal(ShoppingCart cart)
         {
             if(cart.count <= 50)
