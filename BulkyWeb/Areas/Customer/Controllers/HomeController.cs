@@ -62,13 +62,28 @@ namespace BulkyWeb.Areas.Customer.Controllers
             ShoppingCart cartcheck = _unitOfWork.ShoppingCart.Get1(s => s.AppUserId == userId && s.ProductId == cart.ProductId);
             if (cartcheck == null)
             {
+                if (cart.count  > 1000)
+                {
+                    TempData["error"] = "Can't have more than 1000 items to cart";
+                    return RedirectToAction(nameof(Details));
+                }
+
                 cart.AppUserId = userId;
                 _unitOfWork.ShoppingCart.Add(cart);
             }
             else
             {
-                cartcheck.count += cart.count;
-                _unitOfWork.ShoppingCart.Update(cartcheck);
+                if ((cartcheck.count + cart.count) <= 1000)
+                {
+                    cartcheck.count += cart.count;
+                    _unitOfWork.ShoppingCart.Update(cartcheck);
+                }
+                else
+                {
+                    TempData["error"] = "Can't have more than 1000 items to cart";
+                    return RedirectToAction(nameof(Details));
+                }
+
             }
             TempData["success"] = "Added to cart";
             _unitOfWork.save();

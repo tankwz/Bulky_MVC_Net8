@@ -14,10 +14,10 @@
             @foreach (var cart in Model.ListCarts)
             {
                 <div class="row py-2 border-bottom">
-                    <div class=" py-2  col-12 col-md-4  ps-1">
+                    <div class=" py-2  col-12 col-lg-4  ps-1">
                         <img class="  border border-1 border-secondary rounded" src="@cart.Product.ImageUrl" style="width:100%"></img>
                     </div>
-                    <div class="col-12 col-md-8 ">
+                    <div class="col-12 col-lg-8 ">
                         <div class="row">
                             <div class="col-12 ps-1">
                                 <H3 class="text-primary text-uppercase"> @cart.Product.Title </H3>
@@ -55,11 +55,22 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-2">
-                                        <span>@cart.currentprice.ToString("c")</span>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="text-decoration-line-through">@cart.Product.ListPrice.ToString("c")</span>
+                                                <span>@cart.price.ToString("c")</span>
+                                            </div>
+                                            <div class="col-12">
+                                                <span>Total:&nbsp;@cart.currentprice.ToString("c")</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-3 ms-2 p-0">
                                             <button type="button" class="btn btn-lg btn-primary form-control">Buy</button>
+                                    </div>
+                                    <div class="col-3 ms-2 p-0">
+                                        <button asp-area="Customer" asp-controller="ShoppingCart" asp-action="DeleteOne" asp-route-cartid="@cart.Id" class="btn btn-lg btn-danger form-control">Delete</button>
                                     </div>
                                 </div>
                             </div>
