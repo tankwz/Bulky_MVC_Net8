@@ -16,6 +16,52 @@ namespace BulkyWeb.Areas.Customer.Controllers
         {
             _unitOfWork = unit;
         }
+
+      /*  public IActionResult More(int? id)
+        {
+            if (id == null || id == 0) return NotFound();
+            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(a => a.Id == id);
+            if(cart.count <=1000)
+            {
+                cart.count++;
+                _unitOfWork.save();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+
+            }
+
+        }*/
+
+        public IActionResult More(int? cartid)
+        {
+            if (cartid == null || cartid == 0) return NotFound();
+            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(c => c.Id == cartid);
+            if (cart.count <= 1000) cart.count++;
+            else
+            {
+                TempData["error"] = "Quantity cant larger than 1000";
+            }
+            _unitOfWork.ShoppingCart.Update(cart);
+            _unitOfWork.save();
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Less(int? cartid)
+        {
+            if (cartid != null || cartid != 0) return NotFound();
+            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(c => c.Id == cartid);
+            if (cart.count > 1) cart.count--;
+            else
+            {
+                TempData["error"] = "Quantity cant smaller than 1";
+            }
+            _unitOfWork.ShoppingCart.Update(cart);
+            _unitOfWork.save();
+            return RedirectToAction(nameof(Index));
+        }
+
+
         public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
