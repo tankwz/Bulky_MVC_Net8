@@ -11,6 +11,10 @@ namespace pj.Models
 {
     public class ShoppingCart
     {
+        public ShoppingCart()
+        {
+            selected = false;
+        }
         public int Id { get; set; }
         public int ProductId { get; set; }
         [ForeignKey("ProductId"), ValidateNever]
@@ -23,6 +27,6 @@ namespace pj.Models
         public int count { get; set; }
         [NotMapped] public double price { get; set; }
         [NotMapped] public double currentprice { get; set; }
-
+        [NotMapped] public bool selected { get; set; }
     }
 }

@@ -17,10 +17,16 @@ namespace BulkyWeb.Areas.Customer.Controllers
             _unitOfWork = unit;
         }
 
-
-        public IActionResult Summary()
+        [HttpPost]
+        public IActionResult Index(ShoppingCartVM cart)
         {
-
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var useId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ShoppingCartVM = new()
+            {
+                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == useId, includeProperties: "Product"),
+                OrderHead = new()
+            };
             return View();
         }
         public IActionResult Index()
@@ -39,6 +45,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 cart.currentprice = cart.price * cart.count;
 
                 ShoppingCartVM.OrderHead.OrderTotal += (cart.price *cart.count) ;
+                ShoppingCartVM.total += (cart.price * cart.count);
+
             }
             return View(ShoppingCartVM);
         }
