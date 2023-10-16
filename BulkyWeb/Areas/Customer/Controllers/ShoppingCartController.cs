@@ -18,7 +18,10 @@ namespace BulkyWeb.Areas.Customer.Controllers
         }
 
 
-
+        public IActionResult Summary()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
