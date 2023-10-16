@@ -20,23 +20,25 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Summary()
         {
+
             return View();
         }
         public IActionResult Index()
         {
+            
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             ShoppingCartVM = new()
             {
                 ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == UserId, includeProperties: "Product"),
-
+                OrderHead = new() 
             };
             foreach(var cart in ShoppingCartVM.ListCarts)
             {
                 cart.price = PricenQuantityCal(cart);
                 cart.currentprice = cart.price * cart.count;
 
-                ShoppingCartVM.TotalCartPrice += (cart.price *cart.count) ;
+                ShoppingCartVM.OrderHead.OrderTotal += (cart.price *cart.count) ;
             }
             return View(ShoppingCartVM);
         }

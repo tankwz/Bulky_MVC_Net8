@@ -14,6 +14,7 @@ namespace pj.Models
     {
         [Required]
         public string Name { get; set; }
+        [Display(Name = "Stress Address")]
         public string? StressAddress { get; set; }
         public string? City { get; set; }
 
