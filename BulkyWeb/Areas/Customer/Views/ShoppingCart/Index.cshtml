@@ -11,9 +11,10 @@
             </div>
         </div>
         <div class="card-body py-0">
+
             @foreach (var cart in Model.ListCarts)
             {
-                <div class="row py-2 border-bottom">
+                <div class="row py-2  clickable" id="clickable-@cart.Id">
                     <div class=" py-2  col-12 col-lg-4  ps-1">
                         <img class="  border border-1 border-secondary rounded" src="@cart.Product.ImageUrl" style="width:100%"></img>
                     </div>
@@ -67,7 +68,7 @@
                                         </div>
                                     </div>
                                     <div class="col-3 ms-2 p-0">
-                                            <button type="button" class="btn btn-lg btn-primary form-control">Buy</button>
+                                        <button type="button" class="btn btn-lg btn-primary form-control">Buy</button>
                                     </div>
                                     <div class="col-3 ms-2 p-0">
                                         <button asp-area="Customer" asp-controller="ShoppingCart" asp-action="DeleteOne" asp-route-cartid="@cart.Id" class="btn btn-lg btn-danger form-control">Delete</button>
@@ -77,10 +78,21 @@
                         </div>
                     </div>
                 </div>
-
+                <hr>
 
             }
+            <div class="sticky-bottom ">
+                <div class="row bg-secondary border-1">
+                    <div class="col-4 p-3">
+                        <input type="checkbox">asd</input>
+                    </div>
+                    <div class="col-5">
+                        <button class=" btn btn-primary mt-2">Buy All</button>
+                    </div>
+                </div>
 
+            </div>
+        </div>
 
 </form>
 
@@ -112,5 +124,23 @@
 
             }
         }
+        const clickableDivs = document.querySelectorAll('.clickable');
+
+        // Add a click event listener to each clickable div
+        clickableDivs.forEach(function (div) {
+            let isGreen = false;
+            div.addEventListener('click', function () {
+                const productId = div.id;
+                // Specify the action to take when the div is clicked
+                if (isGreen) {
+                    div.style.border = '0px'; // Set border back to normal
+                } else {
+                    div.style.border = '3px solid green'; // Set border to green
+                }
+
+                isGreen = !isGreen; // Toggle the flag
+                console.log('Selected Product ID:', productId);
+            });
+        });
     </script>
 }

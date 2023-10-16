@@ -1,5 +1,31 @@
 
 
+/*label {
+    display: block;
+    border: solid 2px green;
+    width: 200px;
+    height: 40px;
+    margin-top: 10px;
+    color: green;
+    text-align: center;
+    line-height: 40px;
+}
+
+<!-- hide input -->
+input[type=checkbox] {
+    display: none;
+}
+
+<!-- Add ? on checked before label -->
+input:checked + label:before {
+    content: "? ";
+}
+
+<!-- Add styling on check -->
+input:checked + label {
+    border: solid 2px purple;
+    color: purple;
+}*/
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
