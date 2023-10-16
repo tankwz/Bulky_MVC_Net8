@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using pj.Models;
+using pj.Models.ViewModels;
 
 namespace pj.DataAccess.Data
 {
@@ -18,6 +19,9 @@ namespace pj.DataAccess.Data
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<OrderHead> OrderHeads { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             base.OnModelCreating(modelBuilder);

@@ -19,6 +19,8 @@ namespace pj.DataAccess.Repository
 
         public IShoppingCartRepository ShoppingCart { get; private set; }
         public IAppUser AppUser { get; private set; }
+        public IOrderHead OrderHead { get; private set; }
+        public IOrderDetail OrderDetail { get; private set; }
 
         public UnitOfWork(MyAppDatabaseContext db)
         {
@@ -28,6 +30,8 @@ namespace pj.DataAccess.Repository
             Company = new CompanyRepository(_dbContext);
             ShoppingCart = new ShoppingCartRepository(_dbContext);
             AppUser = new AppUserRepository(_dbContext);
+            OrderHead = new OrderHeadRepository(_dbContext);
+            OrderDetail = new OrderDetailRepository(_dbContext);    
         }
 
 
