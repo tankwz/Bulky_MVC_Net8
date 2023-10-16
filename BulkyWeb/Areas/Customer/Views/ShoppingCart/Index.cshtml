@@ -13,26 +13,26 @@
         <div class="card-body py-0">
             <input asp-for="OrderHead.OrderTotal"></input>
             <input asp-for="total"></input>
-            @foreach (var cart in Model.ListCarts)
+            @for (int z = 0; z < Model.ListCarts.Count(); z++)
             {
-                <input asp-for= "@cart.Id"></input>
-                <input asp-for="@cart.selected" type="checkbox" id="selected-@cart.Id"></input>
-                <div class="row py-2 clickable" id="div-@cart.Id">
+                <input asp-for="@Model.ListCarts[z].Id"></input>
+                <input asp-for="@Model.ListCarts[z].selected" type="checkbox" id="selected-@Model.ListCarts[z].Id"></input>
+                <div class="row py-2 clickable" id="div-@Model.ListCarts[z].Id">
                     <div class=" py-2  col-12 col-lg-4  ps-1">
-                        <img class="  border border-1 border-secondary rounded" src="@cart.Product.ImageUrl" style="width:100%"></img>
+                        <img class="  border border-1 border-secondary rounded" src="@Model.ListCarts[z].Product.ImageUrl" style="width:100%"></img>
                     </div>
                     <div class="col-12 col-lg-8 ">
                         <div class="row">
                             <div class="col-12 ps-1">
-                                <H3 class="text-primary text-uppercase"> @cart.Product.Title </H3>
+                                <H3 class="text-primary text-uppercase"> @Model.ListCarts[z].Product.Title </H3>
                                 <p>
                                     <small>
-                                        @if (cart.Product.Description.Length > 475)
+                                        @if (Model.ListCarts[z].Product.Description.Length > 475)
                                         {
-                                            <span><p class="m-0 p-0 d-inline">@Html.Raw(cart.Product.Description.Substring(3,475))</span>
-                                            <span class="" id="extra-des-@cart.ProductId" style="display:none;">
-                                                @Html.Raw(cart.Product.Description.Substring(475))
-                                                <button style="margin-top: -1rem" class="btn btn-link m-0 p-0" type="button" id="readmorebutton-@cart.ProductId" onclick="toggleDescription(@cart.ProductId)">Show More</button>
+                                            <span><p class="m-0 p-0 d-inline">@Html.Raw(Model.ListCarts[z].Product.Description.Substring(3,475))</span>
+                                            <span class="" id="extra-des-@Model.ListCarts[z].ProductId" style="display:none;">
+                                                @Html.Raw(Model.ListCarts[z].Product.Description.Substring(475))
+                                                <button style="margin-top: -1rem" class="btn btn-link m-0 p-0" type="button" id="readmorebutton-@Model.ListCarts[z].ProductId" onclick="toggleDescription(@Model.ListCarts[z].ProductId)">Show More</button>
 
                                             </span>
 
@@ -44,7 +44,7 @@
                                         }
                                         else
                                         {
-                                            @Html.Raw(cart.Product.Description)
+                                            @Html.Raw(Model.ListCarts[z].Product.Description)
                                         }
                                     </small>
                                 </p>
@@ -53,20 +53,20 @@
                                 <div class="row align-items-center">
                                     <div class="col-2 ms-2 p-0 ">
                                         <div class="input-group">
-                                            <button asp-area="customer" asp-controller="ShoppingCart" asp-route-cartid="@cart.Id" asp-action="Less" class="btn btn-secondary">-</button>
-                                            <input asp-for="@cart.count" disabled type="number" class="form-control text-center"></input>
-                                            <button asp-action="More" asp-route-cartid="@cart.Id" class="btn btn-secondary">+</button>
+                                            <button asp-area="customer" asp-controller="ShoppingCart" asp-route-cartid="@Model.ListCarts[z].Id" asp-action="Less" class="btn btn-secondary">-</button>
+                                            <input asp-for="@Model.ListCarts[z].count" disabled type="number" class="form-control text-center"></input>
+                                            <button asp-action="More" asp-route-cartid="@Model.ListCarts[z].Id" class="btn btn-secondary">+</button>
 
                                         </div>
                                     </div>
                                     <div class="col-3">
                                         <div class="row">
                                             <div class="col-12">
-                                                <span class="text-decoration-line-through">@cart.Product.ListPrice.ToString("c")</span>
-                                                <span>@cart.price.ToString("c")</span>
+                                                <span class="text-decoration-line-through">@Model.ListCarts[z].Product.ListPrice.ToString("c")</span>
+                                                <span>@Model.ListCarts[z].price.ToString("c")</span>
                                             </div>
                                             <div class="col-12">
-                                                <span>Total:&nbsp;@cart.currentprice.ToString("c")</span>
+                                                <span>Total:&nbsp;@Model.ListCarts[z].currentprice.ToString("c")</span>
                                             </div>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                         <button type="button" class="btn btn-lg btn-primary form-control">Buy</button>
                                     </div>
                                     <div class="col-3 ms-2 p-0">
-                                        <button asp-area="Customer" asp-controller="ShoppingCart" asp-action="DeleteOne" asp-route-cartid="@cart.Id" class="btn btn-lg btn-danger form-control">Delete</button>
+                                        <button asp-area="Customer" asp-controller="ShoppingCart" asp-action="DeleteOne" asp-route-cartid="@Model.ListCarts[z].Id" class="btn btn-lg btn-danger form-control">Delete</button>
                                     </div>
                                 </div>
                             </div>

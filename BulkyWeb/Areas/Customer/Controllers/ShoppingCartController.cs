@@ -20,13 +20,13 @@ namespace BulkyWeb.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult Index(ShoppingCartVM cart)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var useId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ShoppingCartVM = new()
-            {
-                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == useId, includeProperties: "Product").ToList(),
-                OrderHead = new()
-            };
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var useId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //ShoppingCartVM = new()
+            //{
+            //    ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == useId, includeProperties: "Product").ToList(),
+            //    OrderHead = new()
+            //};
             return View();
         }
         public IActionResult Index()
