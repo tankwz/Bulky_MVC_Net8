@@ -1,0 +1,17 @@
+﻿@model ShoppingCartVM
+<form method="post">
+
+    <input asp-for="OrderHead.OrderTotal"></input>
+    <input asp-for="total"></input>
+
+
+    @for(int z=0; z<Model.ListCarts.Count(); z++ )
+    {
+        <input asp-for="ListCarts[z].Id"></input>
+    }
+
+
+
+    <button>Submit</button>
+
+</form>

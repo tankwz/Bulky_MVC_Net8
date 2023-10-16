@@ -8,7 +8,7 @@ namespace pj.Models.ViewModels
 {
     public class ShoppingCartVM
     {
-        public IEnumerable<ShoppingCart> ListCarts { get; set; }
+        public IList<ShoppingCart> ListCarts { get; set; }
 
         public OrderHead OrderHead { get; set; }
         public double total { get; set; }

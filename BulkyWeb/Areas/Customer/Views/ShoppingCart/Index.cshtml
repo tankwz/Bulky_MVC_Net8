@@ -1,18 +1,151 @@
 ﻿@model ShoppingCartVM
+
 <form method="post">
 
-    <input asp-for="OrderHead.OrderTotal"></input>
-    <input asp-for="total"></input>
+    <div class="card border-1 shadow">
+        <div class="card-header bg-gradient ms-0 py-4">
+            <div class="row">
+                <div class="col">
+                    <h5 class="pt-2">Shopping Cart</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-body py-0">
+            <input asp-for="OrderHead.OrderTotal"></input>
+            <input asp-for="total"></input>
+            @foreach (var cart in Model.ListCarts)
+            {
+                <input asp-for= "@cart.Id"></input>
+                <input asp-for="@cart.selected" type="checkbox" id="selected-@cart.Id"></input>
+                <div class="row py-2 clickable" id="div-@cart.Id">
+                    <div class=" py-2  col-12 col-lg-4  ps-1">
+                        <img class="  border border-1 border-secondary rounded" src="@cart.Product.ImageUrl" style="width:100%"></img>
+                    </div>
+                    <div class="col-12 col-lg-8 ">
+                        <div class="row">
+                            <div class="col-12 ps-1">
+                                <H3 class="text-primary text-uppercase"> @cart.Product.Title </H3>
+                                <p>
+                                    <small>
+                                        @if (cart.Product.Description.Length > 475)
+                                        {
+                                            <span><p class="m-0 p-0 d-inline">@Html.Raw(cart.Product.Description.Substring(3,475))</span>
+                                            <span class="" id="extra-des-@cart.ProductId" style="display:none;">
+                                                @Html.Raw(cart.Product.Description.Substring(475))
+                                                <button style="margin-top: -1rem" class="btn btn-link m-0 p-0" type="button" id="readmorebutton-@cart.ProductId" onclick="toggleDescription(@cart.ProductId)">Show More</button>
 
+                                            </span>
 
-@for (int i = 0; i < Model.ListCarts.Count(); i++)
-{
-    <input asp-for="ListCarts.ElementAt(i).Id"></input>
-  
-}
+                                            // <a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.ProductId)" >ShowMore</a>
+                                            //<span>@Html.Raw(cart.Product.Description.Substring(0, 475))</span>
+                                            // <span style="" id="more-@cart.Product.Id" style="display: none;">@Html.Raw(cart.Product.Description.Substring(475))</span>
+                                            //<a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.Product.Id)">Show More</a>
 
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(cart.Product.Description)
+                                        }
+                                    </small>
+                                </p>
+                            </div>
+                            <div class="col-12">
+                                <div class="row align-items-center">
+                                    <div class="col-2 ms-2 p-0 ">
+                                        <div class="input-group">
+                                            <button asp-area="customer" asp-controller="ShoppingCart" asp-route-cartid="@cart.Id" asp-action="Less" class="btn btn-secondary">-</button>
+                                            <input asp-for="@cart.count" disabled type="number" class="form-control text-center"></input>
+                                            <button asp-action="More" asp-route-cartid="@cart.Id" class="btn btn-secondary">+</button>
 
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="text-decoration-line-through">@cart.Product.ListPrice.ToString("c")</span>
+                                                <span>@cart.price.ToString("c")</span>
+                                            </div>
+                                            <div class="col-12">
+                                                <span>Total:&nbsp;@cart.currentprice.ToString("c")</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 ms-2 p-0">
+                                        <button type="button" class="btn btn-lg btn-primary form-control">Buy</button>
+                                    </div>
+                                    <div class="col-3 ms-2 p-0">
+                                        <button asp-area="Customer" asp-controller="ShoppingCart" asp-action="DeleteOne" asp-route-cartid="@cart.Id" class="btn btn-lg btn-danger form-control">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
 
-    <button>Submit</button>
+            }
+            <div class="sticky-bottom ">
+                <div class="row bg-secondary border-1">
+                    <div class="col-4 p-3">
+                        <input type="checkbox">asd</input>
+                    </div>
+                    <div class="col-5">
+                        <button type="submit" class=" btn btn-primary mt-2">Buy All</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
 </form>
+
+@section Scripts{
+    <script>
+        // function toggleDescription(productId) {
+        //     var moreText = document.getElementById("more-" + productId);
+        //     if (moreText.style.display === "none" || moreText.style.display === "") {
+        //         moreText.style.display = "inline";
+        //         document.getElementById("readmorelink-" + productId).innerHTML = "Show less";
+        //     } else {
+        //         moreText.style.display = "none";
+        //         document.getElementById("readmorelink-" + productId).innerHTML = "Show More";
+        //     }
+        //     return false; // Prevent the default anchor link behavior
+        // }
+        function toggleDescription(productId) {
+            var extratext = document.getElementById("extra-des-" + productId);
+            var button = document.getElementById("readmorebutton-" + productId);
+            if (extratext.style.display === "none") {
+                extratext.style.display = "inline";
+                //document.getElementById("readmorelink-" + productId).innerHTML = "Show less";
+                button.textContent = "Show Less";
+            }
+            else {
+                extratext.style.display = "none";
+                //  document.getElementById("readmorelink-" + productId).innerHTML = "Show More";
+                button.textContent = "Show More";
+
+            }
+        }
+        const clickableDivs = document.querySelectorAll('.clickable');
+         
+        clickableDivs.forEach(function (div) {
+            let isGreen = false;
+            div.addEventListener('click', function () {
+                const productId = div.id.split('-')[1]; // Extract the product ID from the div id
+                var selectBox = document.getElementById('selected-' + productId)
+                if (isGreen) {
+                    div.style.border = '0px';
+                    selectBox.checked = false;
+                    
+                } else {
+                    div.style.border = '3px solid green';
+                    selectBox.checked = true ;
+                }
+
+                isGreen = !isGreen;
+                console.log('Selected Product ID:', productId);
+            });
+        });
+    </script>
+}

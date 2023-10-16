@@ -24,7 +24,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var useId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             ShoppingCartVM = new()
             {
-                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == useId, includeProperties: "Product"),
+                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == useId, includeProperties: "Product").ToList(),
                 OrderHead = new()
             };
             return View();
@@ -36,7 +36,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             ShoppingCartVM = new()
             {
-                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == UserId, includeProperties: "Product"),
+                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == UserId, includeProperties: "Product").ToList(),
                 OrderHead = new() 
             };
             foreach(var cart in ShoppingCartVM.ListCarts)
