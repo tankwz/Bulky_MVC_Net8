@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
 using pj.Models.ViewModels;
@@ -20,15 +21,21 @@ namespace BulkyWeb.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult Index(ShoppingCartVM cart)
         {
-            //var claimsIdentity = (ClaimsIdentity)User.Identity;
-            //var useId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //ShoppingCartVM = new()
-            //{
-            //    ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == useId, includeProperties: "Product").ToList(),
-            //    OrderHead = new()
-            //};
-            return View();
-        }
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //     IEnumerable<ShoppingCart> car = cart.ListCarts.AsEnumerable();
+            var filteredCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList();
+
+            ShoppingCartVM = new()
+            {
+                // ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && a == cart.ListCarts[0].selected).ToList()
+                //ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && cart.ListCarts.Any(item => item.selected)).ToList(),
+                ListCarts = filteredCarts.Where(item => cart.ListCarts.Any(c => c.Id == item.Id && c.selected)).ToList(),
+                OrderHead = new()
+            };
+            return RedirectToAction(nameof(Summary));
+        }   
+
         public IActionResult Index()
         {
             
@@ -45,7 +52,6 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 cart.currentprice = cart.price * cart.count;
 
                 ShoppingCartVM.OrderHead.OrderTotal += (cart.price *cart.count) ;
-                ShoppingCartVM.total += (cart.price * cart.count);
 
             }
             return View(ShoppingCartVM);

@@ -12,7 +12,6 @@
         </div>
         <div class="card-body py-0">
             <input asp-for="OrderHead.OrderTotal"></input>
-            <input asp-for="total"></input>
             @for (int z = 0; z < Model.ListCarts.Count(); z++)
             {
                 <input asp-for="@Model.ListCarts[z].Id"></input>
@@ -144,7 +143,7 @@
                 }
 
                 isGreen = !isGreen;
-                console.log('Selected Product ID:', productId);
+            //    console.log('Selected Product ID:', productId);
             });
         });
     </script>
