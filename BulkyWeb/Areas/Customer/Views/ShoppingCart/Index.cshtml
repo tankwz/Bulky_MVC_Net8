@@ -15,7 +15,7 @@
             @for (int z = 0; z < Model.ListCarts.Count(); z++)
             {
                 <input asp-for="@Model.ListCarts[z].Id" hidden></input>
-                <input asp-for="@Model.ListCarts[z].selected"  type="checkbox" id="selected-@Model.ListCarts[z].Id"></input>
+                <input asp-for="@Model.ListCarts[z].selected" hidden type="checkbox" id="selected-@Model.ListCarts[z].Id"></input>
                 <div class="row py-2 clickable" id="div-@Model.ListCarts[z].Id" style="border:3px solid grey">
                     <div class=" py-2  col-12 col-lg-4  ps-1">
                         <img class="  border border-1 border-secondary rounded" src="@Model.ListCarts[z].Product.ImageUrl" style="width:100%"></img>
@@ -54,6 +54,7 @@
                                         <div class="input-group">
                                             <button asp-area="customer" asp-controller="ShoppingCart" asp-route-cartid="@Model.ListCarts[z].Id" asp-action="Less" class="btn btn-secondary">-</button>
                                             <input asp-for="@Model.ListCarts[z].count" disabled type="number" class="form-control text-center"></input>
+                                            <span id="Count-@Model.ListCarts[z].Id" hidden> @Model.ListCarts[z].count </span>
                                             <button asp-action="More" asp-route-cartid="@Model.ListCarts[z].Id" class="btn btn-secondary">+</button>
 
                                         </div>
@@ -61,11 +62,11 @@
                                     <div class="col-3">
                                         <div class="row">
                                             <div class="col-12">
-                                                <span class="text-decoration-line-through">@Model.ListCarts[z].Product.ListPrice.ToString("c")</span>
-                                                <span>@Model.ListCarts[z].price.ToString("c")</span>
+                                                <span id="BasePrice-@Model.ListCarts[z].Id" class="text-decoration-line-through">@Model.ListCarts[z].Product.ListPrice.ToString("c")</span>
+                                                <span id="OrderPrice-@Model.ListCarts[z].Id">@Model.ListCarts[z].price.ToString("c")</span>
                                             </div>
                                             <div class="col-12">
-                                                <span>Total:&nbsp;@Model.ListCarts[z].currentprice.ToString("c")</span>
+                                                <span >Total:&nbsp;@Model.ListCarts[z].currentprice.ToString("c")</span>
                                             </div>
                                         </div>
                                     </div>
@@ -83,16 +84,29 @@
                 <hr>
 
             }
-            <div class="sticky-bottom ">
-                <div class="row bg-secondary border-1">
-                    <div class="col-4 p-3">
-                            <input type="checkbox" class="form-check" id="SelectAll">Select All</input>
-                    </div>
-                    <div class="col-5">
-                        <button type="submit" class=" btn btn-primary mt-2">Buy</button>
+            <div class="sticky-bottom  ">
+                <div class="row">
+                    <div class="col-12 bg-secondary py-2    ">
+
+
+                        <div class="row bg-secondary border-1 ">
+                            <div class="col-4 form-check d-flex align-items-center check">
+                                <input type="checkbox" class="form-check-input ms-5 me-3 p-2" id="SelectAll"></input>
+                                <label for="SelectAll" class="form-check-label h5 m-0 pt-1">Select All</label>
+                            </div>
+                            <div class="col-3 ">
+                                <h5 id="TotalBasePrice" >Price: @Model.TotalBase.ToString("c")</h5>
+
+                                <h5 id="TotalOrderPrice">Price: @Model.OrderHead.OrderTotal.ToString("c")</h5>
+
+                            </div>
+                            <div class="col-3 ">
+                                <button type="submit" class=" btn btn-primary mt-2 form-control py-2 "><h4 class="m-0 p-0">Buy</h4></button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
             </div>
         </div>
 

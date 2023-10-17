@@ -56,10 +56,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
             
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+          
             ShoppingCartVM = new()
             {
                 ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == UserId, includeProperties: "Product").ToList(),
-                OrderHead = new() 
+                OrderHead = new(),
+                TotalBase =0
             };
             foreach(var cart in ShoppingCartVM.ListCarts)
             {
@@ -67,7 +69,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 cart.currentprice = cart.price * cart.count;
 
                 ShoppingCartVM.OrderHead.OrderTotal += (cart.price *cart.count) ;
-
+                ShoppingCartVM.TotalBase += (cart.Product.ListPrice * cart.count);
             }
             return View(ShoppingCartVM);
         }

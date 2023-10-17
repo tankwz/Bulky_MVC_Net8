@@ -11,5 +11,6 @@ namespace pj.Models.ViewModels
         public IList<ShoppingCart> ListCarts { get; set; }
 
         public OrderHead OrderHead { get; set; }
+        public double TotalBase { get; set; }
     }
 }

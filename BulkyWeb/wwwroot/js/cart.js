@@ -27,18 +27,37 @@
         }
      const clickableDivs = document.querySelectorAll('.clickable');
 
+const TotalBasePrice = document.getElementById('TotalBasePrice');
+const TotalOrderPrice = document.getElementById('TotalOrderPrice');
+var price = 0;
     clickableDivs.forEach(function (div) {
         // let isGreen = false;
         div.addEventListener('click', function () {
             const productId = div.id.split('-')[1]; // Extract the product ID from the div id
             var selectBox = document.getElementById('selected-' + productId)
+
+            var BasePrice = document.getElementById('BasePrice-' + productId).textContent;
+            BasePrice = parseFloat(BasePrice.replace(/[^0-9.]/g, ''));
+            var OrderPrice = document.getElementById('OrderPrice-' + productId).textContent;
+            OrderPrice = parseFloat(OrderPrice.replace(/[^0-9.]/g,''));
+            var QuantityCount = document.getElementById('Count-' + productId).textContent;
+
+            QuantityCount = parseFloat(QuantityCount);
+
+            console.log('BasePrice:', BasePrice);
+            console.log('OrderPrice:', OrderPrice);
+            console.log('QuantityCount:', QuantityCount);
             if (selectBox.checked == true) {
                 div.style.border = '3px solid grey';
                 selectBox.checked = false;
                 selectAll.checked = false;
+                price -= BasePrice * QuantityCount;
+                TotalBasePrice.innerHTML = price;
             } else {
                 div.style.border = '3px solid green';
                 selectBox.checked = true;
+                price += BasePrice * QuantityCount;
+                TotalBasePrice.innerHTML = price;
             }
             const allChecked = Array.from(clickableDivs).every((div) => {
                 const productId = div.id.split('-')[1];
@@ -68,3 +87,4 @@
         })
 
     })
+
