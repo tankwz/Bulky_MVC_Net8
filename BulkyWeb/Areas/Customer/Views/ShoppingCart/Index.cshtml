@@ -90,14 +90,15 @@
 
 
                         <div class="row bg-secondary border-1 ">
-                            <div class="col-4 form-check d-flex align-items-center check">
+                            <div class="col-2 form-check d-flex align-items-center check">
                                 <input type="checkbox" class="form-check-input ms-5 me-3 p-2" id="SelectAll"></input>
                                 <label for="SelectAll" class="form-check-label h5 m-0 pt-1">Select All</label>
                             </div>
-                            <div class="col-3 ">
-                                <h5 id="TotalBasePrice" >Price: @Model.TotalBase.ToString("c")</h5>
+                            <div class="col-5 d-flex align-items-center pt-3">
 
-                                <h5 id="TotalOrderPrice">Price: @Model.OrderHead.OrderTotal.ToString("c")</h5>
+                                <h5 style="display:inline">Total Price:&nbsp;</h5><h5 style="display:inline" id="TotalBasePrice" class="text-decoration-line-through">$0.00@* @Model.TotalBase.ToString("c") *@</h5>
+                                 <h5 style="display:inline" id="TotalOrderPrice">&nbsp;$0.00 @* @Model.OrderHead.OrderTotal.ToString("c") *@</h5>
+                              
 
                             </div>
                             <div class="col-3 ">
