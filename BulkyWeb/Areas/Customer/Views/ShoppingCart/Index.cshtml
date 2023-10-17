@@ -11,12 +11,12 @@
             </div>
         </div>
         <div class="card-body py-0">
-            <input asp-for="OrderHead.OrderTotal"></input>
+            <input asp-for="OrderHead.OrderTotal" hidden></input>
             @for (int z = 0; z < Model.ListCarts.Count(); z++)
             {
-                <input asp-for="@Model.ListCarts[z].Id"></input>
-                <input asp-for="@Model.ListCarts[z].selected" type="checkbox" id="selected-@Model.ListCarts[z].Id"></input>
-                <div class="row py-2 clickable" id="div-@Model.ListCarts[z].Id">
+                <input asp-for="@Model.ListCarts[z].Id" hidden></input>
+                <input asp-for="@Model.ListCarts[z].selected"  type="checkbox" id="selected-@Model.ListCarts[z].Id"></input>
+                <div class="row py-2 clickable" id="div-@Model.ListCarts[z].Id" style="border:3px solid grey">
                     <div class=" py-2  col-12 col-lg-4  ps-1">
                         <img class="  border border-1 border-secondary rounded" src="@Model.ListCarts[z].Product.ImageUrl" style="width:100%"></img>
                     </div>
@@ -86,10 +86,10 @@
             <div class="sticky-bottom ">
                 <div class="row bg-secondary border-1">
                     <div class="col-4 p-3">
-                        <input type="checkbox">asd</input>
+                            <input type="checkbox" class="form-check" id="SelectAll">Select All</input>
                     </div>
                     <div class="col-5">
-                        <button type="submit" class=" btn btn-primary mt-2">Buy All</button>
+                        <button type="submit" class=" btn btn-primary mt-2">Buy</button>
                     </div>
                 </div>
 
@@ -127,24 +127,47 @@
             }
         }
         const clickableDivs = document.querySelectorAll('.clickable');
-         
+
         clickableDivs.forEach(function (div) {
-            let isGreen = false;
+           // let isGreen = false;
             div.addEventListener('click', function () {
                 const productId = div.id.split('-')[1]; // Extract the product ID from the div id
                 var selectBox = document.getElementById('selected-' + productId)
-                if (isGreen) {
-                    div.style.border = '0px';
+                if (selectBox.checked == true) {
+                    div.style.border = '3px solid grey';
                     selectBox.checked = false;
-                    
+                    selectAll.checked = false;
                 } else {
                     div.style.border = '3px solid green';
-                    selectBox.checked = true ;
+                    selectBox.checked = true;
                 }
-
-                isGreen = !isGreen;
-            //    console.log('Selected Product ID:', productId);
+                const allChecked = Array.from(clickableDivs).every((div) => {
+                    const productId = div.id.split('-')[1];
+                    var selectBox = document.getElementById('selected-' + productId);
+                    return selectBox.checked;
+                });
+                selectAll.checked = allChecked;
+              //  isGreen = !isGreen;
+                //    console.log('Selected Product ID:', productId);
             });
         });
+
+        const selectAll = document.getElementById('SelectAll')
+        selectAll.addEventListener('change', function () {
+
+            clickableDivs.forEach(function (div) {
+                const productId = div.id.split('-')[1]; // Extract the product ID from the div id
+                var selectBox = document.getElementById('selected-' + productId)
+                if (selectAll.checked) {
+                    div.style.border = '3px solid green '
+                    selectBox.checked = true;
+                }
+                else if (!selectAll.checked) {
+                    div.style.border = '3px solid grey';
+                    selectBox.checked = false;
+                }
+            })
+
+        })
     </script>
 }

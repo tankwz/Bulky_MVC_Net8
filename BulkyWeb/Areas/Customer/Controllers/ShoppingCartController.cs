@@ -46,8 +46,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
             ShoppingCartVM? cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
 
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             return View(cart);
         }
