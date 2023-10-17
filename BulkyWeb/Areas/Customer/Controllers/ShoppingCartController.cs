@@ -33,9 +33,16 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 ListCarts = filteredCarts.Where(item => cart.ListCarts.Any(c => c.Id == item.Id && c.selected)).ToList(),
                 OrderHead = new()
             };
+            TempData["cart"] = JsonConvert.SerializeObject(ShoppingCartVM);
             return RedirectToAction(nameof(Summary));
         }   
-
+        public IActionResult Summary()
+        {
+            string cartData = TempData["Cart"] as string;
+              ShoppingCartVM cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
+            //ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(serializedCart);
+            return View(cart);
+        }
         public IActionResult Index()
         {
             
