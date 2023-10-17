@@ -32,15 +32,23 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 //ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && cart.ListCarts.Any(item => item.selected)).ToList(),
                 ListCarts = filteredCarts.Where(item => cart.ListCarts.Any(c => c.Id == item.Id && c.selected)).ToList(),
                 OrderHead = new()
+                {
+                   AppUserId = userId,
+                   AppUser = _unitOfWork.AppUser.Get1(a => a.Id == userId)
+                }
             };
             TempData["cart"] = JsonConvert.SerializeObject(ShoppingCartVM);
             return RedirectToAction(nameof(Summary));
         }   
         public IActionResult Summary()
         {
-            string cartData = TempData["Cart"] as string;
-              ShoppingCartVM cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
-            //ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(serializedCart);
+            string? cartData = TempData["cart"] as string;
+            //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
+            ShoppingCartVM? cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             return View(cart);
         }
         public IActionResult Index()
