@@ -33,16 +33,28 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 ListCarts = filteredCarts.Where(item => cart.ListCarts.Any(c => c.Id == item.Id && c.selected)).ToList(),
                 OrderHead = new()
                 {
-                   AppUserId = userId,
-                   AppUser = _unitOfWork.AppUser.Get1(a => a.Id == userId)
+                    AppUserId = userId,
+                    AppUser = _unitOfWork.AppUser.Get1(a => a.Id == userId),
+
+                    OrderTotal = 0
                 }
             };
+            foreach (var carta in ShoppingCartVM.ListCarts)
+            {
+                carta.price = PricenQuantityCal(carta);
+                carta.currentprice = carta.price * carta.count;
+
+                ShoppingCartVM.OrderHead.OrderTotal += (carta.price * carta.count);
+                ShoppingCartVM.TotalBase += (carta.Product.ListPrice * carta.count);
+            }
+
             TempData["cart"] = JsonConvert.SerializeObject(ShoppingCartVM);
+        //    TempData.Keep("cart");
             return RedirectToAction(nameof(Summary));
         }   
         public IActionResult Summary()
         {
-            string? cartData = TempData["cart"] as string;
+            string? cartData = TempData.Peek("cart") as string;
             //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
             ShoppingCartVM? cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
 

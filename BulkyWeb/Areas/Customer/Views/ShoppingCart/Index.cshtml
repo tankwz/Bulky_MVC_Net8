@@ -12,7 +12,7 @@
         </div>
         <div class="card-body py-0">
             <input asp-for="OrderHead.OrderTotal" hidden></input>
-            @for (int z = 0; z < Model.ListCarts.Count(); z++)
+            @for (int z = Model.ListCarts.Count()-1; z >=0; z--)
             {
                 <input asp-for="@Model.ListCarts[z].Id" hidden></input>
                 <input asp-for="@Model.ListCarts[z].selected" hidden type="checkbox" id="selected-@Model.ListCarts[z].Id"></input>

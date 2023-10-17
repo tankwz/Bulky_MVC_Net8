@@ -75,8 +75,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 if ((cartcheck.count + cart.count) <= 1000)
                 {
+                    _unitOfWork.ShoppingCart.Remove(cartcheck);
                     cartcheck.count += cart.count;
-                    _unitOfWork.ShoppingCart.Update(cartcheck);
+                    cartcheck.Id = 0;
+                    _unitOfWork.ShoppingCart.Add(cartcheck);
+
                 }
                 else
                 {
@@ -88,7 +91,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             TempData["success"] = "Added to cart";
             _unitOfWork.save();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ShoppingCart");
         }
         public IActionResult Details2(int? id)
         {
