@@ -18,7 +18,28 @@ namespace BulkyWeb.Areas.Customer.Controllers
         {
             _unitOfWork = unit;
         }
+        public IActionResult Index()
+        {
 
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ShoppingCartVM = new()
+            {
+                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == UserId, includeProperties: "Product").ToList(),
+                OrderHead = new(),
+                TotalBase = 0
+            };
+            foreach (var cart in ShoppingCartVM.ListCarts)
+            {
+                cart.price = PricenQuantityCal(cart);
+                cart.currentprice = cart.price * cart.count;
+
+                ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
+                ShoppingCartVM.TotalBase += (cart.Product.ListPrice * cart.count);
+            }
+            return View(ShoppingCartVM);
+        }
         [HttpPost]
         public IActionResult Index(ShoppingCartVM cart)
         {
@@ -64,13 +85,32 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 OrderHead = cart.OrderHead,
                 TotalBase = cart.TotalBase
             };
-            ShoppingCartVM.OrderHead.PhoneNumber = ShoppingCartVM.OrderHead.AppUser.PhoneNumber;
-            ShoppingCartVM.OrderHead.StressAddress = ShoppingCartVM.OrderHead.AppUser.StressAddress;
-            ShoppingCartVM.OrderHead.PostalCode = ShoppingCartVM.OrderHead.AppUser.PostalCode;
-            ShoppingCartVM.OrderHead.City = ShoppingCartVM.OrderHead.AppUser.City;
-            ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
-            ShoppingCartVM.OrderHead.Name = ShoppingCartVM.OrderHead.AppUser.Name;
 
+
+
+
+            if (TempData.Peek("UserEditData") != null)
+            {
+                string userDataString = TempData.Peek("UserEditData") as string;
+                OrderHead userData = JsonConvert.DeserializeObject<OrderHead>(userDataString);
+
+                ShoppingCartVM.OrderHead.PhoneNumber = userData.PhoneNumber;
+                ShoppingCartVM.OrderHead.StressAddress = userData.StressAddress;
+                ShoppingCartVM.OrderHead.PostalCode = userData.PostalCode;
+                ShoppingCartVM.OrderHead.City = userData.City;
+                ShoppingCartVM.OrderHead.State = userData.State;
+                ShoppingCartVM.OrderHead.Name = userData.Name;
+            }
+            else
+            {
+
+                ShoppingCartVM.OrderHead.PhoneNumber = ShoppingCartVM.OrderHead.AppUser.PhoneNumber;
+                ShoppingCartVM.OrderHead.StressAddress = ShoppingCartVM.OrderHead.AppUser.StressAddress;
+                ShoppingCartVM.OrderHead.PostalCode = ShoppingCartVM.OrderHead.AppUser.PostalCode;
+                ShoppingCartVM.OrderHead.City = ShoppingCartVM.OrderHead.AppUser.City;
+                ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
+                ShoppingCartVM.OrderHead.Name = ShoppingCartVM.OrderHead.AppUser.Name;
+            }
             //var claimsIdentity = (ClaimsIdentity)User.Identity;
             //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View(ShoppingCartVM);
@@ -89,46 +129,32 @@ namespace BulkyWeb.Areas.Customer.Controllers
         }
         public IActionResult ShippingDetails()
         {
-            string? cartData = TempData.Peek("cart") as string;
-            //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
-            ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
-            ShoppingCartVM = new()
+            var claimsUser = (ClaimsIdentity)User.Identity;
+            var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            AppUser user = _unitOfWork.AppUser.Get1(a => a.Id == userId);
+            OrderHead order = new OrderHead()
             {
-                ListCarts = cart.ListCarts,
-                OrderHead = cart.OrderHead,
-                TotalBase = cart.TotalBase
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber,
+                StressAddress = user.StressAddress,
+                City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode
+
             };
-            ShoppingCartVM.OrderHead.PhoneNumber = ShoppingCartVM.OrderHead.AppUser.PhoneNumber;
-            ShoppingCartVM.OrderHead.StressAddress = ShoppingCartVM.OrderHead.AppUser.StressAddress;
-            ShoppingCartVM.OrderHead.PostalCode = ShoppingCartVM.OrderHead.AppUser.PostalCode;
-            ShoppingCartVM.OrderHead.City = ShoppingCartVM.OrderHead.AppUser.City;
-            ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
-            ShoppingCartVM.OrderHead.Name = ShoppingCartVM.OrderHead.AppUser.Name;
-            return View(ShoppingCartVM);
+            return View(order);
         }
-        public IActionResult Index()
+
+        [HttpPost]
+        public IActionResult ShippingDetails(OrderHead head)
         {
-            
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-          
-            ShoppingCartVM = new()
-            {
-                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == UserId, includeProperties: "Product").ToList(),
-                OrderHead = new(),
-                TotalBase =0
-            };
-            foreach(var cart in ShoppingCartVM.ListCarts)
-            {
-                cart.price = PricenQuantityCal(cart);
-                cart.currentprice = cart.price * cart.count;
 
-                ShoppingCartVM.OrderHead.OrderTotal += (cart.price *cart.count) ;
-                ShoppingCartVM.TotalBase += (cart.Product.ListPrice * cart.count);
-            }
-            return View(ShoppingCartVM);
+  
+            TempData["UserEditData"] = JsonConvert.SerializeObject(head);
+             return RedirectToAction(nameof(Summary));
+
+
         }
-
 
         private double PricenQuantityCal(ShoppingCart cart)
         {

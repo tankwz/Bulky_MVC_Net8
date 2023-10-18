@@ -11,9 +11,19 @@
                         <div class="col-12 ">
                             <h5><i class="bi bi-geo-alt-fill"></i> Shipping Details: </h5>
                             <div class="d-flex">
+
+                                <input asp-for="OrderHead.Name" hidden></input>
+                                <input asp-for="OrderHead.City" hidden></input>
+                                <input asp-for="OrderHead.StressAddress" hidden></input>
+                                <input asp-for="OrderHead.PhoneNumber" hidden></input>
+                                <input asp-for="OrderHead.State" hidden></input>
+                                <input asp-for="OrderHead.PostalCode" hidden></input>
+
+
                                 <span class="h5 fw-bold">@Model.OrderHead.Name</span>
+
                                 <span class="h5">&nbsp;@Model.OrderHead.PhoneNumber</span>
-                                <span class="ms-auto">@Model.OrderHead.StressAddress , @Model.OrderHead.State , @Model.OrderHead.City</span>
+                                <span class="ms-auto">@Model.OrderHead.StressAddress , @Model.OrderHead.State , @Model.OrderHead.City, @Model.OrderHead.PostalCode</span>
                                 <a asp-area="customer" asp-controller="ShoppingCart" asp-action="ShippingDetails" class="ps-2 m-0"><h5 class="m-0">Change</h5></a>
                             </div>
                         </div>
