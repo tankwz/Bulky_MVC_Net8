@@ -49,6 +49,11 @@
                                     <li class="list-group-item">
                                         <div class="d-flex align-items-center row">
                                             <input hidden asp-for="@Model.ListCarts[cart].Id"></input>
+                                            @*
+                                        <input hidden asp-for="@Model.ListCarts[cart].count"></input>
+                                        <input hidden asp-for="@Model.ListCarts[cart].currentprice"></input>
+                                        *@
+
                                             <div class="col-8 col-md-6 col-lg-2 pe-0">
 
                                                 <img class="border border-1 rounded border-secondary" src="@Model.ListCarts[cart].Product.ImageUrl" style="width:95%"> </img>
@@ -71,6 +76,8 @@
                                     <div class="d-flex">
                                         <h6 class="m-0">Total(USD):</h6>
                                         <strong class="ms-auto mb-0">@Model.OrderHead.OrderTotal.ToString("c")</strong>
+
+
                                     </div>
                                 </li>
                             </ul>

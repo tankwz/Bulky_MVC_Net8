@@ -54,7 +54,7 @@ namespace pj.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter,string? includeProperties = null)
+        public IEnumerable<T> GetAll1(Expression<Func<T, bool>>? filter,string? includeProperties = null)
         {
 
 
@@ -73,6 +73,25 @@ namespace pj.DataAccess.Repository
             }
             return query.ToList();
             //throw new NotImplementedException();
+        }
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter, string includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
+
+            return query.ToList();
         }
 
         public void Remove(T item)

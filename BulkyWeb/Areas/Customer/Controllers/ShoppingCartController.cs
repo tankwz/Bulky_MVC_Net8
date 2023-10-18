@@ -46,14 +46,16 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             //     IEnumerable<ShoppingCart> car = cart.ListCarts.AsEnumerable();
-            var filteredCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList();
+      //      var filteredCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList();
 
             ShoppingCartVM = new()
             {
                 // ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && a == cart.ListCarts[0].selected).ToList()
                 //ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && cart.ListCarts.Any(item => item.selected)).ToList(),
-                ListCarts = filteredCarts.Where(item => cart.ListCarts.Any(c => c.Id == item.Id && c.selected)).ToList(),
-                OrderHead = new()
+                //                ListCarts = filteredCarts.Where(item => cart.ListCarts.Any(c => c.Id == item.Id && c.selected)).ToList(),
+            //    ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && cart.ListCarts.Any(c => c.Id == a.Id && c.selected), includeProperties: "Product").ToList(),
+            ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList().Where(item => cart.ListCarts.Any(cart => cart.Id == item.Id && cart.selected)).ToList(),
+            OrderHead = new()
                 {
                     AppUserId = userId,
                     AppUser = _unitOfWork.AppUser.Get1(a => a.Id == userId),
@@ -74,7 +76,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
         //    TempData.Keep("cart");
             return RedirectToAction(nameof(Summary));
         }   
-        public IActionResult Summary()
+        public IActionResult Summary(OrderHead? head)
         {
             string? cartData = TempData.Peek("cart") as string;
             //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
@@ -89,10 +91,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
 
 
-            if (TempData.Peek("UserEditData") != null)
+           // if (TempData.Peek("UserEditData") != null)
+            if(head.Name != null)
             {
-                string userDataString = TempData.Peek("UserEditData") as string;
-                OrderHead userData = JsonConvert.DeserializeObject<OrderHead>(userDataString);
+                // string userDataString = TempData.Peek("UserEditData") as string;
+                OrderHead userData = head; // JsonConvert.DeserializeObject<OrderHead>(userDataString);
 
                 ShoppingCartVM.OrderHead.PhoneNumber = userData.PhoneNumber;
                 ShoppingCartVM.OrderHead.StressAddress = userData.StressAddress;
@@ -121,16 +124,35 @@ namespace BulkyWeb.Areas.Customer.Controllers
         public IActionResult SummaryPost()
         {
 
+            var claimsUser = (ClaimsIdentity)User.Identity;
+            var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        //    string? cartData = TempData.Peek("cart") as string;
+            IList<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties:"Product").ToList().Where(items => ShoppingCartVM.ListCarts.Any(c=> c.Id == items.Id)).ToList();
+
+            ShoppingCartVM.ListCarts = carts;
+            ShoppingCartVM.OrderHead.AppUserId = userId;
+
+            foreach (var cart in ShoppingCartVM.ListCarts)
+            {
+                cart.price = PricenQuantityCal(cart);
+                ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
+            }
+
+            //     carts.Where()
+
+            //    string? cartData = TempData.Peek("cart") as string;
             //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
-          //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+            //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
             return View(ShoppingCartVM);
         }
         public IActionResult ShippingDetails()
         {
             var claimsUser = (ClaimsIdentity)User.Identity;
             var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var cart = _unitOfWork.ShoppingCart.GetAll(a => a.AppUser.Id == userId).ToList();
+
+
+
             AppUser user = _unitOfWork.AppUser.Get1(a => a.Id == userId);
             OrderHead order = new OrderHead()
             {
@@ -150,8 +172,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
         {
 
   
-            TempData["UserEditData"] = JsonConvert.SerializeObject(head);
-             return RedirectToAction(nameof(Summary));
+         //   TempData["UserEditData"] = JsonConvert.SerializeObject(head);
+             return RedirectToAction(nameof(Summary), head);
 
 
         }
