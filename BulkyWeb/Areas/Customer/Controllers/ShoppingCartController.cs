@@ -71,13 +71,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
             ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
             ShoppingCartVM.OrderHead.Name = ShoppingCartVM.OrderHead.AppUser.Name;
 
-
-
             //var claimsIdentity = (ClaimsIdentity)User.Identity;
             //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             return View(ShoppingCartVM);
         }
+    
 
         [HttpPost,ActionName("Summary")]
         public IActionResult SummaryPost()

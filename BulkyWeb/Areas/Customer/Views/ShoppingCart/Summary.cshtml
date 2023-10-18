@@ -5,22 +5,22 @@
         <div class="card-header bg-gradient p-3 h2 text-info">Order Summary</div>
 
         <div class="card-header border-2 my-2 pt-0">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-12 mt-2 ">
-                            <div class="col-12 ">
-                            <h5 ><i class="bi bi-geo-alt-fill"></i> Shipping Details: </h5>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 mt-2 ">
+                        <div class="col-12 ">
+                            <h5><i class="bi bi-geo-alt-fill"></i> Shipping Details: </h5>
                             <div class="d-flex">
                                 <span class="h5 fw-bold">@Model.OrderHead.Name</span>
                                 <span class="h5">&nbsp;@Model.OrderHead.PhoneNumber</span>
                                 <span class="ms-auto">@Model.OrderHead.StressAddress , @Model.OrderHead.State , @Model.OrderHead.City</span>
-                                <a class="ps-2 h4" href="#">Change</a>
-                            </div>
+                                <a asp-area="customer" asp-controller="ShoppingCart" asp-action="ShippingDetails" class="ps-2 m-0"><h5 class="m-0">Change</h5></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
         <div class="card-body">
             <div class="row">
@@ -28,20 +28,30 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12">
-                            <h5>Order Summary:</h5>
+                            <h5>Items:</h5>
                         </div>
                         <div>
-                            <ul class="list-group ">
+                            <ul class="list-group  ">
 
                                 @for (var cart = Model.ListCarts.Count() - 1; cart >= 0; cart--)
                                 {
-                                    <li class="list-group-item">
-                                        <div class="d-flex">
-                                            <input hidden asp-for="@Model.ListCarts[cart].Id"></input>
-                                            <h6 class="d-inline"> @Model.ListCarts[cart].Product.Title</h6>
-                                            <small>&nbsp; x @Model.ListCarts[cart].count</small>
-                                            <h6 class="d-inline ms-auto ">@Model.ListCarts[cart].currentprice.ToString("c")</h6>
 
+                                    <li class="list-group-item">
+                                        <div class="d-flex align-items-center row">
+                                            <input hidden asp-for="@Model.ListCarts[cart].Id"></input>
+                                            <div class="col-8 col-md-6 col-lg-2 pe-0">
+
+                                                <img class="border border-1 rounded border-secondary" src="@Model.ListCarts[cart].Product.ImageUrl" style="width:95%"> </img>
+
+                                            </div>
+                                            <div class="col-4 col-md-6 col-lg-10 ps-1">
+                                                <div class="d-flex align-items-center">
+                                                    <h5 class="d-inline m-0"> @Model.ListCarts[cart].Product.Title</h5>
+                                                    <small class="align-self-end text-info">&nbsp;  @Model.ListCarts[cart].price.ToString("c")</small>
+                                                    <small class="align-self-end text-info">&nbsp; x @Model.ListCarts[cart].count</small>
+                                                    <h6 class="d-inline ms-auto ">@Model.ListCarts[cart].currentprice.ToString("c")</h6>
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </li>
@@ -61,13 +71,13 @@
                     </div>
                 </div>
 
-      
+
             </div>
         </div>
         <div class="card-footer">
             <div class="row">
                 <div class="col-12 col-md-9 align-items-center d-flex">
-                    <p class="m-0 text-info" style="font-size: 14px" >
+                    <p class="m-0 text-info" style="font-size: 14px">
                         Estimate arrival time:
                         @DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") - @DateTime.Now.AddDays(14).ToString("dd/MM/yyyy")
                     </p>

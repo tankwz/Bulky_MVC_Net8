@@ -1,7 +1,7 @@
-﻿@model ShoppingCartVM
+﻿@model OrderHead
 <form method="post">
     <div class="card">
-        <div class="card-header bg-gradient p-3 h2 text-info">Order Summary</div>
+        <div class="card-header bg-gradient p-3 h2 text-info">Edit Shipping Details</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
@@ -13,58 +13,58 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.Name" class="col-form-label "></label>
+                                    <label asp-for="@Model.Name" class="col-form-label "></label>
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.Name" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.Name"></span>
+                                    <input asp-for="@Model.Name" class="form-control py-1 bg-secondary text-white"></input>
+                                    <span asp-validation-for="Name"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.PhoneNumber" class="col-form-label ">Phone</label>
+                                    <label asp-for="@Model.PhoneNumber" class="col-form-label ">Phone</label>
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.PhoneNumber" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.PhoneNumber"></span>
+                                    <input asp-for="@Model.PhoneNumber" class="form-control py-1 bg-secondary text-white"></input>
+                                    <span asp-validation-for="PhoneNumber"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.StressAddress" class="col-form-label "></label>
+                                    <label asp-for="@Model.StressAddress" class="col-form-label "></label>
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.StressAddress" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.StressAddress"></span>
+                                    <input asp-for="@Model.StressAddress" class="form-control py-1 bg-secondary text-white"></input>
+                                    <span asp-validation-for="StressAddress"></span>
 
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.City" class="col-form-label "></label>
+                                    <label asp-for="@Model.City" class="col-form-label "></label>
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.City" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.City"></span>
+                                    <input asp-for="@Model.City" class="form-control py-1 bg-secondary text-white"></input>
+                                    <span asp-validation-for="City"></span>
 
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.State" class="col-form-label "></label>
+                                    <label asp-for="@Model.State" class="col-form-label "></label>
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.State" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.State"></span>
+                                    <input asp-for="@Model.State" class="form-control py-1 bg-secondary text-white"></input>
+                                    <span asp-validation-for="State"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.PostalCode" class="col-form-label ">Postal Code</label>
+                                    <label asp-for="@Model.PostalCode" class="col-form-label ">Postal Code</label>
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.PostalCode" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.PostalCode"></span>
+                                    <input asp-for="@Model.PostalCode" class="form-control py-1 bg-secondary text-white"></input>
+                                    <span asp-validation-for="PostalCode"></span>
 
                                 </div>
                             </div>
@@ -78,12 +78,11 @@
             <div class="row">
                 <div class="col-12 col-md-9 align-items-center d-flex">
                     <p class="m-0 text-info" style="font-size: 14px" >
-                        Estimate arrival time:
-                        @DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") - @DateTime.Now.AddDays(14).ToString("dd/MM/yyyy")
+                     
                     </p>
                 </div>
                 <div class="col-12 col-md-3">
-                    <button class="btn btn-primary form-control" type="submit">Place Order</button>
+                    <button class="btn btn-primary form-control" type="submit">Edit</button>
                 </div>
             </div>
         </div>
