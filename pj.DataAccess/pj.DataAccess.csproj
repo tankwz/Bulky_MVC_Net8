@@ -22,4 +22,8 @@
     <ProjectReference Include="..\pj.Utility\pj.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

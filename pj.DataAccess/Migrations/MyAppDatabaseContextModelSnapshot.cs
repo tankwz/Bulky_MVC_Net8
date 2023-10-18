@@ -294,7 +294,7 @@ namespace pj.DataAccess.Migrations
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StressAddress")
+                    b.Property<string>("StreetAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -310,7 +310,7 @@ namespace pj.DataAccess.Migrations
                             PhoneNumber = "012312312",
                             PostalCode = "AAA123",
                             State = "Texa",
-                            StressAddress = "3/2 abc xyz"
+                            StreetAddress = "3/2 abc xyz"
                         },
                         new
                         {
@@ -320,7 +320,7 @@ namespace pj.DataAccess.Migrations
                             PhoneNumber = "0111111233",
                             PostalCode = "BBB345",
                             State = "Texa",
-                            StressAddress = "532 ax"
+                            StreetAddress = "532 ax"
                         },
                         new
                         {
@@ -330,7 +330,7 @@ namespace pj.DataAccess.Migrations
                             PhoneNumber = "00123233",
                             PostalCode = "123BBB",
                             State = "That state",
-                            StressAddress = "6/3 351s as"
+                            StreetAddress = "6/3 351s as"
                         },
                         new
                         {
@@ -340,8 +340,37 @@ namespace pj.DataAccess.Migrations
                             PhoneNumber = "1551251252",
                             PostalCode = "15325",
                             State = "BBBBBB",
-                            StressAddress = "3/2 abc xyz"
+                            StreetAddress = "3/2 abc xyz"
                         });
+                });
+
+            modelBuilder.Entity("pj.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderHeadId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderHeadId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("pj.Models.OrderHead", b =>
@@ -376,9 +405,6 @@ namespace pj.DataAccess.Migrations
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateOnly>("PaymentDueDate")
                         .HasColumnType("date");
 
@@ -387,6 +413,9 @@ namespace pj.DataAccess.Migrations
 
                     b.Property<string>("PaymentStatus")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PaymenteDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -579,35 +608,6 @@ namespace pj.DataAccess.Migrations
                     b.ToTable("ShoppingCarts");
                 });
 
-            modelBuilder.Entity("pj.Models.ViewModels.OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderHeadId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderHeadId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderDetail");
-                });
-
             modelBuilder.Entity("pj.Models.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -629,7 +629,7 @@ namespace pj.DataAccess.Migrations
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StressAddress")
+                    b.Property<string>("StreetAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("CompanyId");
@@ -688,6 +688,25 @@ namespace pj.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("pj.Models.OrderDetail", b =>
+                {
+                    b.HasOne("pj.Models.OrderHead", "OrderHead")
+                        .WithMany()
+                        .HasForeignKey("OrderHeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pj.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderHead");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("pj.Models.OrderHead", b =>
                 {
                     b.HasOne("pj.Models.AppUser", "AppUser")
@@ -725,25 +744,6 @@ namespace pj.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("pj.Models.ViewModels.OrderDetail", b =>
-                {
-                    b.HasOne("pj.Models.OrderHead", "OrderHead")
-                        .WithMany()
-                        .HasForeignKey("OrderHeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("pj.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderHead");
 
                     b.Navigation("Product");
                 });

@@ -7,7 +7,7 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/company/getall' },
         "columnDefs": [
-            { "width": "15%", "targets": [1] }, // stressaddress
+            { "width": "15%", "targets": [1] }, // streetaddress
             { "width": "10%", "targets": [2] }, // city
             { "width": "10%", "targets": [3] }, // state
             { "width": "10%", "targets": [4] }, // postalcode
@@ -16,7 +16,7 @@ function loadDataTable() {
         ],
         "columns": [
             { "data": 'name' },
-            { "data": 'stressAddress' },
+            { "data": 'streetAddress' },
             { "data": 'city' },
             { "data": 'state' },
             { "data": 'postalCode' },

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using pj.Models;
-using pj.Models.ViewModels;
 
 namespace pj.DataAccess.Data
 {
@@ -124,7 +123,7 @@ namespace pj.DataAccess.Data
                 {
                     Id = 1,
                     Name = "SFX Coop",
-                    StressAddress = "3/2 abc xyz",
+                    StreetAddress = "3/2 abc xyz",
                     City = "Colalombua",
                     State = "Texa",
                     PostalCode = "AAA123",
@@ -134,7 +133,7 @@ namespace pj.DataAccess.Data
                 {
                     Id = 2,
                     Name = "KMS Coop",
-                    StressAddress = "532 ax",
+                    StreetAddress = "532 ax",
                     City = "Xiaxia",
                     State = "Texa",
                     PostalCode = "BBB345",
@@ -144,7 +143,7 @@ namespace pj.DataAccess.Data
                 {
                     Id = 3,
                     Name = "ABC Coop",
-                    StressAddress = "6/3 351s as",
+                    StreetAddress = "6/3 351s as",
                     City = "That city",
                     State = "That state",
                     PostalCode = "123BBB",
@@ -154,7 +153,7 @@ namespace pj.DataAccess.Data
                 {
                     Id = 4,
                     Name = "Last Coop",
-                    StressAddress = "3/2 abc xyz",
+                    StreetAddress = "3/2 abc xyz",
                     City = "AAAA",
                     State = "BBBBBB",
                     PostalCode = "15325",

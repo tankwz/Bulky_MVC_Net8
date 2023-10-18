@@ -13,8 +13,8 @@ namespace pj.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [DisplayName("Stress Address")]
-        public string? StressAddress { get; set; }
+        [DisplayName("Street Address")]
+        public string? StreetAddress { get; set; }
 
         public string? City { get; set; }
         public string? State { get; set; }

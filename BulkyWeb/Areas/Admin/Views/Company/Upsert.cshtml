@@ -21,10 +21,10 @@
                         <span asp-validation-for="Name"></span>
                     </div>
                     <div class="form-floating  my-3 col-md-6 py-0">
-                        <input asp-for="StressAddress" class="form-control" placeholder="name ph">
+                        <input asp-for="StreetAddress" class="form-control" placeholder="name ph">
                         </input>
-                        <label asp-for="StressAddress" class="form-label ms-2"></label>
-                        <span asp-validation-for="StressAddress"></span>
+                        <label asp-for="StreetAddress" class="form-label ms-2"></label>
+                        <span asp-validation-for="StreetAddress"></span>
 
                     </div>
                     <div class="form-floating  my-3 col-md-6 py-0">
@@ -70,8 +70,8 @@
     @*         public int Id { get; set; }
     [Required]
     1     public string Name { get; set; }
-    2      [DisplayName("Stress Address")]
-    2    public string? StressAddress { get; set; }
+    2      [DisplayName("Street Address")]
+    2    public string? StreetAddress { get; set; }
 
     3   public string? City { get; set; }
     4     public string? State { get; set; }

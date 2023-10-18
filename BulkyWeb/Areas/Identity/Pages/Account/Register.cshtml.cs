@@ -117,7 +117,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             public IEnumerable<SelectListItem> CompanyList { get; set; }
             [Required]
             public string Name { get; set; }
-            public string? StressAddress { get; set; }
+            public string? StreetAddress { get; set; }
             public string? City { get; set; }
 
             public string? State { get; set; }
@@ -172,7 +172,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.StressAddress = Input.StressAddress;
+                user.StreetAddress = Input.StreetAddress;
                 user.City = Input.City;
                 user.State = Input.State;
                 user.PostalCode = Input.PostalCode;

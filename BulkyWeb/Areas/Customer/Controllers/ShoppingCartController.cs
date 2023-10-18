@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
 using pj.Models.ViewModels;
+using pj.Utility;
 using System.Security.Claims;
 
 namespace BulkyWeb.Areas.Customer.Controllers
@@ -98,7 +99,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 OrderHead userData = head; // JsonConvert.DeserializeObject<OrderHead>(userDataString);
 
                 ShoppingCartVM.OrderHead.PhoneNumber = userData.PhoneNumber;
-                ShoppingCartVM.OrderHead.StressAddress = userData.StressAddress;
+                ShoppingCartVM.OrderHead.StreetAddress = userData.StreetAddress;
                 ShoppingCartVM.OrderHead.PostalCode = userData.PostalCode;
                 ShoppingCartVM.OrderHead.City = userData.City;
                 ShoppingCartVM.OrderHead.State = userData.State;
@@ -108,7 +109,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
 
                 ShoppingCartVM.OrderHead.PhoneNumber = ShoppingCartVM.OrderHead.AppUser.PhoneNumber;
-                ShoppingCartVM.OrderHead.StressAddress = ShoppingCartVM.OrderHead.AppUser.StressAddress;
+                ShoppingCartVM.OrderHead.StreetAddress = ShoppingCartVM.OrderHead.AppUser.StreetAddress;
                 ShoppingCartVM.OrderHead.PostalCode = ShoppingCartVM.OrderHead.AppUser.PostalCode;
                 ShoppingCartVM.OrderHead.City = ShoppingCartVM.OrderHead.AppUser.City;
                 ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
@@ -130,6 +131,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             IList<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties:"Product").ToList().Where(items => ShoppingCartVM.ListCarts.Any(c=> c.Id == items.Id)).ToList();
 
             ShoppingCartVM.ListCarts = carts;
+
+            ShoppingCartVM.OrderHead.AppUser = _unitOfWork.AppUser.Get1(a => a.Id == userId);
             ShoppingCartVM.OrderHead.AppUserId = userId;
 
             foreach (var cart in ShoppingCartVM.ListCarts)
@@ -138,12 +141,59 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
             }
 
-            //     carts.Where()
+            ShoppingCartVM.OrderHead.OrderDate = DateTime.Now;
+            
+            if(ShoppingCartVM.OrderHead.AppUser.CompanyId.GetValueOrDefault() == 0)
+            {
+                ShoppingCartVM.OrderHead.OrderStatus = SD.StatusPending;
+                ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusPending;
+            }
+            else
+            {
+                ShoppingCartVM.OrderHead.OrderStatus = SD.StatusApproved;
+                ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusDelayedPayment;
+            }
+            _unitOfWork.OrderHead.Add(ShoppingCartVM.OrderHead);
+            _unitOfWork.save();
 
-            //    string? cartData = TempData.Peek("cart") as string;
-            //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
-            //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
-            return View(ShoppingCartVM);
+            foreach (var cart in ShoppingCartVM.ListCarts)
+            {
+                OrderDetail detail = new()
+                {
+                    OrderHeadId = ShoppingCartVM.OrderHead.Id,
+                    ProductId = cart.ProductId,
+                    Count = cart.count,
+                    Price = cart.price
+                };
+                _unitOfWork.OrderDetail.Add(detail);
+                _unitOfWork.save();
+            }
+
+                /*
+                 *         public int Id { get; set; }
+        public int OrderHeadId { get; set; }
+        [ForeignKey(nameof(OrderHeadId)), ValidateNever]
+        public OrderHead OrderHead { get; set; }
+        public int ProductId { get; set; }
+        [ForeignKey(nameof(ProductId)), ValidateNever]
+        public Product Product { get; set; }
+        public int Count { get; set; }
+
+        public double Price { get; set; }
+
+                 */
+
+
+                //     carts.Where()
+
+                //    string? cartData = TempData.Peek("cart") as string;
+                //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
+                //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+                return RedirectToAction(nameof(OrderConfirm), ShoppingCartVM.OrderHead.Id);
+        }
+        public IActionResult OrderConfirm(int id)
+        {
+            return View(id);
         }
         public IActionResult ShippingDetails()
         {
@@ -158,7 +208,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 Name = user.Name,
                 PhoneNumber = user.PhoneNumber,
-                StressAddress = user.StressAddress,
+                StreetAddress = user.StreetAddress,
                 City = user.City,
                 State = user.State,
                 PostalCode = user.PostalCode
