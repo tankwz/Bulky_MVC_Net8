@@ -12,6 +12,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
         public ShoppingCartController( IUnitOfWork unit )
         {
@@ -56,12 +57,56 @@ namespace BulkyWeb.Areas.Customer.Controllers
         {
             string? cartData = TempData.Peek("cart") as string;
             //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
-            ShoppingCartVM? cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+            ShoppingCartVM  cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+            ShoppingCartVM = new()
+            {
+                ListCarts = cart.ListCarts,
+                OrderHead = cart.OrderHead,
+                TotalBase = cart.TotalBase
+            };
+            ShoppingCartVM.OrderHead.PhoneNumber = ShoppingCartVM.OrderHead.AppUser.PhoneNumber;
+            ShoppingCartVM.OrderHead.StressAddress = ShoppingCartVM.OrderHead.AppUser.StressAddress;
+            ShoppingCartVM.OrderHead.PostalCode = ShoppingCartVM.OrderHead.AppUser.PostalCode;
+            ShoppingCartVM.OrderHead.City = ShoppingCartVM.OrderHead.AppUser.City;
+            ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
+            ShoppingCartVM.OrderHead.Name = ShoppingCartVM.OrderHead.AppUser.Name;
+
+
 
             //var claimsIdentity = (ClaimsIdentity)User.Identity;
             //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            return View(cart);
+            return View(ShoppingCartVM);
+        }
+
+        [HttpPost,ActionName("Summary")]
+        public IActionResult SummaryPost()
+        {
+
+
+        //    string? cartData = TempData.Peek("cart") as string;
+            //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
+          //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+            return View(ShoppingCartVM);
+        }
+        public IActionResult ShippingDetails()
+        {
+            string? cartData = TempData.Peek("cart") as string;
+            //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
+            ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+            ShoppingCartVM = new()
+            {
+                ListCarts = cart.ListCarts,
+                OrderHead = cart.OrderHead,
+                TotalBase = cart.TotalBase
+            };
+            ShoppingCartVM.OrderHead.PhoneNumber = ShoppingCartVM.OrderHead.AppUser.PhoneNumber;
+            ShoppingCartVM.OrderHead.StressAddress = ShoppingCartVM.OrderHead.AppUser.StressAddress;
+            ShoppingCartVM.OrderHead.PostalCode = ShoppingCartVM.OrderHead.AppUser.PostalCode;
+            ShoppingCartVM.OrderHead.City = ShoppingCartVM.OrderHead.AppUser.City;
+            ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
+            ShoppingCartVM.OrderHead.Name = ShoppingCartVM.OrderHead.AppUser.Name;
+            return View(ShoppingCartVM);
         }
         public IActionResult Index()
         {

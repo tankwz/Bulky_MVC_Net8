@@ -76,6 +76,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 if ((cartcheck.count + cart.count) <= 1000)
                 {
                     _unitOfWork.ShoppingCart.Remove(cartcheck);
+                    _unitOfWork.save();
                     cartcheck.count += cart.count;
                     cartcheck.Id = 0;
                     _unitOfWork.ShoppingCart.Add(cartcheck);

@@ -1,76 +1,31 @@
 ﻿@model ShoppingCartVM
 <form method="post">
+
     <div class="card">
         <div class="card-header bg-gradient p-3 h2 text-info">Order Summary</div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-7">
+
+        <div class="card-header border-2 my-2 pt-0">
+                <div class="col-12">
                     <div class="row">
-                        <div class="col-12">
-                            <h5>Shipping Details:</h5>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <div class="form-group row">
-                                <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.AppUser.Name" class="col-form-label "></label>
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.AppUser.Name" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.AppUser.Name"></span>
-                                </div>
+                        <div class="col-12 mt-2 ">
+                            <div class="col-12 ">
+                            <h5 ><i class="bi bi-geo-alt-fill"></i> Shipping Details: </h5>
+                            <div class="d-flex">
+                                <span class="h5 fw-bold">@Model.OrderHead.Name</span>
+                                <span class="h5">&nbsp;@Model.OrderHead.PhoneNumber</span>
+                                <span class="ms-auto">@Model.OrderHead.StressAddress , @Model.OrderHead.State , @Model.OrderHead.City</span>
+                                <a class="ps-2 h4" href="#">Change</a>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.AppUser.PhoneNumber" class="col-form-label ">Phone</label>
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.AppUser.PhoneNumber" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.AppUser.PhoneNumber"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.AppUser.StressAddress" class="col-form-label "></label>
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.AppUser.StressAddress" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.AppUser.StressAddress"></span>
-
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.AppUser.City" class="col-form-label "></label>
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.AppUser.City" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.AppUser.City"></span>
-
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.AppUser.State" class="col-form-label "></label>
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.AppUser.State" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.AppUser.State"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-3">
-                                    <label asp-for="@Model.OrderHead.AppUser.PostalCode" class="col-form-label ">Postal Code</label>
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <input asp-for="@Model.OrderHead.AppUser.PostalCode" class="form-control py-1 bg-secondary text-white"></input>
-                                    <span asp-validation-for="OrderHead.AppUser.PostalCode"></span>
-
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-5">
+            </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-12">
                     <div class="row">
                         <div class="col-12">
                             <h5>Order Summary:</h5>
@@ -78,14 +33,14 @@
                         <div>
                             <ul class="list-group ">
 
-                                @foreach (var cart in Model.ListCarts)
+                                @for (var cart = Model.ListCarts.Count() - 1; cart >= 0; cart--)
                                 {
                                     <li class="list-group-item">
                                         <div class="d-flex">
-
-                                            <h6 class="d-inline"> @cart.Product.Title</h6>
-                                            <small>&nbsp; x @cart.count</small>
-                                            <h6 class="d-inline ms-auto ">@cart.currentprice.ToString("c")</h6>
+                                            <input hidden asp-for="@Model.ListCarts[cart].Id"></input>
+                                            <h6 class="d-inline"> @Model.ListCarts[cart].Product.Title</h6>
+                                            <small>&nbsp; x @Model.ListCarts[cart].count</small>
+                                            <h6 class="d-inline ms-auto ">@Model.ListCarts[cart].currentprice.ToString("c")</h6>
 
                                         </div>
 
@@ -93,7 +48,7 @@
                                 }
 
                                 <li class="list-group-item  bg-secondary text-">
-                                    <div class="d-flex" >
+                                    <div class="d-flex">
                                         <h6 class="m-0">Total(USD):</h6>
                                         <strong class="ms-auto mb-0">@Model.OrderHead.OrderTotal.ToString("c")</strong>
                                     </div>
@@ -105,6 +60,8 @@
 
                     </div>
                 </div>
+
+      
             </div>
         </div>
         <div class="card-footer">
@@ -116,7 +73,7 @@
                     </p>
                 </div>
                 <div class="col-12 col-md-3">
-                    <button class="btn btn-primary form-control">Place Order</button>
+                    <button class="btn btn-primary form-control" type="submit">Place Order</button>
                 </div>
             </div>
         </div>
