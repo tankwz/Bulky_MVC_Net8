@@ -1,7 +1,7 @@
 ﻿@model ShoppingCartVM
 <form method="post">
     <div class="card">
-        <div class="card-header bg-gradient p-3 h2 text-info">Summary</div>
+        <div class="card-header bg-gradient p-3 h2 text-info">Order Summary</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-7">
@@ -94,8 +94,8 @@
 
                                 <li class="list-group-item  bg-secondary text-">
                                     <div class="d-flex" >
-                                        <h5 class="m-0">Total:</h5>
-                                        <h6 class="ms-auto mb-0">@Model.OrderHead.OrderTotal.ToString("c")</h6>
+                                        <h6 class="m-0">Total(USD):</h6>
+                                        <strong class="ms-auto mb-0">@Model.OrderHead.OrderTotal.ToString("c")</strong>
                                     </div>
                                 </li>
                             </ul>
@@ -104,6 +104,19 @@
                         </div>
 
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-12 col-md-9 align-items-center d-flex">
+                    <p class="m-0 text-info" style="font-size: 14px" >
+                        Estimate arrival time:
+                        @DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") - @DateTime.Now.AddDays(14).ToString("dd/MM/yyyy")
+                    </p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <button class="btn btn-primary form-control">Place Order</button>
                 </div>
             </div>
         </div>
