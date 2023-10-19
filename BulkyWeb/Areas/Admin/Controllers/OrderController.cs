@@ -29,10 +29,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult getAllAPI()
         {
             List<OrderHead> head = _unitOfWork.OrderHead.GetAll(includeProperties: "AppUser").ToList();
-            if (head == null) return Json(new { data = "No Record" });
+         //   if (head == null) return Json(new { data = "No Record" });
             return Json(new { data = head });
         }
 

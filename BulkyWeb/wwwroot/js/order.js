@@ -18,9 +18,11 @@ function loadDataTable() {
             {
                 data: 'id',
                 "render": function (data) {
-                    return ` <div class="w-75 ">
-                        <a href="/admin/order/detail?orderId=${data}" class="btn btn-primary mx-2"><i class="bi bi-layout-text-window-reverse"></i> Details</a>
-                    </div> `
+                    return ` 
+                        <div class="w-75 ">
+                            <a href="/admin/order/details?orderId=${data}" class="btn btn-primary mx-2"><i class="bi bi-layout-text-window-reverse"></i> Details</a>
+                        </div> 
+                    `
                 },
                 "width": "20%"
             }
