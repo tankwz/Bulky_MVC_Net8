@@ -22,6 +22,7 @@ namespace pj.Utility
         public const string StatusRefunded = "Refunded";
 
         public const string PaymentStatusPending = "Pending";
+        public const string PaymentStatusApprovedCOD = "ApprovedForCOD";
         public const string PaymentStatusApproved = "Approved";
         public const string PaymentStatusDelayedPayment = "ApprovedForDelayPayment";
         public const string PaymentStatusRejected = "Rejected";

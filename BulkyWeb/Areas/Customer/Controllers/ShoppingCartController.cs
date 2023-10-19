@@ -147,6 +147,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 ShoppingCartVM.OrderHead.OrderStatus = SD.StatusPending;
                 ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusPending;
+                //implement more logic here if the you want to have any different payment, cod (no logic) by default)
             }
             else
             {
@@ -169,7 +170,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 _unitOfWork.save();
             }
 
-            /*
+            /* throwawa
              *         public int Id { get; set; }
     public int OrderHeadId { get; set; }
     [ForeignKey(nameof(OrderHeadId)), ValidateNever]
@@ -193,6 +194,15 @@ namespace BulkyWeb.Areas.Customer.Controllers
         }
         public IActionResult OrderConfirm(int id)
         {
+            OrderHead head = _unitOfWork.OrderHead.Get1(a => a.Id == id);
+            if((head.PaymentStatus != SD.PaymentStatusApprovedCOD) || (head.PaymentStatus != SD.PaymentStatusDelayedPayment))
+            {
+                //this section for implement other payment method that not cod
+                //check if user's payment isn't cod nor its a company user, company can pay later
+                
+            }
+
+            //remove item from cart logic here
             return View(id);
         }
         public IActionResult ShippingDetails()
