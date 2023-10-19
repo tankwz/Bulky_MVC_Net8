@@ -32,7 +32,7 @@ namespace pj.Models
 
 
         public string? PaymentIntentId { get; set; }
-
+        public string? PaymentSessionId { get; set; }
         public string PhoneNumber { get; set; }
         public string StreetAddress { get; set; }
         public string City { get; set; }

@@ -119,20 +119,20 @@ namespace BulkyWeb.Areas.Customer.Controllers
             //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View(ShoppingCartVM);
         }
-    
 
-        [HttpPost,ActionName("Summary")]
+
+        [HttpPost, ActionName("Summary")]
         public IActionResult SummaryPost()
         {
 
             var claimsUser = (ClaimsIdentity)User.Identity;
             var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            IList<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties:"Product").ToList().Where(items => ShoppingCartVM.ListCarts.Any(c=> c.Id == items.Id)).ToList();
+            IList<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList().Where(items => ShoppingCartVM.ListCarts.Any(c => c.Id == items.Id)).ToList();
 
             ShoppingCartVM.ListCarts = carts;
 
-            ShoppingCartVM.OrderHead.AppUser = _unitOfWork.AppUser.Get1(a => a.Id == userId);
+            AppUser userObject = _unitOfWork.AppUser.Get1(a => a.Id == userId);
             ShoppingCartVM.OrderHead.AppUserId = userId;
 
             foreach (var cart in ShoppingCartVM.ListCarts)
@@ -142,8 +142,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
 
             ShoppingCartVM.OrderHead.OrderDate = DateTime.Now;
-            
-            if(ShoppingCartVM.OrderHead.AppUser.CompanyId.GetValueOrDefault() == 0)
+
+            if (userObject.CompanyId.GetValueOrDefault() == 0)
             {
                 ShoppingCartVM.OrderHead.OrderStatus = SD.StatusPending;
                 ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusPending;
@@ -169,27 +169,27 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 _unitOfWork.save();
             }
 
-                /*
-                 *         public int Id { get; set; }
-        public int OrderHeadId { get; set; }
-        [ForeignKey(nameof(OrderHeadId)), ValidateNever]
-        public OrderHead OrderHead { get; set; }
-        public int ProductId { get; set; }
-        [ForeignKey(nameof(ProductId)), ValidateNever]
-        public Product Product { get; set; }
-        public int Count { get; set; }
+            /*
+             *         public int Id { get; set; }
+    public int OrderHeadId { get; set; }
+    [ForeignKey(nameof(OrderHeadId)), ValidateNever]
+    public OrderHead OrderHead { get; set; }
+    public int ProductId { get; set; }
+    [ForeignKey(nameof(ProductId)), ValidateNever]
+    public Product Product { get; set; }
+    public int Count { get; set; }
 
-        public double Price { get; set; }
+    public double Price { get; set; }
 
-                 */
+             */
 
 
-                //     carts.Where()
+            //     carts.Where()
 
-                //    string? cartData = TempData.Peek("cart") as string;
-                //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
-                //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
-                return RedirectToAction(nameof(OrderConfirm), ShoppingCartVM.OrderHead.Id);
+            //    string? cartData = TempData.Peek("cart") as string;
+            //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
+            //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+            return RedirectToAction(nameof(OrderConfirm), new { id = ShoppingCartVM.OrderHead.Id });
         }
         public IActionResult OrderConfirm(int id)
         {

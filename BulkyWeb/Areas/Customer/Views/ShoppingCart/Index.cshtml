@@ -29,11 +29,14 @@
                                         @if (Model.ListCarts[z].Product.Description.Length > 475)
                                         {
                                             <span><p class="m-0 p-0 d-inline">@Html.Raw(Model.ListCarts[z].Product.Description.Substring(3,475))</span>
-                                            <span class="" id="extra-des-@Model.ListCarts[z].ProductId" style="display:none;">
+
+                                            <div id="extra-des-@Model.ListCarts[z].ProductId" style="display:none;">
+                                            <span class=""  >
                                                 @Html.Raw(Model.ListCarts[z].Product.Description.Substring(475))
-                                                <button style="margin-top: -1rem" class="btn btn-link m-0 p-0" type="button" id="readmorebutton-@Model.ListCarts[z].ProductId" onclick="toggleDescription(@Model.ListCarts[z].ProductId)">Show More</button>
 
                                             </span>
+                                            </div>
+                                            <button style="margin-top: -1rem" class="btn btn-link m-0 p-0" type="button" id="readmorebutton-@Model.ListCarts[z].ProductId" onclick="toggleDescription(@Model.ListCarts[z].ProductId)">Show More</button>
 
                                             // <a href="#" id="readmorelink-@cart.ProductId" onclick="return toggleDescription(@cart.ProductId)" >ShowMore</a>
                                             //<span>@Html.Raw(cart.Product.Description.Substring(0, 475))</span>
