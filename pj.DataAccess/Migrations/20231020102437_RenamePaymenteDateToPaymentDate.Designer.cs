@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pj.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using pj.DataAccess.Data;
 namespace pj.DataAccess.Migrations
 {
     [DbContext(typeof(MyAppDatabaseContext))]
-    partial class MyAppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231020102437_RenamePaymenteDateToPaymentDate")]
+    partial class RenamePaymenteDateToPaymentDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -359,6 +362,9 @@ namespace pj.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Price3")
                         .HasColumnType("float");
 
                     b.Property<int>("ProductId")

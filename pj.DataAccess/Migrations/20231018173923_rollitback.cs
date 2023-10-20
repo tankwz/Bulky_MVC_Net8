@@ -245,7 +245,7 @@ namespace pj.DataAccess.Migrations
                     PaymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TrackingNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Carrier = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PaymenteDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentDueDate = table.Column<DateOnly>(type: "date", nullable: false),
                     PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),

@@ -1,5 +1,9 @@
 ﻿@model OrderVM
 
+@if (Model.orderHead.PaymentDate.Year < 2000)
+{
+    
+}
 <div class="container">
     <div class="card">
         <div class="card-header bg-gradient p-3 ">
@@ -39,7 +43,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-4">
-                    <h5><i class="bi bi-person-circle"></i> Customer</h5>
+                    <h5 class ="text-info"><i class="bi bi-person-circle"></i> Customer</h5>
                     <span class="d-block"><span class="fw-bold">Name:</span><span class="opacity-75"> @Model.orderHead.Name</span></span>
                     <span class ="d-block"><span class="fw-bold">E-mail:</span><span class="opacity-75"> @Model.orderHead.AppUser.Email </span></span>
                     <span class ="d-block"><span class="fw-bold">Phone Number:</span><span class="opacity-75"> @Model.orderHead.PhoneNumber</span></span>
@@ -47,7 +51,41 @@
 
                 </div>
                 <div class="col-4">
-                    <h5><i class="bi bi-truck"></i> Shipment Info</h5>
+                    <h5 class="text-info"><i class="bi bi-credit-card-fill"></i> Payment Info</h5>
+                    <span class="d-block"><span class="fw-bold">Payment Status:</span><span class="opacity-75"> @Model.orderHead.PaymentStatus</span></span>
+                    <span class="d-block">
+                        <span class="fw-bold">Payment Date:</span><span class="opacity-75">
+                            @{
+                                if (Model.orderHead.PaymentDate.Year > 2000)
+                                {
+                                    @Model.orderHead.PaymentDate
+                                }
+                                else
+                                {
+                                    <text>Not yet paid</text>
+                                }
+                            }
+                        </span>
+                    </span>
+                    <span class="d-block"><span class="fw-bold">Payment DueDate:</span><span class="opacity-75"> 
+                    @{
+                                                    
+                                    if (@Model.orderHead.PaymentDueDate.Year > 2000)
+                                {
+                                    @Model.orderHead.PaymentDueDate
+                                }
+                                else
+                                {
+                                    <text>Only for Company user</text>
+                                }
+                            
+                            }
+                        </span>
+                    </span>
+                    <span class="d-block"><span class="fw-bold">Total:</span><span class="opacity-75"> @Model.orderHead.OrderTotal.ToString("c") </span></span>
+                </div>
+                <div class="col-4">
+                    <h5 class="text-info"><i class="bi bi-truck"></i> Shipment Info</h5>
                     <span class="d-block"><span class="fw-bold">Carrier:</span><span class="opacity-75"> @Model.orderHead.Carrier not yet implemented</span></span>
                     <span class="d-block"><span class="fw-bold">City:</span><span class="opacity-75"> @Model.orderHead.AppUser.City @Model.orderHead.State  </span></span>
                     <span class="d-block"><span class="fw-bold">Address:</span><span class="opacity-75"> @Model.orderHead.StreetAddress </span></span>
@@ -75,6 +113,11 @@
                     <div class="divider py-2 bg-danger"></div>
                 </div>
             </div>
+            <div>
+
+            </div>
+
+
         </div>
     </div>
 </div>  

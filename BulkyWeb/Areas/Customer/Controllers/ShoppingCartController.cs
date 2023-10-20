@@ -153,6 +153,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 ShoppingCartVM.OrderHead.OrderStatus = SD.StatusApproved;
                 ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusDelayedPayment;
+                ShoppingCartVM.OrderHead.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
             }
             _unitOfWork.OrderHead.Add(ShoppingCartVM.OrderHead);
             _unitOfWork.save();

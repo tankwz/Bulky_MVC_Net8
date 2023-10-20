@@ -51,7 +51,7 @@ namespace pj.DataAccess.Repository
                 {
                     //when payment successful
                     head.PaymentIntentId = PaymentIntentId;
-                    head.PaymenteDate = DateTime.Now;
+                    head.PaymentDate = DateTime.Now;
                 }
             }
         }
