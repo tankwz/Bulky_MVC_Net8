@@ -21,7 +21,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             _unitOfWork = uni;
         }
-        OrderVM orderVM = new();
+        
         public IActionResult Index()
         {
             //    if(id== null || id==0)
@@ -61,7 +61,22 @@ namespace BulkyWeb.Areas.Admin.Controllers
             //   if (head == null) return Json(new { data = "No Record" });
             return Json(new { data = head });
         }
+        public OrderVM OrderVM { get; set; }
+        public IActionResult Details(int? orderId)
+        {
 
+            OrderHead head = _unitOfWork.OrderHead.Get1(a => a.Id == orderId);
+            IEnumerable<OrderDetail> details = _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId);
+            AppUser user = _unitOfWork.AppUser.Get1(a=> a.Id == head.AppUserId);
+            head.AppUser = user;
+            OrderVM = new()
+            {
+                orderHead = head,
+                orderDetail = details
+            };
+
+            return View(OrderVM);
+        }
 
 
 

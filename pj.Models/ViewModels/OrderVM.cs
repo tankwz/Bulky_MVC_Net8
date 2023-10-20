@@ -8,7 +8,7 @@ namespace pj.Models.ViewModels
 {
     public class OrderVM
     {
-        OrderHead orderHead { get; set; }
-        IEnumerable<OrderDetail> orderDetail { get; set; }
+        public OrderHead orderHead { get; set; }
+        public IEnumerable<OrderDetail> orderDetail { get; set; }
     }
 }
