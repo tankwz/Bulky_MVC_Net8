@@ -1,9 +1,9 @@
 ﻿@model OrderVM
 
-@if (Model.orderHead.PaymentDate.Year < 2000)
-{
-    
+@{
+    var reversedOrderDetail = Model.orderDetail.Reverse().ToList();
 }
+
 <div class="container">
     <div class="card">
         <div class="card-header bg-gradient p-3 ">
@@ -47,7 +47,7 @@
                     <span class="d-block"><span class="fw-bold">Name:</span><span class="opacity-75"> @Model.orderHead.Name</span></span>
                     <span class ="d-block"><span class="fw-bold">E-mail:</span><span class="opacity-75"> @Model.orderHead.AppUser.Email </span></span>
                     <span class ="d-block"><span class="fw-bold">Phone Number:</span><span class="opacity-75"> @Model.orderHead.PhoneNumber</span></span>
-                    <a href="#" class="btn btn-sm btn-link bg-secondary link-info">View User Profile</a>
+                    <a href="#" class="btn btn-sm btn-link bg-secondary link-info text-decoration-none">View User Profile</a>
 
                 </div>
                 <div class="col-4">
@@ -113,8 +113,56 @@
                     <div class="divider py-2 bg-danger"></div>
                 </div>
             </div>
-            <div>
+            <div class="row my-4">
+                <div class="col-12">
+                    <ul class="list-group">
+                        @foreach (var detail in reversedOrderDetail)
+                        {
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center row">
+                                    <div class="col-8 col-md-6 col-lg-2 pe-0">
+                                        <img class="border border-1 rounded border-secondary" src="@detail.Product.ImageUrl"  style="width:95%"></img>
+                                    </div>
 
+                                    <div class="col-4 col-md-6 col-lg-10 ps-1">
+                                        <div class="d-flex align-items-center">
+                                            <h5 class="d-inline m-0"> @detail.Product.Title</h5>
+                                            <small class="align-self-end text-info">&nbsp;  @detail.Price.ToString("c")</small>
+                                            <small class="align-self-end text-info">&nbsp; x @detail.Count</small>
+                                            <h6 class="d-inline ms-auto">@string.Format("{0:C}", detail.Count * detail.Price)</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+
+                        <li class="list-group-item  bg-secondary text-">
+                            <div class="d-flex row">
+                                <div class="col-12 d-flex">
+                                    <h6 class="m-0">Subtotal(To Be Implemented):</h6>
+                                    <span class="ms-auto mb-0">$123.00</span>
+                                </div>
+                                <div class="col-12 d-flex">
+
+                                    <h6 class="m-0">Tax(To Be Implemented):</h6>
+                                    <strong class="ms-auto mb-0">$123.00</strong>
+                                </div>
+                                <div class="col-12 d-flex">
+
+                                    <h6 class="m-0">Discount(To Be Implemented):</h6>
+                                    <strong class="ms-auto mb-0 ">$123.00</strong>
+                                </div>
+                                <div class="col-12 d-flex">
+                                    <h6 class="m-0 fw-bold">Total(USD):</h6>
+                                    <strong class="ms-auto mb-0 fw-bold">@Model.orderHead.OrderTotal.ToString("c")</strong>
+                                </div>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
 
 

@@ -81,7 +81,12 @@ function loadDataTable(status) {
             { data: 'phoneNumber', "width": "15%" },
             { data: 'orderStatus', "width": "10%" },
             { data: 'paymentStatus', "width": "10%" },
-            { data: 'orderTotal', "width": "10%" },
+            {
+                data: 'orderTotal', "render": data => {
+                    return parseFloat(data).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                }
+            
+            , "width": "10%" },
             {
                 data: 'id',
                 "render": function (data) {
