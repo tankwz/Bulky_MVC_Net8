@@ -42,11 +42,11 @@
                         </div>
                         <div>
                             <ul class="list-group  ">
-
+                                <hr>
                                 @for (var cart = Model.ListCarts.Count() - 1; cart >= 0; cart--)
                                 {
 
-                                    <li class="list-group-item">
+                                    <li class="list-group-item ">
                                         <div class="d-flex align-items-center row">
                                             <input hidden asp-for="@Model.ListCarts[cart].Id"></input>
                                             @*

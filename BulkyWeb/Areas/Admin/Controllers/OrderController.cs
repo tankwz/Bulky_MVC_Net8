@@ -68,6 +68,12 @@ namespace BulkyWeb.Areas.Admin.Controllers
             OrderHead head = _unitOfWork.OrderHead.Get1(a => a.Id == orderId);
             IEnumerable<OrderDetail> details = _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId);
             AppUser user = _unitOfWork.AppUser.Get1(a=> a.Id == head.AppUserId);
+
+            foreach (OrderDetail detail in details)
+            {
+                detail.Product = _unitOfWork.Product.Get1(a => a.Id == detail.ProductId);
+            }
+
             head.AppUser = user;
             OrderVM = new()
             {
