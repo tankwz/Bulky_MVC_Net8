@@ -12,7 +12,7 @@ using System.Net.NetworkInformation;
 namespace BulkyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = SD.Role_Admin )]
+    //[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee )]
 
     public class OrderController : Controller
     {
@@ -65,21 +65,30 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Details(int? orderId)
         {
 
-            OrderHead head = _unitOfWork.OrderHead.Get1(a => a.Id == orderId);
-            IEnumerable<OrderDetail> details = _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId);
-            AppUser user = _unitOfWork.AppUser.Get1(a=> a.Id == head.AppUserId);
+            //OrderHead head = _unitOfWork.OrderHead.Get1(a => a.Id == orderId);
+            //IEnumerable<OrderDetail> details = _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId);
+            //AppUser user = _unitOfWork.AppUser.Get1(a=> a.Id == head.AppUserId);
 
-            foreach (OrderDetail detail in details)
-            {
-                detail.Product = _unitOfWork.Product.Get1(a => a.Id == detail.ProductId);
-            }
+            //foreach (OrderDetail detail in details)
+            //{
+            //    detail.Product = _unitOfWork.Product.Get1(a => a.Id == detail.ProductId);
+            //}
 
-            head.AppUser = user;
+            //head.AppUser = user;
+            //OrderVM = new()
+            //{
+            //    orderHead = head,
+            //    orderDetail = details
+            //};
+
+            //shorter
+
             OrderVM = new()
             {
-                orderHead = head,
-                orderDetail = details
+                orderHead = _unitOfWork.OrderHead.Get1(u => u.Id == orderId, includeProperties:"AppUser"),
+                orderDetail = _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId, includeProperties:"Product")
             };
+
 
             return View(OrderVM);
         }
