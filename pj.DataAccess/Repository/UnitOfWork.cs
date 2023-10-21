@@ -41,5 +41,11 @@ namespace pj.DataAccess.Repository
             _dbContext.SaveChanges();
             //throw new NotImplementedException();
         }
+        public async Task SaveAsync()
+        {
+
+            await _dbContext.SaveChangesAsync();
+            //throw new NotImplementedException();
+        }
     }
 }

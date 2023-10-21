@@ -16,6 +16,7 @@ namespace pj.DataAccess.Repository.IRepository
         IOrderHead OrderHead { get; }
         IOrderDetail OrderDetail { get; }
         void save();
+         Task SaveAsync();
 
     }
 }

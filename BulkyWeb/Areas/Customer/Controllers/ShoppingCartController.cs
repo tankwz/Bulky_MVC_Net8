@@ -39,6 +39,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
                 ShoppingCartVM.TotalBase += (cart.Product.ListPrice * cart.count);
             }
+            for (int i = 0; i < 5; i++)
+            {
+                // Simulate a 1-second delay for each iteration (adjust as needed)
+                Thread.Sleep(1000);
+            }
             return View(ShoppingCartVM);
         }
         [HttpPost]
@@ -74,7 +79,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
 
             TempData["cart"] = JsonConvert.SerializeObject(ShoppingCartVM);
-        //    TempData.Keep("cart");
+
+            //    TempData.Keep("cart");
             return RedirectToAction(nameof(Summary));
         }   
         public IActionResult Summary(OrderHead? head)

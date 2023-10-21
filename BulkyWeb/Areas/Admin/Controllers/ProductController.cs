@@ -120,18 +120,20 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(ProductVM p)
+        public async Task<IActionResult> Create(ProductVM p)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(p.Product);
+                await _unitOfWork.Product.AddAsync(p.Product);
                 _unitOfWork.save();
                 TempData["success"] = "Added product successfully";
                 return RedirectToAction("Index", "Product");
             }
             else
             {
-                p.CategoryList = _unitOfWork.Category.GetAll().Select(a =>
+                var categories = await _unitOfWork.Category.GetAllAsync();
+
+                p.CategoryList = categories.Select(a =>
                 new SelectListItem
                 {
                     Text = a.Name,

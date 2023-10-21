@@ -18,9 +18,10 @@ namespace BulkyWeb.Areas.Customer.Controllers
             _unitOfWork = unitofwr;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Product> products =  _unitOfWork.Product.GetAll(includeProperties:"Category");
+
+            IEnumerable<Product> products =  await _unitOfWork.Product.GetAllAsync(includeProperties:"Category");
             return View(products);
         }
 
@@ -39,11 +40,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
         //    return View(cart);
         //}
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             ShoppingCart cart = new()
             {
-                Product = _unitOfWork.Product.Get1(p => p.Id == id, includeProperties: "Category"),
+                 Product = await _unitOfWork.Product.Get1Async(p => p.Id == id, includeProperties: "Category"),
                 count = 1,
                 ProductId = id
             };
@@ -55,11 +56,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
 
         [HttpPost, Authorize]
-        public IActionResult Details(ShoppingCart cart)
+        public async Task<IActionResult> Details(ShoppingCart cart)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ShoppingCart cartcheck = _unitOfWork.ShoppingCart.Get1(s => s.AppUserId == userId && s.ProductId == cart.ProductId);
+            ShoppingCart cartcheck = await _unitOfWork.ShoppingCart.Get1Async(s => s.AppUserId == userId && s.ProductId == cart.ProductId);
             if (cartcheck == null)
             {
                 if (cart.count  > 1000)
@@ -69,17 +70,17 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 }
 
                 cart.AppUserId = userId;
-                _unitOfWork.ShoppingCart.Add(cart);
+                await _unitOfWork.ShoppingCart.AddAsync(cart);
             }
             else
             {
                 if ((cartcheck.count + cart.count) <= 1000)
                 {
-                    _unitOfWork.ShoppingCart.Remove(cartcheck);
-                    _unitOfWork.save();
+                     _unitOfWork.ShoppingCart.Remove(cartcheck);
+                    await _unitOfWork.SaveAsync();
                     cartcheck.count += cart.count;
                     cartcheck.Id = 0;
-                    _unitOfWork.ShoppingCart.Add(cartcheck);
+                    await _unitOfWork.ShoppingCart.AddAsync(cartcheck);
 
                 }
                 else
@@ -90,15 +91,15 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             }
             TempData["success"] = "Added to cart";
-            _unitOfWork.save();
+            await _unitOfWork.SaveAsync();
 
             return RedirectToAction("Index", "ShoppingCart");
         }
-        public IActionResult Details2(int? id)
+        public async Task<IActionResult> Details2(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
-            Product p = _unitOfWork.Product.Get1(p => p.Id == id, includeProperties: "Category");
+            Product p = await _unitOfWork.Product.Get1Async(p => p.Id == id, includeProperties: "Category");
             return View(p);
         }
 

@@ -84,7 +84,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             OrderVM = new()
             {
                 orderHead = await _unitOfWork.OrderHead.Get1Async(u => u.Id == orderId, includeProperties:"AppUser"),
-                orderDetail = await _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId, includeProperties:"Product")
+                orderDetail = await _unitOfWork.OrderDetail.GetAllAsync(a=> a.OrderHeadId == orderId, includeProperties:"Product")
             };
 
 

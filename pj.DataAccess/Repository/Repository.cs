@@ -26,8 +26,12 @@ namespace pj.DataAccess.Repository
 
         public void Add(T item)
         {
-            dbSet.Add(item);    
-          //  throw new NotImplementedException();
+
+            dbSet.AddAsync(item);    
+        }
+        public async Task AddAsync(T item)
+        {
+             await dbSet.AddAsync(item);
         }
 
         public T Get1(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
@@ -90,7 +94,7 @@ namespace pj.DataAccess.Repository
             {
                 foreach(var property in includeProperties.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query.Include(property);
+                    query = query.Include(property);
                 }
             }
 
