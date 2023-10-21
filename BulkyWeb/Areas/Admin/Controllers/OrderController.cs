@@ -62,18 +62,16 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return Json(new { data = head });
         }
         public OrderVM OrderVM { get; set; }
-        public IActionResult Details(int? orderId)
+        public async Task<IActionResult> Details(int? orderId)
         {
 
             //OrderHead head = _unitOfWork.OrderHead.Get1(a => a.Id == orderId);
             //IEnumerable<OrderDetail> details = _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId);
             //AppUser user = _unitOfWork.AppUser.Get1(a=> a.Id == head.AppUserId);
-
             //foreach (OrderDetail detail in details)
             //{
             //    detail.Product = _unitOfWork.Product.Get1(a => a.Id == detail.ProductId);
             //}
-
             //head.AppUser = user;
             //OrderVM = new()
             //{
@@ -81,12 +79,12 @@ namespace BulkyWeb.Areas.Admin.Controllers
             //    orderDetail = details
             //};
 
-            //shorter
+            //shorter, better, async
 
             OrderVM = new()
             {
-                orderHead = _unitOfWork.OrderHead.Get1(u => u.Id == orderId, includeProperties:"AppUser"),
-                orderDetail = _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId, includeProperties:"Product")
+                orderHead = await _unitOfWork.OrderHead.Get1Async(u => u.Id == orderId, includeProperties:"AppUser"),
+                orderDetail = await _unitOfWork.OrderDetail.GetAll(a=> a.OrderHeadId == orderId, includeProperties:"Product")
             };
 
 

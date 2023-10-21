@@ -54,10 +54,51 @@ namespace pj.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
+        public async Task<T> Get1Async(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        {
+            IQueryable<T> query;
+            if (tracked)
+            {
+                query = dbSet;
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+
+            }
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
+            query = query.Where(filter);
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+            if(filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach(var property in includeProperties.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query.Include(property);
+                }
+            }
+
+            return await query.ToListAsync();
+
+        }
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter,string? includeProperties = null)
         {
-
-            
             IQueryable<T> query = dbSet;
             
             if(filter != null)
@@ -86,5 +127,7 @@ namespace pj.DataAccess.Repository
             dbSet.RemoveRange(item);
             //throw new NotImplementedException();
         }
+
+
     }
 }

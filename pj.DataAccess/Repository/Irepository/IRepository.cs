@@ -11,7 +11,11 @@ namespace pj.DataAccess.Repository.IRepository
     {
         //T - Category
         IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter=null, string? includeProperties = null);
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
+
         T Get1(Expression<Func<T, bool>> filter, string? includeProperties = null,bool tracked = false);
+        Task<T> Get1Async(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false);
+    
         // Get1(Experssion<Func<T,bool>>
         //Get (Experssion<Func<t,bool>>)???????????????????????????????????
         // Exoression<Func<t,bool>> 
