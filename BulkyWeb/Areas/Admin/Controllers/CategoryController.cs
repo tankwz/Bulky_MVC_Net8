@@ -71,7 +71,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> oldDelete(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
@@ -81,7 +81,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return View(category);
         }
         [HttpPost]
-        [ActionName("Delete")]
+        [ActionName("oldDelete")]
         public async Task<IActionResult> DeletePost(int? id)
         {
             Category? obj = await _uniOfWork.Category.Get1Async(u => u.Id == id);
