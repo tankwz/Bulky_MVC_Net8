@@ -22,7 +22,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             _unitOfWork = uni;
         }
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //    if(id== null || id==0)
             //    {
@@ -32,9 +32,10 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult getAllAPI(string status)
+        public async Task<IActionResult> getAllAPI(string status)
         {
-            List<OrderHead> head = _unitOfWork.OrderHead.GetAll(includeProperties: "AppUser").ToList();
+            var headfromdatabase = await _unitOfWork.OrderHead.GetAllAsync(includeProperties: "AppUser");
+            List<OrderHead> head = headfromdatabase.ToList();
 
             switch (status)
             {
