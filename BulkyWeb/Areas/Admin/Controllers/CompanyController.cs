@@ -15,12 +15,12 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             _unitOfWork = uni;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Company> cp = _unitOfWork.Company.GetAll().ToList();
-            return View(cp);
+          //  IEnumerable<Company> companies = await _unitOfWork.Company.GetAllAsync();
+            return View();
         }
-        public IActionResult UpSert(int? id)
+        public async Task<IActionResult> UpSert(int? id)
         {
             Company cp = new Company();
 
@@ -30,19 +30,19 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
             else
             {
-                cp = _unitOfWork.Company.Get1(a => a.Id == id);
+                cp = await _unitOfWork.Company.Get1Async(a => a.Id == id);
 
                 return View(cp);
             }
         }
         [HttpPost] 
-        public IActionResult UpSert(Company company)
+        public async Task<IActionResult> UpSert(Company company)
         {
             if (ModelState.IsValid)
             {
                 if (company.Id == 0)
                 {
-                    _unitOfWork.Company.Add(company);
+                    await _unitOfWork.Company.AddAsync(company);
                     TempData["success"] = "Added company successfully";
                 }
                 else
@@ -50,7 +50,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     _unitOfWork.Company.Update(company);
                     TempData["success"] = "Updated company successfully";
                 }
-                _unitOfWork.save();
+                await _unitOfWork.SaveAsync();
                 return RedirectToAction("Index");
             }
             else
@@ -64,9 +64,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            List<Company> cp = _unitOfWork.Company.GetAll().ToList();
+            var cpn = await _unitOfWork.Company.GetAllAsync();
+
+            List<Company> cp = cpn.ToList();
             return Json(new { data= cp });
         }
 
@@ -83,16 +85,13 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
              */
         [HttpDelete]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            Company p = _unitOfWork.Company.Get1(p => p.Id == id);
+            Company p = await _unitOfWork.Company.Get1Async(p => p.Id == id);
             if (p == null) return Json(new { success = false, message = "Error while deleting" });
-          
-          
             _unitOfWork.Company.Remove(p);
-            _unitOfWork.save();
-            return Json(new { success = true, messsage = "Delete Successfully" });
-
+            await _unitOfWork.SaveAsync();
+            return Json(new { success = true, message = "Delete Successfully" });
 
         }
 
