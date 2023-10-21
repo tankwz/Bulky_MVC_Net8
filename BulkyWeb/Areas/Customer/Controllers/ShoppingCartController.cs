@@ -15,19 +15,19 @@ namespace BulkyWeb.Areas.Customer.Controllers
         private readonly IUnitOfWork _unitOfWork;
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
-        public ShoppingCartController( IUnitOfWork unit )
+        public ShoppingCartController(IUnitOfWork unit)
         {
             _unitOfWork = unit;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+            var LCarts = await _unitOfWork.ShoppingCart.GetAllAsync(a => a.AppUserId == UserId, includeProperties: "Product");
             ShoppingCartVM = new()
             {
-                ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == UserId, includeProperties: "Product").ToList(),
+                ListCarts = LCarts.ToList(),
                 OrderHead = new(),
                 TotalBase = 0
             };
@@ -39,32 +39,28 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
                 ShoppingCartVM.TotalBase += (cart.Product.ListPrice * cart.count);
             }
-            for (int i = 0; i < 5; i++)
-            {
-                // Simulate a 1-second delay for each iteration (adjust as needed)
-                Thread.Sleep(1000);
-            }
             return View(ShoppingCartVM);
         }
         [HttpPost]
-        public IActionResult Index(ShoppingCartVM cart)
+        public async Task<IActionResult> Index(ShoppingCartVM cart)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             //     IEnumerable<ShoppingCart> car = cart.ListCarts.AsEnumerable();
-      //      var filteredCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList();
+            //      var filteredCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList();
+            var cartsFromDb = await _unitOfWork.ShoppingCart.GetAllAsync(a => a.AppUserId == userId, includeProperties: "Product");
 
             ShoppingCartVM = new()
             {
                 // ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && a == cart.ListCarts[0].selected).ToList()
                 //ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && cart.ListCarts.Any(item => item.selected)).ToList(),
                 //                ListCarts = filteredCarts.Where(item => cart.ListCarts.Any(c => c.Id == item.Id && c.selected)).ToList(),
-            //    ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId && cart.ListCarts.Any(c => c.Id == a.Id && c.selected), includeProperties: "Product").ToList(),
-            ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList().Where(item => cart.ListCarts.Any(cart => cart.Id == item.Id && cart.selected)).ToList(),
-            OrderHead = new()
+                //ListCarts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList().Where(item => cart.ListCarts.Any(cart => cart.Id == item.Id && cart.selected)).ToList(),
+                ListCarts = cartsFromDb.Where(c => cart.ListCarts.Any(cart => cart.Id == c.Id && cart.selected)).ToList(),
+                OrderHead = new()
                 {
                     AppUserId = userId,
-                    AppUser = _unitOfWork.AppUser.Get1(a => a.Id == userId),
+                    AppUser = await _unitOfWork.AppUser.Get1Async(a => a.Id == userId),
 
                     OrderTotal = 0
                 }
@@ -82,70 +78,73 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             //    TempData.Keep("cart");
             return RedirectToAction(nameof(Summary));
-        }   
-        public IActionResult Summary(OrderHead? head)
+        }
+      
+       
+        public async Task<IActionResult> Summary(OrderHead? head)
         {
             string? cartData = TempData.Peek("cart") as string;
             //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
-            ShoppingCartVM  cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
+            ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
             ShoppingCartVM = new()
             {
                 ListCarts = cart.ListCarts,
                 OrderHead = cart.OrderHead,
                 TotalBase = cart.TotalBase
             };
-
-
-
-
-           // if (TempData.Peek("UserEditData") != null)
-            if(head.Name != null)
+            if (head.Name != null)
             {
-                // string userDataString = TempData.Peek("UserEditData") as string;
-                OrderHead userData = head; // JsonConvert.DeserializeObject<OrderHead>(userDataString);
-
-                ShoppingCartVM.OrderHead.PhoneNumber = userData.PhoneNumber;
-                ShoppingCartVM.OrderHead.StreetAddress = userData.StreetAddress;
-                ShoppingCartVM.OrderHead.PostalCode = userData.PostalCode;
-                ShoppingCartVM.OrderHead.City = userData.City;
-                ShoppingCartVM.OrderHead.State = userData.State;
-                ShoppingCartVM.OrderHead.Name = userData.Name;
+                OrderHead userData = head;
+                await PopulateOrderHeadFromUserDataAsync(ShoppingCartVM.OrderHead, userData);
             }
             else
             {
-
-                ShoppingCartVM.OrderHead.PhoneNumber = ShoppingCartVM.OrderHead.AppUser.PhoneNumber;
-                ShoppingCartVM.OrderHead.StreetAddress = ShoppingCartVM.OrderHead.AppUser.StreetAddress;
-                ShoppingCartVM.OrderHead.PostalCode = ShoppingCartVM.OrderHead.AppUser.PostalCode;
-                ShoppingCartVM.OrderHead.City = ShoppingCartVM.OrderHead.AppUser.City;
-                ShoppingCartVM.OrderHead.State = ShoppingCartVM.OrderHead.AppUser.State;
-                ShoppingCartVM.OrderHead.Name = ShoppingCartVM.OrderHead.AppUser.Name;
+                
+                await PopulateOrderHeadFromAppUserAsync(ShoppingCartVM.OrderHead);
             }
-            //var claimsIdentity = (ClaimsIdentity)User.Identity;
-            //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             return View(ShoppingCartVM);
+        }
+
+        private async Task PopulateOrderHeadFromUserDataAsync(OrderHead orderHead, OrderHead userData)
+        {
+            orderHead.PhoneNumber = userData.PhoneNumber;
+            orderHead.StreetAddress = userData.StreetAddress;
+            orderHead.PostalCode = userData.PostalCode;
+            orderHead.City = userData.City;
+            orderHead.State = userData.State;
+            orderHead.Name = userData.Name;
+        }
+
+        private async Task PopulateOrderHeadFromAppUserAsync(OrderHead orderHead)
+        {
+            orderHead.PhoneNumber = orderHead.AppUser.PhoneNumber;
+            orderHead.StreetAddress = orderHead.AppUser.StreetAddress;
+            orderHead.PostalCode = orderHead.AppUser.PostalCode;
+            orderHead.City = orderHead.AppUser.City;
+            orderHead.State = orderHead.AppUser.State;
+            orderHead.Name = orderHead.AppUser.Name;
         }
 
 
         [HttpPost, ActionName("Summary")]
-        public IActionResult SummaryPost()
+        public async Task<IActionResult> SummaryPost()
         {
 
             var claimsUser = (ClaimsIdentity)User.Identity;
             var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var cartFromDb = await _unitOfWork.ShoppingCart.GetAllAsync(a => a.AppUserId == userId, includeProperties: "Product");
 
-            IList<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList().Where(items => ShoppingCartVM.ListCarts.Any(c => c.Id == items.Id)).ToList();
+            IList<ShoppingCart> carts = cartFromDb.Where(items => ShoppingCartVM.ListCarts.Any(c => c.Id == items.Id)).ToList();
 
             ShoppingCartVM.ListCarts = carts;
 
-            AppUser userObject = _unitOfWork.AppUser.Get1(a => a.Id == userId);
+            AppUser userObject = await _unitOfWork.AppUser.Get1Async(a => a.Id == userId);
             ShoppingCartVM.OrderHead.AppUserId = userId;
 
-            foreach (var cart in ShoppingCartVM.ListCarts)
-            {
-                cart.price = PricenQuantityCal(cart);
-                ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
-            }
+
+
+
 
             ShoppingCartVM.OrderHead.OrderDate = DateTime.Now;
 
@@ -161,11 +160,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusDelayedPayment;
                 ShoppingCartVM.OrderHead.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
             }
-            _unitOfWork.OrderHead.Add(ShoppingCartVM.OrderHead);
-            _unitOfWork.save();
-
+            await _unitOfWork.OrderHead.AddAsync(ShoppingCartVM.OrderHead);
+            await _unitOfWork.SaveAsync();
             foreach (var cart in ShoppingCartVM.ListCarts)
             {
+                cart.price = PricenQuantityCal(cart);
+                ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
                 OrderDetail detail = new()
                 {
                     OrderHeadId = ShoppingCartVM.OrderHead.Id,
@@ -173,11 +173,13 @@ namespace BulkyWeb.Areas.Customer.Controllers
                     Count = cart.count,
                     Price = cart.price
                 };
-                _unitOfWork.OrderDetail.Add(detail);
-                _unitOfWork.save();
+
+
+                await _unitOfWork.OrderDetail.AddAsync(detail);
             }
 
-            /* throwawa
+            await _unitOfWork.SaveAsync();
+            /* throwaway
              *         public int Id { get; set; }
     public int OrderHeadId { get; set; }
     [ForeignKey(nameof(OrderHeadId)), ValidateNever]
@@ -199,28 +201,91 @@ namespace BulkyWeb.Areas.Customer.Controllers
             //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
             return RedirectToAction(nameof(OrderConfirm), new { id = ShoppingCartVM.OrderHead.Id });
         }
-        public IActionResult OrderConfirm(int id)
+
+        //#region Sync code
+        //[HttpPost, ActionName("Sum5mary")]
+        //public IActionResult Summar4yPost()
+        //{
+
+        //    var claimsUser = (ClaimsIdentity)User.Identity;
+        //    var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        //    IList<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(a => a.AppUserId == userId, includeProperties: "Product").ToList().Where(items => ShoppingCartVM.ListCarts.Any(c => c.Id == items.Id)).ToList();
+
+        //    ShoppingCartVM.ListCarts = carts;
+
+        //    AppUser userObject = _unitOfWork.AppUser.Get1(a => a.Id == userId);
+        //    ShoppingCartVM.OrderHead.AppUserId = userId;
+
+        //    foreach (var cart in ShoppingCartVM.ListCarts)
+        //    {
+        //        cart.price = PricenQuantityCal(cart);
+        //        ShoppingCartVM.OrderHead.OrderTotal += (cart.price * cart.count);
+        //    }
+
+        //    ShoppingCartVM.OrderHead.OrderDate = DateTime.Now;
+
+        //    if (userObject.CompanyId.GetValueOrDefault() == 0)
+        //    {
+        //        ShoppingCartVM.OrderHead.OrderStatus = SD.StatusPending;
+        //        ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusPending;
+        //        //implement more logic here if the you want to have any different payment, cod (no logic) by default)
+        //    }
+        //    else
+        //    {
+        //        ShoppingCartVM.OrderHead.OrderStatus = SD.StatusApproved;
+        //        ShoppingCartVM.OrderHead.PaymentStatus = SD.PaymentStatusDelayedPayment;
+        //        ShoppingCartVM.OrderHead.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
+        //    }
+        //    _unitOfWork.OrderHead.Add(ShoppingCartVM.OrderHead);
+        //    _unitOfWork.save();
+
+        //    foreach (var cart in ShoppingCartVM.ListCarts)
+        //    {
+        //        OrderDetail detail = new()
+        //        {
+        //            OrderHeadId = ShoppingCartVM.OrderHead.Id,
+        //            ProductId = cart.ProductId,
+        //            Count = cart.count,
+        //            Price = cart.price
+        //        };
+        //        _unitOfWork.OrderDetail.Add(detail);
+
+        //    }
+        //    _unitOfWork.save();
+        //    return RedirectToAction(nameof(OrderConfirm), new { id = ShoppingCartVM.OrderHead.Id });
+        //}
+
+
+
+        public async Task<IActionResult> OrderConfirm(int id)
         {
-            OrderHead head = _unitOfWork.OrderHead.Get1(a => a.Id == id);
-            if((head.PaymentStatus != SD.PaymentStatusApprovedCOD) || (head.PaymentStatus != SD.PaymentStatusDelayedPayment))
+            OrderHead head = await _unitOfWork.OrderHead.Get1Async(a => a.Id == id);
+            if (head == null)
+            {
+                return NotFound();
+            }
+            if ((head.PaymentStatus != SD.PaymentStatusApprovedCOD) || (head.PaymentStatus != SD.PaymentStatusDelayedPayment))
             {
                 //this section for implement other payment method that not cod
                 //check if user's payment isn't cod nor its a company user, company can pay later
-                
+           //     return RedirectToAction("insert action here");
             }
 
-            //remove item from cart logic here
             return View(id);
         }
-        public IActionResult ShippingDetails()
+        //this is for changing address 
+        public async Task<IActionResult> ShippingDetails()
         {
             var claimsUser = (ClaimsIdentity)User.Identity;
             var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var cart = _unitOfWork.ShoppingCart.GetAll(a => a.AppUser.Id == userId).ToList();
+          //  var cart = await _unitOfWork.ShoppingCart.GetAllAsync(a => a.AppUser.Id == userId);
+            AppUser user = await _unitOfWork.AppUser.Get1Async(a => a.Id == userId);
+            if (user == null)
+            {
 
-
-
-            AppUser user = _unitOfWork.AppUser.Get1(a => a.Id == userId);
+                return NotFound();
+            }
             OrderHead order = new OrderHead()
             {
                 Name = user.Name,
@@ -238,16 +303,16 @@ namespace BulkyWeb.Areas.Customer.Controllers
         public IActionResult ShippingDetails(OrderHead head)
         {
 
-  
-         //   TempData["UserEditData"] = JsonConvert.SerializeObject(head);
-             return RedirectToAction(nameof(Summary), head);
+
+            //   TempData["UserEditData"] = JsonConvert.SerializeObject(head);
+            return RedirectToAction(nameof(Summary), head);
 
 
         }
 
         private double PricenQuantityCal(ShoppingCart cart)
         {
-            if(cart.count <= 50)
+            if (cart.count <= 50)
             {
                 return cart.Product.Price;
             }
@@ -278,43 +343,44 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
           }*/
 
-        public IActionResult More(int? cartid)
+        public async Task<IActionResult> More(int? cartid)
         {
             if (cartid == null || cartid == 0) return NotFound();
-            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(c => c.Id == cartid);
+            ShoppingCart cart = await _unitOfWork.ShoppingCart.Get1Async(c => c.Id == cartid);
             if (cart.count < 1000) cart.count++;
             else
             {
                 TempData["error"] = "Quantity cant larger than 1000";
             }
-            _unitOfWork.ShoppingCart.Update(cart);
-            _unitOfWork.save();
+             _unitOfWork.ShoppingCart.Update(cart);
+            await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Less(int? cartid)
+        public async Task<IActionResult> Less(int? cartid)
         {
             if (cartid == null || cartid == 0) return NotFound();
-            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(c => c.Id == cartid);
+            ShoppingCart cart = await _unitOfWork.ShoppingCart.Get1Async(c => c.Id == cartid);
             if (cart.count > 1) cart.count--;
             else
             {
                 TempData["error"] = "Quantity cant smaller than 1";
             }
             _unitOfWork.ShoppingCart.Update(cart);
-            _unitOfWork.save();
+            await _unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult DeleteOne(int? cartid)
+        public async Task<IActionResult> DeleteOne(int? cartid)
         {
             if (cartid == null || cartid == 0) return NotFound();
-            ShoppingCart cart = _unitOfWork.ShoppingCart.Get1(a =>  a.Id == cartid);
+            ShoppingCart cart = await _unitOfWork.ShoppingCart.Get1Async(a => a.Id == cartid);
 
             _unitOfWork.ShoppingCart.Remove(cart);
-            _unitOfWork.save();
+            await _unitOfWork.SaveAsync();
             TempData["success"] = "Delete item successfully";
             return RedirectToAction(nameof(Index));
         }
+        //still need mass delete, probably later if i remember
 
     }
 }
