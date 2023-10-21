@@ -151,12 +151,12 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return View(product);
         }
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public async Task<IActionResult> Edit(Product product)
         {
             if (ModelState.IsValid)
             {
                 _unitOfWork.Product.Update(product);
-                _unitOfWork.save();
+                await _unitOfWork.SaveAsync();
                 TempData["success"] = "Edited product successfully";
                 return RedirectToAction("Index", "Product");
             }
