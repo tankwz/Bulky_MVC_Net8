@@ -143,11 +143,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
-            Product? product = _unitOfWork.Product.Get1(p => p.Id == id);
+            Product? product = await _unitOfWork.Product.Get1Async(p => p.Id == id);
             return View(product);
         }
         [HttpPost]
