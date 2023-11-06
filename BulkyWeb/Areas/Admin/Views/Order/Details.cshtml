@@ -3,7 +3,19 @@
 @{
     var reversedOrderDetail = Model.orderDetail.Reverse().ToList();
 }
+@{
+    var statusMapping = new Dictionary<string, int>
+    {
+        { "Pending", 1 },
+        { "Confirmed", 2 },
+        { "Ready", 3 },
+        { "Completed", 4 },
+        { "Cancelled", 0 }
 
+    };
+    var orderStatus = statusMapping[Model.orderHead.OrderStatus];
+
+}
 <div class="container">
     <div class="card">
         <div class="card-header bg-gradient p-3 ">
@@ -35,9 +47,9 @@
                         <div class="col">
                             <button class="btn btn-danger form-control text-center py-2">Cancel</button>
                         </div>
-                        <div class="col">
+@*                         <div class="col">
                             <button class="btn btn-danger form-control text-center py-2">Refund</button>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
             </div>
@@ -46,11 +58,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-4">
-                    <h5 class ="text-info"><i class="bi bi-person-circle"></i> Customer</h5>
+                    <h5 class="text-info"><i class="bi bi-person-circle"></i> Customer</h5>
                     <span class="d-block"><span class="fw-bold">Name:</span><span class="opacity-75"> @Model.orderHead.Name</span></span>
-                    <span class ="d-block"><span class="fw-bold">E-mail:</span><span class="opacity-75"> @Model.orderHead.AppUser.Email </span></span>
-                    <span class ="d-block"><span class="fw-bold">Phone Number:</span><span class="opacity-75"> @Model.orderHead.PhoneNumber</span></span>
-                    <a href="#" class="btn btn-sm btn-link bg-secondary link-info text-decoration-none">View User Profile</a>
+                    <span class="d-block"><span class="fw-bold">E-mail:</span><span class="opacity-75"> @Model.orderHead.AppUser.Email </span></span>
+                    <span class="d-block"><span class="fw-bold">Phone Number:</span><span class="opacity-75"> @Model.orderHead.PhoneNumber</span></span>
+                    <a href="#" class="btn btn-sm btn-link bg-secondary link-info text-decoration-none">View User Profile </a> (not yet implemented)
 
                 </div>
                 <div class="col-4">
@@ -70,10 +82,11 @@
                             }
                         </span>
                     </span>
-                    <span class="d-block"><span class="fw-bold">Payment DueDate:</span><span class="opacity-75"> 
-                    @{
-                                                    
-                                    if (@Model.orderHead.PaymentDueDate.Year > 2000)
+                    <span class="d-block">
+                        <span class="fw-bold">Payment DueDate:</span><span class="opacity-75">
+                            @{
+
+                                if (@Model.orderHead.PaymentDueDate.Year > 2000)
                                 {
                                     @Model.orderHead.PaymentDueDate
                                 }
@@ -81,7 +94,7 @@
                                 {
                                     <text>Only for Company user</text>
                                 }
-                            
+
                             }
                         </span>
                     </span>
@@ -96,29 +109,29 @@
                 </div>
             </div>
             <div class="row">
-
             </div>
             <div class="row mt-3">
                 <div class="col align-self-center ps-3 pe-0">
                     <p>Pending</p>
-                    <div class="divider py-2 bg-success"></div>
+                    <div class="divider py-2 @(orderStatus>= 1? "bg-success": (orderStatus == 0? "bg-danger": "bg-secondary"))">
+                        </div>
                 </div>
                 <div class="col align-self-center ps-1 pe-0">
                     <p>Approved</p>
-                    <div class="divider py-2 bg-success"></div>
+                    <div class="divider py-2 @(orderStatus>= 2? "bg-success": (orderStatus == 0? "bg-danger": "bg-secondary"))"></div>
                 </div>
                 <div class="col align-self-center ps-1 pe-0">
                     <p>Processing</p>
-                    <div class="divider py-2 bg-success"></div>
+                    <div class="divider py-2  @(orderStatus>= 3? "bg-success": (orderStatus == 0? "bg-danger": "bg-secondary"))"></div>
                 </div>
                 <div class="col align-self-center ps-1 pe-0">
                     <p>Shipped</p>
-                    <div class="divider py-2 bg-danger"></div>
+                    <div class="divider py-2 @(orderStatus>= 4? "bg-success": (orderStatus == 0? "bg-danger": "bg-secondary"))"></div>
                 </div>
-                <div class="col align-self-center ps-1 pe-2">
+@*                 <div class="col align-self-center ps-1 pe-2">
                     <p>Refund</p>
                     <div class="divider py-2 bg-secondary"></div>
-                </div>
+                </div> *@
             </div>
             <div class="row my-4">
                 <div class="col-12">
@@ -128,7 +141,7 @@
                             <li class="list-group-item">
                                 <div class="d-flex align-items-center row">
                                     <div class="col-8 col-md-6 col-lg-2 pe-0">
-                                        <img class="border border-1 rounded border-secondary" src="@detail.Product.ImageUrl"  style="width:95%"></img>
+                                        <img class="border border-1 rounded border-secondary" src="@detail.Product.ImageUrl" style="width:95%"></img>
                                     </div>
 
                                     <div class="col-4 col-md-6 col-lg-10 ps-1">

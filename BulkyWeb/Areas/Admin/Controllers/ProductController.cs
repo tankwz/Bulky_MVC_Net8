@@ -214,8 +214,6 @@ namespace BulkyWeb.Areas.Admin.Controllers
             _unitOfWork.Product.Remove(p);
             await _unitOfWork.SaveAsync();
             return Json(new { success=true, messsage="Delete Successfully" });
-
-
         }        
         
         #endregion
