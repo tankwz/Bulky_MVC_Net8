@@ -21,7 +21,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             _unitOfWork = uni;
         }
-        
+
         public async Task<IActionResult> Index()
         {
             //    if(id== null || id==0)
@@ -36,6 +36,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             var headfromdatabase = await _unitOfWork.OrderHead.GetAllAsync(includeProperties: "AppUser");
             List<OrderHead> head = headfromdatabase.ToList();
+            head.Reverse();
 
             switch (status)
             {
@@ -84,12 +85,58 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
             OrderVM = new()
             {
-                orderHead = await _unitOfWork.OrderHead.Get1Async(u => u.Id == orderId, includeProperties:"AppUser"),
-                orderDetail = await _unitOfWork.OrderDetail.GetAllAsync(a=> a.OrderHeadId == orderId, includeProperties:"Product")
+                orderHead = await _unitOfWork.OrderHead.Get1Async(u => u.Id == orderId, includeProperties: "AppUser"),
+                orderDetail = await _unitOfWork.OrderDetail.GetAllAsync(a => a.OrderHeadId == orderId, includeProperties: "Product")
             };
 
 
             return View(OrderVM);
+        }
+
+        public async Task<IActionResult> HandleStatus(int id, string status)
+        {
+            Console.WriteLine(status);
+
+            OrderHead heade = await _unitOfWork.OrderHead.Get1Async(a => a.Id == id);
+            switch (status)
+            {
+                case SD.StatusApproved:
+                    {
+                      //  if(heade.OrderStatus == SD.StatusPending)
+                        heade.OrderStatus = SD.StatusApproved;
+                    //    
+                        break;
+                    }
+                case SD.StatusProcessing:
+                    {
+                        heade.OrderStatus = SD.StatusProcessing;
+                        break;
+                    }
+                case SD.StatusShipped:
+                    {
+                        heade.OrderStatus = SD.StatusShipped;
+                        heade.PaymentStatus = SD.PaymentStatusApproved;
+                        break;
+                    }
+                case SD.StatusCanceled:
+                    {
+                        heade.OrderStatus = SD.StatusCanceled;
+                        break;
+                    }
+                default:
+                    {
+                        TempData["error"] = "Status isn't right";
+                    }
+                    break;
+            }
+
+            _unitOfWork.OrderHead.Update(heade);
+
+            await _unitOfWork.SaveAsync();
+
+            TempData["success"] = "Update Order successfully";
+
+            return RedirectToAction(nameof(Details), new{ orderId = id});
         }
 
 

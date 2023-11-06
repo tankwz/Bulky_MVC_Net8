@@ -49,9 +49,13 @@
             <div class="col-12">
                 <div class="d-flex">
                     <ul class="list-group list-group-horizontal ms-auto mb-2">
+                        <li class="list-group-item @pending ">
+                            <a style="text-decoration: none; color:aliceblue;" asp-area="admin" asp-controller="order" asp-action="index" asp-route-status="pending">Pending</a>
+                        </li>
                         <li class="list-group-item @inprocess">
                             <a class="text-decoration-none text-white" asp-area="admin" asp-controller="order" asp-action="index" asp-route-status="inprocess">In Process</a>
                         </li>
+
                         <li class="list-group-item @paymentpending ">
                             <a style="text-decoration: none; color:aliceblue;" asp-area="admin" asp-controller="order" asp-action="index" asp-route-status="paymentpending">Payment Pending</a>
                         </li>

@@ -92,7 +92,7 @@ function loadDataTable(status) {
                 "render": function (data) {
                     return ` 
                         <div class="w-75 ">
-                            <a href="/admin/order/details?orderId=${data}" class="btn btn-primary mx-2"><i class="bi bi-layout-text-window-reverse"></i> Details</a>
+                            <a href="/Admin/Order/Details?orderId=${data}" class="btn btn-primary mx-2"><i class="bi bi-layout-text-window-reverse"></i> Details</a>
                         </div> 
                     `
                 },

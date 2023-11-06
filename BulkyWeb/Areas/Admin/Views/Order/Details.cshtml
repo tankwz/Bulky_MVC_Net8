@@ -29,35 +29,35 @@
                             <i class="bi bi-calendar"></i> <span> &nbsp;@Model.orderHead.OrderDate.ToString("ddd, MMM dd, yyyy, h:mmtt")</span>
                         </div>
                         <div class="col-12">
-                            <small class="" style="opacity: 0.70;"> Order ID: @Model.orderHead.Id </small>
+                            <small class="" style="opacity: 0.70;"> Order ID: @Model.orderHead.OrderStatus @Model.orderHead.Id </small>
                         </div>
                     </div>
                 </div>
                 <div class="col-8">
                     <div class="row d-flex">
                         <div class="col ms-auto">
-                            <button class="btn btn-success form-control text-center py-2" disabled=@(orderStatus!=1)
-                                    asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Approve" asp-action="handleStatus">
+                            <a class="btn btn-success form-control text-center py-2  @(orderStatus!=1 ? "disabled" : "")"
+                               asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Approved" asp-action="HandleStatus">
                                 Approve
-                            </button>
+                            </a>
                         </div>
                         <div class="col">
-                            <button class="btn btn-primary form-control text-center py-2" disabled=@(orderStatus != 2)
-                                    asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Process" asp-action="handleStatus">
+                            <a class="btn btn-primary form-control text-center py-2  @(orderStatus!=2 ? "disabled" : "")" 
+                               asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Processing" asp-action="HandleStatus">
                                 Process
-                            </button>
+                            </a>
                         </div>
                         <div class="col">
-                            <button class="btn btn-primary form-control text-center py-2" disabled=@(orderStatus != 3)
-                                    asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Ship" asp-action="handleStatus">
+                            <a class="btn btn-primary form-control text-center py-2 @(orderStatus!=3 ? "disabled" : "")"
+                               asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Shipped" asp-action="HandleStatus">
 
-                                >Ship</button>
+                                Ship</a>
                         </div>
                         <div class="col">
-                            <button class="btn btn-danger form-control text-center py-2" disabled=@(orderStatus == 0 || orderStatus ==3 )
-                                    asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Cancel" asp-action="handleStatus">
+                            <a class="btn btn-danger form-control text-center py-2 @((orderStatus==0 || orderStatus ==4) ? "disabled" : "") "
+                               asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Canceled" asp-action="HandleStatus">
 
-                                >Cancel</button>
+                                >Cancel</a>
                         </div>
 @*                         <div class="col">
                             <button class="btn btn-danger form-control text-center py-2">Refund</button>
