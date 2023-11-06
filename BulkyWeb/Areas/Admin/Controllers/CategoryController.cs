@@ -36,8 +36,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
             if (ModelState.IsValid)
             {
-                _uniOfWork.Category.AddAsync(obj);
-                _uniOfWork.SaveAsync();
+                await _uniOfWork.Category.AddAsync(obj);
+                await _uniOfWork.SaveAsync();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index", "Category");
             }
@@ -87,7 +87,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             Category? obj = await _uniOfWork.Category.Get1Async(u => u.Id == id);
             if (obj == null) return NotFound();
             _uniOfWork.Category.Remove(obj);
-            _uniOfWork.SaveAsync();
+            await _uniOfWork.SaveAsync();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index", "Category");
         }

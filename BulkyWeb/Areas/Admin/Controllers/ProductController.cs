@@ -20,19 +20,21 @@ namespace BulkyWeb.Areas.Admin.Controllers
             _unitOfWork = uni;
             _webHostEnvironment = webHost;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
-
+            var objProduct = await _unitOfWork.Product.GetAllAsync(includeProperties: "Category");
+            
+            List<Product> objProductList = objProduct.ToList();
             return View(objProductList);
-        }
+        }                  
 
-        public IActionResult UpSert(int? id)
+        public async Task<IActionResult> UpSert(int? id)
         {
+            IEnumerable<Category> Category = await _unitOfWork.Category.GetAllAsync();
             ProductVM productVM = new()
             {
                 Product = new Product(),
-                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                CategoryList = Category.Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -49,7 +51,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public IActionResult UpSert(ProductVM p, IFormFile? file)
+        public async Task<IActionResult> UpSert(ProductVM p, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -64,13 +66,14 @@ namespace BulkyWeb.Areas.Admin.Controllers
                         var OldImagePath = Path.Combine(wwwRootPath, p.Product.ImageUrl.TrimStart('\\'));
                         if (System.IO.File.Exists(OldImagePath))
                         {
-                            System.IO.File.Delete(OldImagePath);
+                             System.IO.File.Delete(OldImagePath);
                         }
                     }
 
                     using (var fileStream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
                     {
-                        file.CopyTo(fileStream);
+                      //  file.CopyTo(fileStream);
+                        await file.CopyToAsync(fileStream);
                     }
 
                     p.Product.ImageUrl = @"\img\products\" + filename;
@@ -80,20 +83,21 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 if (p.Product.Id == 0)
                 {
 
-                    _unitOfWork.Product.Add(p.Product);
+                    await _unitOfWork.Product.AddAsync(p.Product);
                     TempData["success"] = "Added product successfully";
                 }
                 else
                 {
-                    _unitOfWork.Product.Update(p.Product);
+                     _unitOfWork.Product.Update(p.Product);
                     TempData["success"] = "Updated product successfully";
                 }
-                _unitOfWork.save();
+                await _unitOfWork.SaveAsync();
                 return RedirectToAction("Index", "Product");
             }
             else
             {
-                p.CategoryList = _unitOfWork.Category.GetAll().Select(a =>
+                var category = await _unitOfWork.Category.GetAllAsync();
+                p.CategoryList = category.Select(a =>
                 new SelectListItem
                 {
                     Text = a.Name,
@@ -103,13 +107,15 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var category = await _unitOfWork.Category.GetAllAsync();
+
             ProductVM productVM = new()
             {
 
                 Product = new Product(),
-                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                CategoryList = category.Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -121,7 +127,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductVM p)
-        {
+        {//old code, not relevant anymore, now its upsert
             if (ModelState.IsValid)
             {
                 await _unitOfWork.Product.AddAsync(p.Product);
@@ -144,7 +150,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
 
         public async Task<IActionResult> Edit(int? id)
-        {
+        {//old code, not relevant anymore, now its upsert
             if (id == null || id == 0)
                 return NotFound();
             Product? product = await _unitOfWork.Product.Get1Async(p => p.Id == id);
@@ -152,7 +158,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Edit(Product product)
-        {
+        {//old code, not relevant anymore, now its upsert
             if (ModelState.IsValid)
             {
                 _unitOfWork.Product.Update(product);
@@ -183,16 +189,18 @@ namespace BulkyWeb.Areas.Admin.Controllers
         #region API CALLS
         [HttpGet]
 
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            List<Product> p = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
+
+            var Products = await _unitOfWork.Product.GetAllAsync(includeProperties: "Category");
+            List<Product> p = Products.ToList();
             return Json(new {data = p});
         }
 
         [HttpDelete]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            Product p = _unitOfWork.Product.Get1(p => p.Id == id);
+            Product p = await _unitOfWork.Product.Get1Async(p => p.Id == id);
             string wwwRoot = _webHostEnvironment.WebRootPath;
             if( p == null) return Json(new {success=false, message="Error while deleting"});
             if (!string.IsNullOrEmpty(p.ImageUrl))
@@ -204,7 +212,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 }
             }
             _unitOfWork.Product.Remove(p);
-            _unitOfWork.save();
+            await _unitOfWork.SaveAsync();
             return Json(new { success=true, messsage="Delete Successfully" });
 
 
