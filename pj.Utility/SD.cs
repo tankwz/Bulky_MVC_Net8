@@ -19,7 +19,6 @@ namespace pj.Utility
         public const string StatusProcessing = "Processing";
         public const string StatusShipped = "Shipped";
         public const string StatusCanceled = "Canceled";
-        public const string StatusRefunded = "Refunded";
 
         public const string PaymentStatusPending = "Pending";
         public const string PaymentStatusApprovedCOD = "ApprovedForCOD";
