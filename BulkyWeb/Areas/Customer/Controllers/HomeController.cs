@@ -92,8 +92,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
             TempData["success"] = "Added to cart";
             await _unitOfWork.SaveAsync();
-
-            return RedirectToAction("Index", "ShoppingCart");
+            return RedirectToAction("Details");
+          //  return RedirectToAction("Index", "ShoppingCart");
         }
         public async Task<IActionResult> Details2(int? id)
         {

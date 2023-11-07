@@ -28,14 +28,14 @@
                             <a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <li class="nav-item">
+           @*              <li class="nav-item">
                             <a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        @* @if (User.IsInRole(SD.Role_Admin)){ *@
+                        </li> *@
+                         @if (User.IsInRole(SD.Role_Admin)){ 
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
+                                Admin stuff
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item">
@@ -47,17 +47,15 @@
                                 <li class="dropdown-item">
                                     <a class="nav-link " asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
                                 </li>
-                                <li class="dropdown-item">
-                                    <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Order</a>
-                                </li>
+
                                 <li class="dropdown-item"><hr class="dropdown-divider"></li>
-                                <li class="dropdown-item"><a class="nav-link" href="#">Something else here</a></li>
+                                <li class="dropdown-item"><a class="nav-link" href="#">User(not yet implemented) </a></li>
                                 
                             </ul>
 
                         </li>
 
-                        @* } *@
+                         } 
                         <li class="nav-item">
                             <a class="nav-link" asp-area="customer" asp-controller="ShoppingCart" asp-action="Index">
                                 <i class="bi bi-cart4">&nbsp;@* (0) *@</i>

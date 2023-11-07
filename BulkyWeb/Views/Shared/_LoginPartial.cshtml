@@ -6,6 +6,9 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+        <li class="nav-item">
+            <a class="nav-link fw-bolder text-decoration-underline" asp-area="Admin" asp-controller="Order" asp-action="Index">Order</a>
+        </li>
     <li class="nav-item">
         <a id="manage" class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
     </li>
