@@ -15,7 +15,6 @@
 
 # Mono auto generated files
 mono_crash.*
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -361,3 +360,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/BulkyWeb/appsettings.json
