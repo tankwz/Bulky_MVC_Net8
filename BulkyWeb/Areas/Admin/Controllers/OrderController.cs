@@ -8,11 +8,12 @@ using pj.Models.ViewModels;
 using pj.Utility;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
+using System.Security.Claims;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee )]
+    [Authorize]
 
     public class OrderController : Controller
     {
@@ -32,9 +33,23 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
 
         [HttpGet]
+
         public async Task<IActionResult> getAllAPI(string status)
         {
-            var headfromdatabase = await _unitOfWork.OrderHead.GetAllAsync(includeProperties: "AppUser");
+            IEnumerable<OrderHead> headfromdatabase;
+            if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+            {
+                 headfromdatabase = await _unitOfWork.OrderHead.GetAllAsync(includeProperties: "AppUser");
+
+            }
+            else
+            {
+                var claimIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                headfromdatabase = await _unitOfWork.OrderHead.GetAllAsync(a=>a.AppUserId == userId,includeProperties:"AppUser");
+            }
+
             List<OrderHead> head = headfromdatabase.ToList();
             head.Reverse();
 
