@@ -199,7 +199,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
             //    string? cartData = TempData.Peek("cart") as string;
             //  ShoppingCartVM? cart = JsonConvert.DeserializeObject(cartData) as ShoppingCartVM;
             //  ShoppingCartVM cart = JsonConvert.DeserializeObject<ShoppingCartVM>(cartData);
-            return RedirectToAction(nameof(OrderConfirm), new { id = ShoppingCartVM.OrderHead.Id });
+
+            //  return RedirectToAction(nameof(OrderDetail)
+            return RedirectToAction("Details", "Order", new { area = "Admin", orderId = ShoppingCartVM.OrderHead.Id });
+ 
+
+            //  return RedirectToAction(nameof(OrderConfirm), new { id = ShoppingCartVM.OrderHead.Id });
         }
 
         //#region Sync code

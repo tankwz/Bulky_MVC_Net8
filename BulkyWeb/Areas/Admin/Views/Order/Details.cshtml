@@ -35,32 +35,36 @@
                 </div>
                 <div class="col-8">
                     <div class="row d-flex">
-                        <div class="col ms-auto">
-                            <a class="btn btn-success form-control text-center py-2  @(orderStatus != 1 ? "disabled" : "")"
-                              asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Approved" asp-action="HandleStatus"
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                        {
+                            <div class="col ms-auto">
+                                <a class="btn btn-success form-control text-center py-2  @(orderStatus != 1 ? "disabled" : "")"
+                                asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Approved" asp-action="HandleStatus"
 
-                            >
-                                Approve
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="btn btn-primary form-control text-center py-2  @(orderStatus!=2 ? "disabled" : "")"
-                               asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Processing" asp-action="HandleStatus">
-                                Process
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="btn btn-primary form-control text-center py-2 @(orderStatus!=3 ? "disabled" : "")"
-                               asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Shipped" asp-action="HandleStatus">
+                                >
+                                    Approve
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a class="btn btn-primary form-control text-center py-2  @(orderStatus!=2 ? "disabled" : "")"
+                                asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Processing" asp-action="HandleStatus">
+                                    Process
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a class="btn btn-primary form-control text-center py-2 @(orderStatus!=3 ? "disabled" : "")"
+                                asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Shipped" asp-action="HandleStatus">
 
-                                Ship
-                            </a>
-                        </div>
-                        <div class="col">
+                                    Ship
+                                </a>
+                            </div>
+                        }
+
+                        <div class="col-4 ms-auto">
                             <a class="btn btn-danger form-control text-center py-2 @((orderStatus==0 || orderStatus ==4) ? "disabled" : "") "
                                asp-area="Admin" asp-controller="Order" asp-route-id="@Model.orderHead.Id" asp-route-status="Canceled" asp-action="HandleStatus">
 
-                                >Cancel
+                                Cancel
                             </a>
                         </div>
                         @*                         <div class="col">
