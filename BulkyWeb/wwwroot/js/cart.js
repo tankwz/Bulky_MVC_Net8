@@ -12,16 +12,21 @@
     // }
 function toggleDescription(productId) {
     var extratext = document.getElementById("extra-des-" + productId);
+    var shorttext = document.getElementById("short-des-" + productId);
+
     var button = document.getElementById("readmorebutton-" + productId);
     if (extratext.style.display === "none") {
         extratext.style.display = "inline";
+        shorttext.style.display = "none";
         //document.getElementById("readmorelink-" + productId).innerHTML = "Show less";
-        button.textContent = "Show Less";
+        button.textContent = "Hide Description";
     }
     else {
         extratext.style.display = "none";
+        shorttext.style.display = "none";
+
         //  document.getElementById("readmorelink-" + productId).innerHTML = "Show More";
-        button.textContent = "Show More";
+        button.textContent = "Show Description";
 
     }
 }
