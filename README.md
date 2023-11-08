@@ -39,9 +39,9 @@ Admin users can access and perform all customer user tasks. Additionally, they c
 
 [[/Product List](https://tanbook.azurewebsites.net/Admin/Product)] This is where admin users can add/update/delete product. Since I purposely let you register as an admin user for testing purposes, please don't mess up my preset data. thank you
 
-[[/Upsert](https://tanbook.azurewebsites.net/Admin/Product/UpSert)] This is the upsert page you access from [[/Product List](https://tanbook.azurewebsites.net/Admin/Product)] to update or if not if will be an insert page, i combined Update and Insert logic depend whether there is a an id present on the route
+[[/Product Upsert](https://tanbook.azurewebsites.net/Admin/Product/UpSert)] This is the upsert page you access from [[/Product List](https://tanbook.azurewebsites.net/Admin/Product)] to update or if not if will be an insert page, i combined Update and Insert logic depend whether there is a an id present on the route
 
-[[/Company List](https://tanbook.azurewebsites.net/Admin/Company)] [[/Company List](https://tanbook.azurewebsites.net/Admin/Company/Upsert)]  This is the same as two pages above, but for Company (not to be confused with company users a user belong to one company like a product belong to a category)
+[[/Company List](https://tanbook.azurewebsites.net/Admin/Company)] [[/Company Upsert](https://tanbook.azurewebsites.net/Admin/Company/Upsert)]  This is the same as two pages above, but for Company (not to be confused with company users a user belong to one company like a product belong to a category)
 
 [[/Category List](https://tanbook.azurewebsites.net/Admin/Category)] This is where admin users can add/edit/delete on category of book
 
