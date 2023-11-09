@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using pj.DataAccess.Repository;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
 using pj.Models.ViewModels;
@@ -134,19 +135,16 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var claimsUser = (ClaimsIdentity)User.Identity;
             var userId = claimsUser.FindFirst(ClaimTypes.NameIdentifier).Value;
             var cartFromDb = await _unitOfWork.ShoppingCart.GetAllAsync(a => a.AppUserId == userId, includeProperties: "Product");
-
+            //bad code, should get that sinle item instead of all the cart then filter it back
             IList<ShoppingCart> carts = cartFromDb.Where(items => ShoppingCartVM.ListCarts.Any(c => c.Id == items.Id)).ToList();
 
             ShoppingCartVM.ListCarts = carts;
 
+
             AppUser userObject = await _unitOfWork.AppUser.Get1Async(a => a.Id == userId);
             ShoppingCartVM.OrderHead.AppUserId = userId;
 
-
-
-
-
-            ShoppingCartVM.OrderHead.OrderDate = DateTime.Now;
+            ShoppingCartVM.OrderHead.OrderDate = DateTime.Now.AddHours(7);
 
             if (userObject.CompanyId.GetValueOrDefault() == 0)
             {
@@ -161,6 +159,10 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHead.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
             }
             await _unitOfWork.OrderHead.AddAsync(ShoppingCartVM.OrderHead);
+            foreach (var cart in carts)
+            {
+                _unitOfWork.ShoppingCart.Remove(cart);
+            }
             await _unitOfWork.SaveAsync();
             foreach (var cart in ShoppingCartVM.ListCarts)
             {

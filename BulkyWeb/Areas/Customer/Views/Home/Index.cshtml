@@ -15,14 +15,20 @@
                         <div class="card shadow border-5 rounded p-2">
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <img src="@p.ImageUrl" class="card-img-top img-fluid" style="height:320px; width:270px; object-fit:cover;"></img>
+                                    <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@p.Id" >
+                                        <img src="@p.ImageUrl" class="card-img-top img-fluid" style="height:320px; width:270px; object-fit:cover;"></img>
+                                    </a>
                                 </div>
                             </div>
                             <div class="card-body pb-0">
                                 <div>
-                                    <p class="card-title text-center bg-secondary border border-info rounded-1 text-uppercase py-1 ">
+                                    <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@p.Id" class="text-decoration-none text-white">
+
+                                    <p class="card-title text-center bg-secondary border border-info rounded-1 text-uppercase py-1  ">
                                         @p.Title
                                     </p>
+                                    </a>
+
                                     <p class="card-title text-center text-info bg-secondary rounded-1">
                                         <span class="text-muted">by</span> <b>@p.Author</b>
                                     </p>
