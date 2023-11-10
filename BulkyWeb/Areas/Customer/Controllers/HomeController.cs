@@ -77,7 +77,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 if (cart.count  > 1000)
                 {
-                    TempData["error"] = "Can't have more than 1000 items to cart";
+                    TempData["error"] = "Can't have more than 1000 items in cart";
                     return RedirectToAction(nameof(Details));
                 }
 
@@ -100,7 +100,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 } 
                 else
                 {
-                    TempData["error"] = "Can't have more than 1000 items to cart";
+                    TempData["error"] = "Can't have more than 1000 items in cart";
                     return RedirectToAction(nameof(Details));
                 }
 

@@ -392,6 +392,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             _unitOfWork.ShoppingCart.Remove(cart);
             await _unitOfWork.SaveAsync();
+
+         
+            var carts = await _unitOfWork.ShoppingCart.GetAllAsync(c => c.AppUserId == cart.AppUserId);
+            int carC = carts.Distinct().Count();
+            HttpContext.Session.SetInt32(SD.SessionCart, carC);
+
             TempData["success"] = "Delete item successfully";
             return RedirectToAction(nameof(Index));
         }
