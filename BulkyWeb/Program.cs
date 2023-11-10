@@ -13,7 +13,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyAppDatabaseContext>(myoptions => 
     myoptions.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionName")));
 
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromMinutes(100);
+    option.Cookie.HttpOnly = true;
+    option.Cookie.IsEssential = true;
+});
 
 builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<MyAppDatabaseContext>().AddDefaultTokenProviders();
 
@@ -27,6 +33,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender,EmailSender>() ;
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -47,5 +55,5 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
-
+app.UseSession();
 app.Run();

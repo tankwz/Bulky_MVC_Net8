@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
+using pj.Utility;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -20,6 +22,16 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            var claimU = (ClaimsIdentity)User.Identity;
+
+            if(claimU.IsAuthenticated != !true)
+            {
+                var UID = claimU.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var carts = await _unitOfWork.ShoppingCart.GetAllAsync(c => c.AppUserId == UID);
+                int carC = carts.Distinct().Count();
+                HttpContext.Session.SetInt32(SD.SessionCart, carC);
+            }
 
             IEnumerable<Product> products =  await _unitOfWork.Product.GetAllAsync(includeProperties:"Category");
             return View(products);
@@ -71,6 +83,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
                 cart.AppUserId = userId;
                 await _unitOfWork.ShoppingCart.AddAsync(cart);
+
+       
             }
             else
             {
@@ -82,7 +96,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
                     cartcheck.Id = 0;
                     await _unitOfWork.ShoppingCart.AddAsync(cartcheck);
 
-                }
+
+                } 
                 else
                 {
                     TempData["error"] = "Can't have more than 1000 items to cart";
@@ -92,6 +107,13 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
             TempData["success"] = "Added to cart";
             await _unitOfWork.SaveAsync();
+
+
+            var carts = await _unitOfWork.ShoppingCart.GetAllAsync(c => c.AppUserId == userId);
+            int carC = carts.Distinct().Count();
+            HttpContext.Session.SetInt32(SD.SessionCart, carC);
+
+
             return RedirectToAction("Details");
           //  return RedirectToAction("Index", "ShoppingCart");
         }

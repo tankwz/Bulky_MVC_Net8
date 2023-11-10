@@ -181,6 +181,14 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
 
             await _unitOfWork.SaveAsync();
+
+
+        
+            
+                var carts2 = await _unitOfWork.ShoppingCart.GetAllAsync(c => c.AppUserId == userId);
+                int carC = carts2.Distinct().Count();
+                HttpContext.Session.SetInt32(SD.SessionCart, carC);
+           
             /* throwaway
              *         public int Id { get; set; }
     public int OrderHeadId { get; set; }

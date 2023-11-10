@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using pj.DataAccess.Data;
 using pj.DataAccess.Repository.IRepository;
 using pj.Models;
+using pj.Utility;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -16,7 +19,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             _unitOfWork = uni;
         }
         public async Task<IActionResult> Index()
-        {
+        { 
           //  IEnumerable<Company> companies = await _unitOfWork.Company.GetAllAsync();
             return View();
         }
